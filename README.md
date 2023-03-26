@@ -6,7 +6,7 @@ A Weather App built with Vue.js and Node.js as the final project by "L'equipe" f
 
 It works utilizing 4 Services:
 
-1) Data Retrieval Service -> Data Ninja
+1) Data Retrieval Service -> Data Demon
 
 2) Notification Service -> Notify Nexus
 
