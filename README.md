@@ -6,10 +6,14 @@ A Weather App built with Vue.js and Node.js as the final project by "L'equipe" f
 
 It works utilizing 4 Services:
 
-1) Data Retrieval Service 
+1) Data Retrieval Service -> Data Ninja
 
-2) Notification Service
+2) Notification Service -> Notify Nexus
 
-3) Visualization/Pre-Render Service
+3) Visualization/Pre-Render Service -> Visual Voyager
 
-4) Authentication Service
+4) Authentication Service -> Cipher Chief
+
+The UI is codenamed Sky Siren
+## Setup for the Services and UI
+Ensure that when you go into the directory that you are working on, that you do ``npm install`` first to make sure you have all the packages up to date before running ``npm start`` to have the server running (by default will be on localhost:3000)
