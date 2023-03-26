@@ -1,0 +1,17 @@
+{
+  "name": "data-demon",
+  "version": "1.0.0",
+  "description": "The Data Retrieval Service",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest --watchAll --verbose --coverage"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0"
+  }
+}
