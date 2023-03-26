@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
 });
 
 // Start the server
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`Notify Nexus Server started on port ${port}`);
 });
