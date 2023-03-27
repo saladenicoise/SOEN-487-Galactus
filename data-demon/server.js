@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 import { getLocationFromIp, getLocationFromAddress } from './geoCodingAPI.js';
+import { fetchWeatherData, fetchHistoricalData} from './weatherRetrievalAPIs.js';
 
 // Middleware
 app.use(express.json());
@@ -12,15 +13,31 @@ app.get('/', (req, res) => {
 });
 
 app.get('/fromIp', (req, res) => {
-  var ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress; //Gets us the requester's IP address
+  let ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress; //Gets us the requester's IP address
+  let language= req.params.language;
   locationObject = getLocationFromIp(ip);
-  //Call weather API with locationObject
+  //Call weather API with locationObject properties
+  let weatherData = fetchWeatherData(locationObject.latitude, locationObject.longitude, language);
+  let jsonObject = {
+    'locationObject': locationObject,
+    'weatherData': weatherData
+  }
+  let jsonString = JSON.stringify(jsonObject);
+  //Send jsonString to cache
 });
 
 app.get('/fromAddress', (req, res) => {
-  var cityName = req.body.cityName;
+  let cityName = req.params.cityName;
+  let language = req.params.language;
   locationObject = getLocationFromAddress(cityName);
-  //Call weather API with locationObject
+  //Call weather API with locationObject properties
+  let weatherData = fetchWeatherData(locationObject.latitude, locationObject.longitude, language);
+  let jsonObject = {
+    'locationObject': locationObject,
+    'weatherData': weatherData
+  }
+  let jsonString = JSON.stringify(jsonObject);
+  //Send jsonString to cache
 });
 
 // Start the server

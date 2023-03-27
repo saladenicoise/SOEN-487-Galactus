@@ -506,14 +506,14 @@ const fetchHistoricalData = (lat, lon, start_date, end_date) => {
     return historicalDataArr;
 };
 
-const fetchWeatherData = (lat, lon) => {
+const fetchWeatherData = (lat, lon, lang) => {
     //APIs are ranked arbitrarily according to my personal preference and observations on the quality and amount of data provided
     //1) WeatherAPI
     //2) OpenMeteo
     //3) OpenWeatherMap
 
     let weatherData = null;
-    weatherData = fetchWeatherAPIForecast(lat, lon);
+    weatherData = fetchWeatherAPIForecast(lat, lon, lang);
     if(weatherData !== undefined || weatherData.length > 0) {
         return weatherData;
     }
@@ -521,7 +521,7 @@ const fetchWeatherData = (lat, lon) => {
     if(weatherData !== undefined || weatherData.length > 0) {
         return weatherData;
     }
-    weatherData = fetchOpenWeatherCurrent(lat, lon).concat(fetchOpenWeatherHourly(lat, lon));
+    weatherData = fetchOpenWeatherCurrent(lat, lon, lang).concat(fetchOpenWeatherHourly(lat, lon, lang));
     return weatherData;
 }
 
