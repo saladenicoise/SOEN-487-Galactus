@@ -1,12 +1,16 @@
 const express = require('express');
 const app = express();
+const path = require('path');
+const fileName = '\\testing_beam.html';
+
 
 // Middleware
 app.use(express.json());
+app.use(express.static("public"));
 
 // Routes
 app.get('/', (req, res) => {
-  res.send('Notify Nexus');
+  res.sendFile(__dirname + fileName);
 });
 
 // Start the server
