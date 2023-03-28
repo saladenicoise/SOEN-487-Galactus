@@ -15,6 +15,7 @@ It works utilizing 4 Services:
 4) Authentication Service -> Cipher Chief
 
 The UI is codenamed Sky Siren
+
 ## Setup for the Services and UI
 Please ensure that you have Node.js already installed on your machine, you can download it at [Node Download](https://nodejs.org/en/download)
 
@@ -24,3 +25,5 @@ When you are in the directory, run the ``npm install`` command first. This makes
 
 When you the previous command finishes, then you can edit as you want. If you want to see the result and test it out then run the ``npm start`` command. It will output in the terminal the port at which it can be reached and you may navigate to it by visiting localhost:PORT.
 
+## Development in the backend service
+To see your code changes live while running a service, run the service with ``npm run live-reload`` instead of ``npm start``. Edit code and save the file, and the changes will apply to the server live.

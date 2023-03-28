@@ -4,13 +4,15 @@
   "description": "The notification service",
   "main": "server.js",
   "scripts": {
-    "test": "jest --watchAll --verbose --coverage"
+    "test": "jest --watchAll --verbose --coverage",
+    "live-reload": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
-    "@pusher/push-notifications-server": "^1.2.6"
+    "@pusher/push-notifications-server": "^1.2.6",
+    "nodemon": "^2.0.22"
   },
   "devDependencies": {
     "jest": "^29.5.0"
