@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --watchAll --verbose --coverage",
-    "start": "nodemon server.js"
+    "live-reload": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
