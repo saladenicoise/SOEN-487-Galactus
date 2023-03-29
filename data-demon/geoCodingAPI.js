@@ -1,56 +1,53 @@
 const IP_API_KEY = '';
 const CITY_API_KEY = '';
 
-const getLocationFromIp = (ip) => {
-    let url = 'https://api.ipgeolocation.io/ipgeo?apiKey=' + IP_API_KEY + '&ip=107.171.241.34';
+const getLocationFromIp = async (ip) => {
+    let url = 'https://api.ipgeolocation.io/ipgeo?apiKey=' + IP_API_KEY + '&ip='+ip;
   
-    fetch(url).then(res => {
-      if (res.status !== 200) {
-        console.log('Looks like there was a problem. Status Code: ' + res.status);
-        return;
-      }
-  
-      // Examine the text in the response
-      res.json().then(data => {
-        console.log(data);
-        const toReturn = {
-            latitude: data.latitude,
-            longitude: data.longitude,
-            city: data.city,
-            state: data.state_prov,
-            state_abrv: null,
-            country: data.country_name,
-            time_zone: data.time_zone
-        };
-        return toReturn;
-      });
-    });
+    const apiCall = await fetch(url);
+
+    if (!apiCall.ok) {
+      const message = `An error has occured: ${apiCall.status}`;
+      console.log(message);
+      return;
+    }
+
+    const locationData = await apiCall.json();
+    console.log(JSON.stringify(locationData));
+    const toReturn = {
+      latitude: locationData.latitude,
+      longitude: locationData.longitude,
+      city: locationData.city,
+      state: locationData.state_prov,
+      state_abrv: null,
+      country: locationData.country_name,
+      time_zone: locationData.time_zone.name,
+    };
+    console.log("Now Returning: " + JSON.stringify(toReturn))
+    return toReturn;
 }
 
-const getLocationFromAddress = (cityName) => {
-    let url = 'http://api.positionstack.com/v1/forward?access_key=' + CITY_API_KEY + '&query=' + cityName + '&timezone_module = 1';
-
-    fetch(url).then(res => {
-        if (res.status !== 200) {
-            console.log('Looks like there was a problem. Status Code: ' + res.status);
-            return;
-          }
-      
-          // Examine the text in the response
-          res.json().then(data => {
-            console.log(data);
-            const toReturn = {
-                latitude: data.latitude,
-                longitude: data.longitude,
-                city: city,
-                state: data.region,
-                state_abrv: data.region_code,
-                country: data.country,
-                time_zone: data.timezone_module.name
-            };
-            return toReturn;
-          });
-    });
+const getLocationFromAddress = async (cityName) => {
+    let url = 'http://api.positionstack.com/v1/forward?access_key=' + CITY_API_KEY + '&query=' + cityName + '&timezone_module=1';
+    const apiCall = await fetch(url);
+    if (!apiCall.ok) {
+      const message = `An error has occured: ${apiCall.status}`;
+      console.log(message);
+      return;
+    }
+    
+    const locationData = await apiCall.json();
+    const toReturn = {
+      latitude: locationData.data[0].latitude,
+      longitude: locationData.data[0].longitude,
+      city: locationData.data[0].name,
+      state: locationData.data[0].region,
+      state_abrv: locationData.data[0].region_code,
+      country: locationData.data[0].country,
+      time_zone: null,
+    };
+    console.log("Now Returning: " + JSON.stringify(toReturn))
+    return toReturn;
 };
 
-export default {getLocationFromIp, getLocationFromAddress};
+module.exports = {getLocationFromIp, getLocationFromAddress};
