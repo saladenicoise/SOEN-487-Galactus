@@ -20,15 +20,17 @@ router.get('/fromIp', (req, res) => {
   const search_params = incomingURL.searchParams;
   let ip = search_params.get('ip'); //Gets us the requester's IP address
   let language= search_params.get('lang');
-  locationObject = geoCoding.getLocationFromIp(ip);
-  //Call weather API with locationObject properties
-  let weatherData = weatherRetrieval.fetchWeatherData(locationObject.latitude, locationObject.longitude, language);
-  let jsonObject = {
-    'locationObject': locationObject,
-    'weatherData': weatherData
-  }
-  let jsonString = JSON.stringify(jsonObject);
-  //Send jsonString to cache
+  return geoCoding.getLocationFromIp(ip).then(locationObject => {
+    return weatherRetrieval.fetchWeatherData(locationObject.latitude, locationObject.longitude, language).then((weatherData) => {
+      let jsonObject = {
+        'locationObject': locationObject,
+        'weatherData': weatherData
+      }
+      let jsonString = JSON.stringify(jsonObject);
+      console.log(jsonString);
+      res.send(jsonString);
+    });
+  });
 });
 
 router.get('/fromAddress', async (req, res) => {
@@ -36,16 +38,17 @@ router.get('/fromAddress', async (req, res) => {
   const search_params = incomingURL.searchParams;
   let cityName = search_params.get('cityName');
   let language = search_params.get('lang');
-  const locationObject = await geoCoding.getLocationFromAddress(cityName);
-  //Call weather API with locationObject properties
-  let weatherData = weatherRetrieval.fetchWeatherData(locationObject.latitude, locationObject.longitude, language);
-  console.log("Weather Data: " + weatherData);
-  let jsonObject = {
-    'locationObject': locationObject,
-    'weatherData': weatherData
-  }
-  let jsonString = JSON.stringify(jsonObject);
-  //Send jsonString to cache
+  return geoCoding.getLocationFromAddress(cityName).then(locationObject => {
+    return weatherRetrieval.fetchWeatherData(locationObject.latitude, locationObject.longitude, language).then((weatherData) => {
+      let jsonObject = {
+        'locationObject': locationObject,
+        'weatherData': weatherData
+      }
+      let jsonString = JSON.stringify(jsonObject);
+      console.log(jsonString);
+      res.send(jsonString);
+    });
+  });
 });
 
 // Start the server

@@ -1,53 +1,43 @@
-const IP_API_KEY = '';
-const CITY_API_KEY = '';
+const IP_API_KEY = '326730ba1d4149759691b05c236207aa';
+const CITY_API_KEY = '119dc3a311b1faa4ed064d95a49c9d39';
 
 const getLocationFromIp = async (ip) => {
     let url = 'https://api.ipgeolocation.io/ipgeo?apiKey=' + IP_API_KEY + '&ip='+ip;
-  
-    const apiCall = await fetch(url);
 
-    if (!apiCall.ok) {
-      const message = `An error has occured: ${apiCall.status}`;
-      console.log(message);
-      return;
-    }
+    return fetch(url).then((response) => response.json()).then((locationData) => {
+      const toReturn = {
+        latitude: locationData.latitude,
+        longitude: locationData.longitude,
+        city: locationData.city,
+        state: locationData.state_prov,
+        state_abrv: null,
+        country: locationData.country_name,
+        time_zone: locationData.time_zone.name,
+      };
+      return toReturn;
+    }).catch((error) => {
+      console.log(error);
+    });
 
-    const locationData = await apiCall.json();
-    console.log(JSON.stringify(locationData));
-    const toReturn = {
-      latitude: locationData.latitude,
-      longitude: locationData.longitude,
-      city: locationData.city,
-      state: locationData.state_prov,
-      state_abrv: null,
-      country: locationData.country_name,
-      time_zone: locationData.time_zone.name,
-    };
-    console.log("Now Returning: " + JSON.stringify(toReturn))
-    return toReturn;
 }
 
-const getLocationFromAddress = async (cityName) => {
-    let url = 'http://api.positionstack.com/v1/forward?access_key=' + CITY_API_KEY + '&query=' + cityName + '&timezone_module=1';
-    const apiCall = await fetch(url);
-    if (!apiCall.ok) {
-      const message = `An error has occured: ${apiCall.status}`;
-      console.log(message);
-      return;
-    }
-    
-    const locationData = await apiCall.json();
+const getLocationFromAddress = (cityName) => {
+  let url = 'http://api.positionstack.com/v1/forward?access_key=' + CITY_API_KEY + '&query=' + cityName + '&timezone_module=1';
+
+  return fetch(url).then((response) => response.json()).then((data) => {
     const toReturn = {
-      latitude: locationData.data[0].latitude,
-      longitude: locationData.data[0].longitude,
-      city: locationData.data[0].name,
-      state: locationData.data[0].region,
-      state_abrv: locationData.data[0].region_code,
-      country: locationData.data[0].country,
+      latitude: data.data[0].latitude,
+      longitude: data.data[0].longitude,
+      city: data.data[0].name,
+      state: data.data[0].region,
+      state_abrv: data.data[0].region_code,
+      country: data.data[0].country,
       time_zone: null,
     };
-    console.log("Now Returning: " + JSON.stringify(toReturn))
     return toReturn;
+  }).catch((error) => {
+    console.log(error);
+  });
 };
 
 module.exports = {getLocationFromIp, getLocationFromAddress};
