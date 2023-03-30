@@ -32,4 +32,8 @@ const consumeFromQueue = async (queue, isNoAck = false, durable = false, prefetc
     }
 }
 
+<<<<<<< HEAD
 consumeFromQueue("Q1_weather");
+=======
+consumeFromQueue('w/e');
+>>>>>>> rabbitmq-queue1
