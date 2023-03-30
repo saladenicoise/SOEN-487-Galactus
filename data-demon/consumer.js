@@ -32,4 +32,4 @@ const consumeFromQueue = async (queue, isNoAck = false, durable = false, prefetc
     }
 }
 
-consumeFromQueue('w/e');
+consumeFromQueue("Q1_weather");
