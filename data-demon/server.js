@@ -41,6 +41,10 @@ router.get('/fromAddress', async (req, res) => {
   let cityName = search_params.get('cityName');
   let language = search_params.get('lang');
   return geoCoding.getLocationFromAddress(cityName).then(locationObject => {
+    if (!locationObject) {
+      res.status(404).send(`Error: Could not find location ${cityName}`);
+      return;
+    }
     return weatherRetrieval.fetchWeatherData(locationObject.latitude, locationObject.longitude, language).then((weatherData) => {
       let jsonObject = {
         'locationObject': locationObject,
