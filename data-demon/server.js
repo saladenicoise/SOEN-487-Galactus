@@ -5,6 +5,7 @@ const url = require('url');
 const app = express();
 const path = require('path');
 const router = express.Router();
+const produce = require("./producer");
 
 // Middleware
 app.use(express.json());
@@ -27,6 +28,7 @@ router.get('/fromIp', (req, res) => {
         'weatherData': weatherData
       }
       let jsonString = JSON.stringify(jsonObject);
+      produce("Q1_weather", jsonString, (durable = false));
       console.log(jsonString);
       res.send(jsonString);
     });
@@ -45,8 +47,10 @@ router.get('/fromAddress', async (req, res) => {
         'weatherData': weatherData
       }
       let jsonString = JSON.stringify(jsonObject);
+      
+      produce("Q1_weather", jsonString, (durable = false));
+      res.status(200).send(jsonString);
       console.log(jsonString);
-      res.send(jsonString);
     });
   });
 });
