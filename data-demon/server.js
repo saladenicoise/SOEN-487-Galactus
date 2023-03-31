@@ -5,6 +5,7 @@ const url = require('url');
 const app = express();
 const path = require('path');
 const router = express.Router();
+const produce = require("./producer");
 
 // Middleware
 app.use(express.json());
@@ -27,6 +28,7 @@ router.get('/fromIp', (req, res) => {
         'weatherData': weatherData
       }
       let jsonString = JSON.stringify(jsonObject);
+      produce("Q1_weather", jsonString, (durable = false));
       console.log(jsonString);
       res.send(jsonString);
     });
@@ -39,14 +41,20 @@ router.get('/fromAddress', async (req, res) => {
   let cityName = search_params.get('cityName');
   let language = search_params.get('lang');
   return geoCoding.getLocationFromAddress(cityName).then(locationObject => {
+    if (!locationObject) {
+      res.status(404).send(`Error: Could not find location ${cityName}`);
+      return;
+    }
     return weatherRetrieval.fetchWeatherData(locationObject.latitude, locationObject.longitude, language).then((weatherData) => {
       let jsonObject = {
         'locationObject': locationObject,
         'weatherData': weatherData
       }
       let jsonString = JSON.stringify(jsonObject);
+      
+      produce("Q1_weather", jsonString, (durable = false));
+      res.status(200).send(jsonString);
       console.log(jsonString);
-      res.send(jsonString);
     });
   });
 });

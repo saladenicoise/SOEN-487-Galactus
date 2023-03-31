@@ -5,11 +5,12 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --watchAll --verbose --coverage",
-    "start": "nodemon server.js"
+    "live-reload": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.10.3",
     "express": "^4.18.2",
     "nodemon": "^2.0.22"
   },
