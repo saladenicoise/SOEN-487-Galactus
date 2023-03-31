@@ -1,5 +1,5 @@
 const amqp = require("amqplib");
-var amqpURL =
+const amqpURL =
   "amqps://shdtwjbe:ErN_h2yhsDwmTZRgRYl8SU68t9ylyps2@codfish.rmq.cloudamqp.com/shdtwjbe";
 const publishToQueue = async (queue, message, durable = false) => {
   try {
