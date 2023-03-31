@@ -29,7 +29,7 @@
             <button class="btn btn-outline-primary" type="submit">Sign Up</button>
 
             <p class="mt-4">
-                Already have an account? <a href="/sign-in">Sign In</a>
+                Already have an account? <router-link to="/sign-in">Sign In</router-link>
             </p>
         </form>
 
