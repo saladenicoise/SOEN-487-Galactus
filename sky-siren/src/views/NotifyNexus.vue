@@ -1,15 +1,9 @@
 <template>
     <div class="notify-nexus">
-        <h1>Permission</h1>
-        <span>Do you allow this web app to <b>register</b> this device to push notifications?</span>
-        <button>Register</button>
-
-        <!-- The following divs are only dispayed if the Register button is clicked -->
-        <!-- If the device is already register, show the divs by default  -->
-        <!-- TODO: Perform check to see if this devide is registed to Pusher Beam -->
+        <!-- TODO Perform check to see if this devide is registed to Pusher Beam -->
         <div>
             <h2>Notifications scheduler</h2>
-            <input name="notification-scheduler-input" type="time">
+            <input name="schedule" v-model="schedule" type="time">
             <button @click="subscribeToNotifyNexus('scheduled-notif')">Subscribe to weather notifications?</button>
         </div>
 
@@ -22,25 +16,14 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
+    data() {
+        return {
+            schedule: ''
+        }
+    },
     methods: {
-        // registerMyDevice() {
-        //     console.log('Registering to for notify-nexus');
-        //     // real registration code from pusher beam client sdk docs
-        //     const beamsClient = new PusherPushNotifications.Client({
-        //     instanceId: 'b8e54c3c-7ad0-41ce-9c6f-63f5d8f52dcb',
-        //     });
-        
-        //     beamsClient.start()
-        //     .then((activeClient) => {
-        //             // beamsClient.addDeviceInterest('hello')
-        //             let x = activeClient.getDeviceId();
-        //             console.log(x);
-
-        //     })
-        //     .then((deviceId) => console.log(`Successfully registered! This devide ID is ${deviceId}`))
-        //     .catch(console.error);
-        // },
         subscribeToNotifyNexus(interest) {
             console.log(`Subscribe to ${interest} interest for notify-nexus`);
 
@@ -51,18 +34,33 @@ export default {
         
             beamsClient.start()
             .then((beamsClient) => beamsClient.getDeviceId())
-            .then((deviceId) => {
+            .then(async (deviceId) => {
                 console.log(`Successfully registered device ${deviceId} and subscribed to ${interest}!`)
-                // TODO register deviceId in User service, if does not exist yet
-                this.sendDeviceIdToNotifyNexus(deviceId);
+                // TODO Register deviceId in User service, if does not exist yet
+                // TODO Refactor into switch case?
+                if (interest === 'weather-alert')
+                    await this.postDeviceIdToNotifyNexus(deviceId).catch(e => console.log(`Can't send alert deviceId to notify-nexus service: ${e}`));
+                if (interest === 'scheduled-notif')
+                    await this.postNotificationPreferences(deviceId, this.schedule).catch(e => console.log(`Can't send notification preferences to notify-nexus service: ${e}`));
             })
             .then(() => beamsClient.addDeviceInterest(interest))
             .then(() => beamsClient.getDeviceInterests())
             .then((interests) => console.log(`Current interests: ${interests}`))
             .catch(console.error);
         },
-        sendDeviceIdToNotifyNexus(decideId) {
-            
+        async postNotificationPreferences(deviceId, schedule) {
+            let res = await axios.post("http://localhost:3001/post/notification-preferences", {
+                deviceId,
+                schedule
+            }).catch(e =>  console.log(`weird axios or await error? ${e}`))
+            console.log(`postNotificationPreferences result: ${res.data}`);
+        },
+        // This function calls the notify-nexus server to pass it the registered device id
+        async postDeviceIdToNotifyNexus(deviceId) {
+            let res = await axios.post("http://localhost:3001/post/deviceId", {
+                deviceId
+            }).catch(e =>  console.log(`weird axios or await error? ${e}`))
+            console.log(`postDeviceIdToNotifyNexus result: ${res.data}`);
         }
     }
 }
