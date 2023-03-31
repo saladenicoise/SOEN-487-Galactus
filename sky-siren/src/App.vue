@@ -49,11 +49,13 @@
 
   	<router-view></router-view>
 
-  	<footer class="footer mt-auto py-4 text-center">
-		<div class="container">
-			Made with <i class="bi bi-heart-fill text-danger"></i> by L'equipe<br>
+	<footer>
+		<div class="container " >
+			<span class="text-muted"> Made with <i class="bi bi-heart-fill text-danger"></i> by L'equipe<br> </span>
+
 			<span class="text-muted">&copy; {{ new Date().getFullYear() }} All Rights Reserved.</span>
 		</div>
+
 	</footer>
 </template>
 
