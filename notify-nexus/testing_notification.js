@@ -6,11 +6,11 @@ let beamsClient = new PushNotifications({
 });
 
 beamsClient
-  .publishToInterests(["test_interest"], {
+  .publishToInterests(["weather-alert"], {
     web: {
       notification: {
-        title: "Hello",
-        body: "Hello, world!",
+        title: "ALERT",
+        body: "This device can now receive alerts!",
         deep_link: "https://www.pusher.com",
       },
     },
