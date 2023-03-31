@@ -1,15 +1,13 @@
-const amqp = require("amqplib");
-var amqpURL =
-  "amqps://shdtwjbe:ErN_h2yhsDwmTZRgRYl8SU68t9ylyps2@codfish.rmq.cloudamqp.com/shdtwjbe";
+const rabbit = require("./rabbit.js");
 const publishToQueue = async (queue, message, durable = false) => {
   try {
-    const cluster = await amqp.connect(amqpURL);
+    const cluster = await rabbit();
     const channel = await cluster.createChannel();
 
     await channel.assertQueue(queue, (durable = false));
     await channel.sendToQueue(queue, Buffer.from(message));
 
-    console.info(" [x] Sending message to queue", queue, message);
+    console.info(" [x] Sending message to ", queue);
   } catch (error) {
     // handle error response
     console.error(error, "Unable to connect to cluster!");

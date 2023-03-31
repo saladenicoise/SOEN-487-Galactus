@@ -1,10 +1,8 @@
-const amqp = require("amqplib");
-var amqpURL =
-  "amqps://shdtwjbe:ErN_h2yhsDwmTZRgRYl8SU68t9ylyps2@codfish.rmq.cloudamqp.com/shdtwjbe";
+const rabbit = require("./rabbit.js");
 
 const consumeFromQueue = async (queue, isNoAck = false, durable = false, prefetch = null) => {
 
-    const cluster = await amqp.connect(amqpURL);
+    const cluster = await rabbit();
     const channel = await cluster.createChannel();
 
     await channel.assertQueue(queue, durable=false);
