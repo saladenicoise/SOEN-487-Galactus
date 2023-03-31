@@ -1,81 +1,85 @@
-<script setup>
-//import { RouterLink, RouterView } from 'vue-router'
-//import HelloWorld from './components/HelloWorld.vue'
-</script>
+<template>
+  	<nav class="navbar navbar-expand-lg bg-body-tertiary">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="/">
+				<img src="/favicon.ico" alt="Logo" width="30" height="24" class="d-inline-block align-text-top"> <b>Galactus</b> SkySiren
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarSupportedContent">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+					<li class="nav-item">
+						<a class="nav-link" aria-current="page" href="/">
+							<i class="bi bi-house-door-fill"></i>&nbsp;Home
+						</a>
+					</li>
+					<li class="nav-item" v-if="isLoggedIn">
+						<a class="nav-link" href="/profile">
+							<i class="bi bi-person-fill"></i>&nbsp;Profile
+						</a>
+					</li>
+					<li class="nav-item" v-if="isLoggedIn">
+						<a class="nav-link" href="/preferences">
+							<i class="bi bi-gear-fill"></i>&nbsp;Preferences
+						</a>
+					</li>
+				</ul>
+				<ul class="navbar-nav flex-row">
+					<li class="nav-item" v-if="isLoggedIn">
+						<button type="button" class="btn btn-outline-danger" @click="logout" >
+							<i class="bi bi-box-arrow-right"></i>&nbsp;Sign Out
+						</button>
+					</li>
 
-<template><div>
-<the-header></the-header>
-<router-view></router-view>
-</div>
+					<li class="nav-item" v-if="!isLoggedIn">
+						<a class="nav-link" href="/sign-in">
+							<i class="bi bi-box-arrow-in-right"></i>&nbsp;Sign In
+						</a>
+					</li>
+					<li class="nav-item" v-if="!isLoggedIn">
+						<a class="nav-link" href="/sign-up">
+							<i class="bi bi-person-plus-fill"></i>&nbsp;Sign Up
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+  	<router-view></router-view>
+
+  	<footer class="footer mt-auto py-4 text-center">
+		<div class="container">
+			Made with <i class="bi bi-heart-fill text-danger"></i> by L'equipe<br>
+			<span class="text-muted">&copy; {{ new Date().getFullYear() }} All Rights Reserved.</span>
+		</div>
+	</footer>
 </template>
-<script>
-import TheHeader from './components/layout/TheHeader.vue'
-export default{
-  components: { TheHeader },
-} 
+
+<script setup>
+
+import { ref, onMounted } from 'vue';
+import { auth } from '@/firebase';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import router from './router';
+
+const isLoggedIn = ref(false);
+
+onMounted(() => {
+	onAuthStateChanged(auth, (user) => {
+		if (user) {
+			isLoggedIn.value = true;
+		} else {
+			isLoggedIn.value = false;
+		}
+	});
+});
+
+const logout = () => {
+	signOut(auth).then(() => {
+		router.push('/');
+	});
+};
+
 </script>
-
-<!-- <style scoped>
-
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style> -->
