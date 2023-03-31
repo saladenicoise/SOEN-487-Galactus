@@ -1,28 +1,41 @@
 <template>
-    <main class="container flex-shrink-0 text-center mt-4">
-        <h1 class="h3 mb-3 fw-normal">Sign In</h1>
-        <form class="mx-auto col-lg-4 col-md-6 col-sm-8 col-xs-12" @submit.prevent="signIn">
-            <div class="alert alert-danger mb-4" role="alert" v-if="errorMsg">
+    <main >
+        <div class="login-box">
+
+<h1>Login</h1>
+<form  @submit.prevent="signIn">
+    <div class="alert alert-danger mb-4" role="alert" v-if="errorMsg">
                 {{ errorMsg }}
             </div>
-            <div class="form-floating mb-4">
-                <input type="email" class="form-control" id="email" v-model="email" placeholder="Email address">
-                <label for="email">Email address</label>
-            </div>
-            <div class="form-floating mb-4">
-                <input type="password" class="form-control" id="password" v-model="password" placeholder="Password">
-                <label for="password">Password</label>
-            </div>
-            <button class="btn btn-outline-primary" type="submit" >Sign in</button>
+  <div class="user-box">
+    <input type="email" name=""  d="email" v-model="email">
+    <label>Username</label>
+  </div>
+  <div class="user-box">
+    <input type="password" name=""  id="password" v-model="password">
+    <label>Password</label>
+  </div>
 
-            <p class="mt-4">
+<button type="submit" class="center">
+
+   <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    Sign in
+</button>
+</form>
+
+<p class="mt-4">
                 Don't have an account? <a href="/sign-up">Sign Up</a>
+</p>
+<p>
+                Forgot Password? <a href="/forgot-password">Reset</a>
             </p>
+</div>
 
-            <p class="mt-2">
-                <a href="/forgot-password">Forgot Password?</a>
-            </p>
-        </form>
+
+
     </main>
 </template>
 
