@@ -2,6 +2,8 @@ const amqp = require("amqplib");
 var amqpURL =
   "amqps://shdtwjbe:ErN_h2yhsDwmTZRgRYl8SU68t9ylyps2@codfish.rmq.cloudamqp.com/shdtwjbe";
 
+// Connect to RabbitMQ with multiple logger messages. 
+// Kept seperate to avoid repeated code.  
 const connectToRabbit = async () => {
     return amqp.connect(amqpURL + "?heartbeat=60", function(err, conn) {
       if (err) {
