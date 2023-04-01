@@ -7,11 +7,11 @@
                     {{ errorMsg }}
                 </div>
                 <div class="user-box">
-                    <input type="email" name=""  d="email" v-model="email">
-                    <label>Username</label>
+                    <input type="email" name="email" id="email" v-model="email" required>
+                    <label>Email</label>
                 </div>
                 <div class="user-box">
-                    <input type="password" name=""  id="password" v-model="password">
+                    <input type="password" name="password" id="password" v-model="password" required>
                     <label>Password</label>
                 </div>
 
@@ -25,11 +25,7 @@
             </form>
 
             <p class="mt-4">
-                Don't have an account? <router-link to="/sign-up">Sign Up</router-link>
-            </p>
-
-            <p class="mt-2">
-                <router-link to="/forgot-password">Forgot Password?</router-link>
+                Don't have an account? <router-link to="/sign-up" class="sign-up-link">Sign Up</router-link>
             </p>
         </div>
     </main>
@@ -51,8 +47,8 @@ const store = useStore();
 /* Authenticates a user */
 const signIn = async () => {
     try {
-        await store.dispatch('user/signIn', { email: email.value, password: password.value });
-        router.push('/');
+        await store.dispatch('user/signIn', { email: email.value, password: password.value })
+        router.push('/preferences');
     } catch (error) {
         errorMsg.value = error.message;
     }

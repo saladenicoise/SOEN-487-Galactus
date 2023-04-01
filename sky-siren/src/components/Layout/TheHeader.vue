@@ -18,18 +18,18 @@
 					</li>
 					<li class="nav-item" v-if="isAuthenticated">
 						<div class="nav-link">
-							<router-link to="/profile" class="bi bi-person-fill no-underline">&nbsp;Profile</router-link>
+							<router-link to="/profile" class="bi bi-person-fill link-profile no-underline">&nbsp;Profile</router-link>
 						</div>
 					</li>
 					<li class="nav-item" v-if="isAuthenticated">
 						<div class="nav-link">
-							<router-link to="/preferences" class="bi bi-gear-fill no-underline">&nbsp;Preferences</router-link>
+							<router-link to="/preferences" class="bi bi-gear-fill link-preferences no-underline">&nbsp;Preferences</router-link>
 						</div>
 					</li>
 				</ul>
 				<ul class="navbar-nav flex-row">
 					<li class="nav-item" v-if="isAuthenticated">
-						<button type="button" class="btn btn-outline-danger" @click="logout" >
+						<button type="button" class="btn btn-outline-danger btn-sign-out" @click="logout" >
 							<i class="bi bi-box-arrow-right"></i>&nbsp;Sign Out
 						</button>
 					</li>
