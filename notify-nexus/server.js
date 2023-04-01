@@ -1,6 +1,7 @@
 const express = require('express');
 var cors = require('cors');
 const app = express();
+const startScheduler = require('./scheduler/control/start-scheduler')
 
 // Middleware
 app.use(express.json());
@@ -26,8 +27,12 @@ app.post('/post/notification-preferences', (req, res) => {
 
 })
 
+// TO-DO In production change to no arguments 
+startScheduler();
+
 // Start the server
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`Notify Nexus Server started on port ${port}`);
 });
+
