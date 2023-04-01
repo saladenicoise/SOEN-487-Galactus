@@ -1,11 +1,16 @@
 const express = require('express');
 var cors = require('cors');
 const app = express();
+const startScheduler = require('./scheduler/control/start-scheduler')
+
+// In production change to no arguments 
+startScheduler();
 
 // Middleware
 app.use(express.json());
 app.use(express.static('public'));
 app.use(cors({origin: 'http://localhost:5173'}))
+
 
 // Routes
 app.get('/', (req, res) => {
@@ -26,8 +31,12 @@ app.post('/post/notification-preferences', (req, res) => {
 
 })
 
+// TO-DO In production change to no arguments 
+startScheduler();
+
 // Start the server
 const port = process.env.PORT || 3001;
 app.listen(port, () => {
   console.log(`Notify Nexus Server started on port ${port}`);
 });
+
