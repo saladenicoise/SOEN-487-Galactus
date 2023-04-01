@@ -45,9 +45,41 @@ router.get("/", (req, res) => {
 router.get("/fromIp", (req, res) => {
   const incomingURL = new URL(req.url, `http://${req.headers.host}`);
   const search_params = incomingURL.searchParams;
-  let ip = search_params.get("ip"); //Gets us the requester's IP address
+  let ip = search_params.get('ip'); //Gets us the requester's IP address
+  let language= search_params.get('lang');
+  return geoCoding.getLocationFromIp(ip).then(locationObject => {
+    if (!locationObject) {
+      res.status(404).send(`Error: Invalid IP`);
+      return;
+    }
+    return weatherRetrieval.fetchWeatherData(locationObject.latitude, locationObject.longitude, language).then((weatherData) => {
+      if(!weatherData) {
+        res.status(404).send('Error: Could not retrieve weather data for this location.');
+        return;
+      }
+      let jsonObject = {
+        'locationObject': locationObject,
+        'weatherData': weatherData
+      }
+      let jsonString = JSON.stringify(jsonObject);
+      produce("Q1_weather", jsonString, (durable = false));
+      console.log(jsonString);
+      res.status(200).send(jsonString);
+    });
+  });
+});
+
+
+/**
+ * @res - Sends you a string with the weather data when calling localhost:3000/cityName=[city]
+ */
+router.get("/fromAddress", async (req, res) => {
+  const incomingURL = new URL(req.url, `http://${req.headers.host}`);
+  const search_params = incomingURL.searchParams;
+  let cityName = search_params.get("cityName");
   let language = search_params.get("lang");
-  return geoCoding.getLocationFromIp(ip).then((locationObject) => {
+  return geoCoding.getLocationFromAddress(cityName).then((locationObject) => {
+    // if locationObject is null, send a 404 error
     if (!locationObject) {
       res.status(404).send(`Error: Could not find location ${cityName}`);
       return;
@@ -127,7 +159,9 @@ router.get("/fromAddress", async (req, res) => {
             locationObject.latitude,
             locationObject.longitude,
             language
-          )
+          ).then(res => {
+            return res.json();
+          })
           .then((weatherData) => {
             if(!weatherData) {
               res.status(404).send('Error: Could not retrieve weather data for this location.');

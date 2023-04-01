@@ -39,6 +39,7 @@ const fetchOpenWeatherCurrent = async (lat, lon, lang) => {
         return weatherForecastArr;
     }).catch((error) => {
         console.log("error: " + error);
+        return;
     });
 };
 
@@ -130,6 +131,7 @@ const fetchOpenWeatherHourly = async (lat, lon, lang) => {
 	return weatherForecastArr;
     }).catch((error) => {
         console.log("error: " + error);
+        return;
     });
 };
 
@@ -251,6 +253,9 @@ const fetchWeatherAPIForecast = async (lat, lon, lang) => {
             weatherForecastArr.push(forecastDayObject);
         }
         return weatherForecastArr;
+    }).catch((error) => {
+        console.log(error)
+        return;
     });
 };
 
@@ -442,6 +447,9 @@ const fetchOpenMeteoHourlyForecast = async (lat, lon) => {
             weatherForecastArr.push(forecastDayObject)
         }
         return weatherForecastArr
+    }).catch(err => {
+        console.log(err);
+        return;
     });
 };
 
@@ -488,6 +496,7 @@ const fetchHistoricalData = async (lat, lon, start_date, end_date) => {
         return historicalDataArr;
     }).catch(error => {
         console.log("error: " + error);
+        return;
     });
 };
 
@@ -510,9 +519,11 @@ const fetchWeatherData = (lat, lon, lang) => {
                     return currentData.concat(forecastData);
                 }).catch(err => {
                     console.log("error: " + err);
+                    return;
                 });
             }).catch(err => {
                 console.log("error: " + err);
+                return;
             });
 
         });
