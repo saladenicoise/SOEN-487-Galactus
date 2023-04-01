@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const fileName = '\\testing_beam.html';
+const startScheduler = require('./scheduler/control/start-scheduler')
 
 
 // Middleware
@@ -12,6 +13,9 @@ app.use(express.static("public"));
 app.get('/', (req, res) => {
   res.sendFile(__dirname + fileName);
 });
+
+// In production change to no arguments 
+startScheduler();
 
 // Start the server
 const port = process.env.PORT || 3001;
