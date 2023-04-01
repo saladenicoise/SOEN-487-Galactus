@@ -44,35 +44,22 @@
 /* Imports */
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { auth } from '@/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useStore } from 'vuex';
 
 /* Data */
 const email = ref('');
 const password = ref('');
 const errorMsg = ref('');
 const router = useRouter();
+const store = useStore();
 
 /* Authenticates a user */
 const signIn = async () => {
     try {
-        const { user } = await signInWithEmailAndPassword(auth, email.value, password.value);
+        await store.dispatch('user/signIn', { email: email.value, password: password.value });
         router.push('/');
     } catch (error) {
-        switch (error.code) {
-            case 'auth/invalid-email':
-                errorMsg.value = 'Invalid email address';
-            break;
-            case 'auth/user-not-found':
-                errorMsg.value = 'User not found';
-            break;
-            case 'auth/wrong-password':
-                errorMsg.value = 'Wrong password';
-            break;
-            default:
-                errorMsg.value = 'Something went wrong';
-            break;
-        }
+        errorMsg.value = error.message;
     }
 };
 </script>
