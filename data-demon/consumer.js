@@ -1,4 +1,5 @@
 const rabbit = require("./rabbit.js");
+const fs = require('fs');
 
 const consumeFromQueue = async (queue, isNoAck = false, durable = false, prefetch = null) => {
 
@@ -16,7 +17,17 @@ const consumeFromQueue = async (queue, isNoAck = false, durable = false, prefetc
     try {
         channel.consume(queue, message => {
       if (message !== null) {
-        console.log(' [x] Received', JSON.parse(message.content.toString()));
+        const weather = JSON.parse(message.content.toString()) ;
+        const result = "[ " + new Date().toISOString() + " ] --- " +
+         weather.locationObject.city + " --- " +
+         weather.weatherData[0].weather_condition + "\n";  
+        fs.appendFile('file.log', result, err => {
+          if (err) {
+            console.error(err);
+          }
+          
+        });
+        console.log(' [x] Received ', queue);
         channel.ack(message);
         return null;
       } else {
