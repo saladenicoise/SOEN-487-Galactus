@@ -1,7 +1,5 @@
 const express = require('express');
 const app = express();
-const path = require('path');
-const fileName = '\\testing_beam.html';
 const startScheduler = require('./scheduler/control/start-scheduler')
 
 // In production change to no arguments 
@@ -13,7 +11,7 @@ app.use(express.static("public"));
 
 // Routes
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + fileName);
+  res.send('Notify Nexus');
 });
 
 // Start the server
