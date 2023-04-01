@@ -72,8 +72,14 @@ router.get("/fromIp", (req, res) => {
             locationObject.latitude,
             locationObject.longitude,
             language
-          )
+          ).then(res => {
+            return res.json();
+          })
           .then((weatherData) => {
+            if(!weatherData) {
+              res.status(404).send('Error: Could not retrieve weather data for this location.');
+              return;
+            }
             let jsonObject = {
               locationObject: locationObject,
               weatherData: weatherData,
@@ -82,7 +88,6 @@ router.get("/fromIp", (req, res) => {
             client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
             produce("Q1_weather", jsonString, (durable = false));
             res.status(200).send(jsonString);
-            // console.log(jsonString);
           });
       }
     });
@@ -124,6 +129,10 @@ router.get("/fromAddress", async (req, res) => {
             language
           )
           .then((weatherData) => {
+            if(!weatherData) {
+              res.status(404).send('Error: Could not retrieve weather data for this location.');
+              return;
+            }
             let jsonObject = {
               locationObject: locationObject,
               weatherData: weatherData,
@@ -132,7 +141,6 @@ router.get("/fromAddress", async (req, res) => {
             client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
             produce("Q1_weather", jsonString, (durable = false));
             res.status(200).send(jsonString);
-            // console.log(jsonString);
           });
       }
     });
