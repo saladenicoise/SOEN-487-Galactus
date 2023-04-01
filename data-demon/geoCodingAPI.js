@@ -17,6 +17,7 @@ const getLocationFromIp = async (ip) => {
       return toReturn;
     }).catch((error) => {
       console.log(error);
+      return;
     });
 
 }
@@ -37,6 +38,7 @@ const getLocationFromAddress = (cityName) => {
     return toReturn;
   }).catch((error) => {
     console.log(error);
+    return;
   });
 };
 

@@ -22,7 +22,15 @@ router.get('/fromIp', (req, res) => {
   let ip = search_params.get('ip'); //Gets us the requester's IP address
   let language= search_params.get('lang');
   return geoCoding.getLocationFromIp(ip).then(locationObject => {
+    if (!locationObject) {
+      res.status(404).send(`Error: Invalid IP`);
+      return;
+    }
     return weatherRetrieval.fetchWeatherData(locationObject.latitude, locationObject.longitude, language).then((weatherData) => {
+      if(!weatherData) {
+        res.status(404).send('Error: Could not retrieve weather data for this location.');
+        return;
+      }
       let jsonObject = {
         'locationObject': locationObject,
         'weatherData': weatherData
@@ -30,7 +38,7 @@ router.get('/fromIp', (req, res) => {
       let jsonString = JSON.stringify(jsonObject);
       produce("Q1_weather", jsonString, (durable = false));
       console.log(jsonString);
-      res.send(jsonString);
+      res.status(200).send(jsonString);
     });
   });
 });
@@ -46,6 +54,10 @@ router.get('/fromAddress', async (req, res) => {
       return;
     }
     return weatherRetrieval.fetchWeatherData(locationObject.latitude, locationObject.longitude, language).then((weatherData) => {
+      if(!weatherData) {
+        res.status(404).send('Error: Could not retrieve weather data for this location.');
+        return;
+      }
       let jsonObject = {
         'locationObject': locationObject,
         'weatherData': weatherData
