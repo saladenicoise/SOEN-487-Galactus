@@ -37,13 +37,12 @@
 					<li class="nav-item" v-if="!isAuthenticated">
 						<div class="nav-link">
 							<router-link to="/sign-in" class="bi bi-box-arrow-in-right no-underline">&nbsp;Sign In</router-link>
-							
 						</div>
 					</li>
 					<li class="nav-item" v-if="!isAuthenticated">
-						<a class="nav-link" href="/sign-up">
-							<i class="bi bi-person-plus-fill"></i>&nbsp;Sign Up
-						</a>
+						<div class="nav-link">
+							<router-link to="/sign-up" class="bi bi-person-plus-fill no-underline">&nbsp;Sign Up</router-link>
+						</div>
 					</li>
 				</ul>
 			</div>

@@ -18,10 +18,6 @@
                 <label for="password">Password</label>
             </div>
             <div class="form-floating mb-4">
-                <input type="password" class="form-control" id="confirm-password" v-model="confirmPassword" placeholder="Confirm Password">
-                <label for="password">Confirm Password</label>
-            </div>
-            <div class="form-floating mb-4">
                 <input type="text" class="form-control" id="city" v-model="city" placeholder="City">
                 <label for="city">City</label>
             </div>
@@ -33,8 +29,6 @@
             </p>
         </form>
 
-        <!-- Vue test button to save user data -->
-        <button class="btn btn-outline-primary" @click="saveUserData">saveUserData</button>
     </main>
 </template>
 
@@ -48,7 +42,6 @@ import { useStore } from 'vuex';
 const name = ref('');
 const email = ref('');
 const password = ref('');
-const confirmPassword = ref('');
 const city = ref('');
 const errorMsg = ref('');
 const store = useStore();
@@ -59,24 +52,19 @@ const signUp = async () => {
         await store.dispatch('user/signUp', {
             email: email.value,
             password: password.value,
-        });
-
-        // Save user data to firebase database
-        await store.dispatch('user/saveUserData', {
             name: name.value,
-            email: email.value,
             city: city.value,
             language: 'en',
             temperatureUnit: 'celsius',
-            timeFormat: '24h',
+            timeFormat: '24',
             location: 'autoDetect',
             weatherAlerts: false,
             notification: false,
-            notificationTime: '08:00 AM',
+            notificationSchedule: '08:00',
             darkMode: false,
         });
 
-        router.push('/preferences');
+        router.push('/');
     } catch (error) {
         errorMsg.value = error.message;
     }

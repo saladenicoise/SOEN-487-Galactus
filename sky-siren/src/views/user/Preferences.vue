@@ -89,7 +89,6 @@ const location = ref('');
 const weatherAlerts = ref(false);
 const notification = ref(false);
 const notificationSchedule = ref('');
-const darkMode = ref(false);
 const errorMsg = ref('');
 const store = useStore();
 

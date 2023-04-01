@@ -53,6 +53,9 @@ const actions = {
             .then((userCredential) => {
                 console.log('User signed up');
                 context.commit('setUserId', userCredential.user.uid);
+
+                delete payload.password;
+                context.dispatch('saveUserData', payload);
             })
             .catch((error) => {
                 console.log('Error signing up', error);
