@@ -29,7 +29,7 @@
             </p>
 
             <p class="mt-2">
-                <router-link href="/forgot-password">Forgot Password?</router-link>
+                <router-link to="/forgot-password">Forgot Password?</router-link>
             </p>
         </div>
     </main>
