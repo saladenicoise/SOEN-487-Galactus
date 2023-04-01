@@ -1,7 +1,7 @@
 <template>
     <main class="container flex-shrink-0  mt-4">
-        <h1 class="h3 mb-3 fw-normal text-center">Manage Preferences</h1>
-        <form class="mx-auto col-lg-4 col-md-6 col-sm-8 col-xs-12" @submit.prevent="updatePreference">
+        <h1 class="h3 mb-3 fw-normal text-center" style="color: white">Manage Preferences</h1>
+        <form class="mx-auto col-lg-4 col-md-6 col-sm-8 col-xs-12" style="color: white" @submit.prevent="updatePreference">
             <div class="alert alert-danger mb-4" role="alert" v-if="errorMsg">
                 {{ errorMsg }}
             </div>

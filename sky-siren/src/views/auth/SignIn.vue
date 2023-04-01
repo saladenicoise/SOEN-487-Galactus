@@ -27,11 +27,11 @@
 </form>
 
             <p class="mt-4">
-                Don't have an account? <a href="/sign-up">Sign Up</a>
+                Don't have an account? <router-link to="/sign-up">Sign Up</router-link>
             </p>
 
             <p class="mt-2">
-                <a href="/forgot-password">Forgot Password?</a>
+                <router-link to="/forgot-password">Forgot Password</router-link>
             </p>
 </div>
 

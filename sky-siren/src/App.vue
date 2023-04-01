@@ -1,4 +1,5 @@
 <template>
+	<div>
   	<nav class="navbar navbar-expand-lg bg-body-tertiary">
 		<div class="container-fluid">
 			<div class="navbar-brand">
@@ -35,14 +36,14 @@
 					</li>
 
 					<li class="nav-item" v-if="!isLoggedIn">
-						<a class="nav-link" href="/sign-in">
+						<router-link class="nav-link" to="/sign-in">
 							<i class="bi bi-box-arrow-in-right"></i>&nbsp;Sign In
-						</a>
+						</router-link>
 					</li>
 					<li class="nav-item" v-if="!isLoggedIn">
-						<a class="nav-link" href="/sign-up">
+						<router-link class="nav-link" to="/sign-up">
 							<i class="bi bi-person-plus-fill"></i>&nbsp;Sign Up
-						</a>
+						</router-link>
 					</li>
 				</ul>
 			</div>
@@ -59,6 +60,7 @@
 		</div>
 
 	</footer>
+</div>
 </template>
 
 <script setup>
