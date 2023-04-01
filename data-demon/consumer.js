@@ -1,35 +1,61 @@
-const amqp = require("amqplib");
-var amqpURL =
-  "amqps://shdtwjbe:ErN_h2yhsDwmTZRgRYl8SU68t9ylyps2@codfish.rmq.cloudamqp.com/shdtwjbe";
+const rabbit = require("./rabbit.js");
+const fs = require("fs");
 
-const consumeFromQueue = async (queue, isNoAck = false, durable = false, prefetch = null) => {
+const consumeFromQueue = async (
+  queue,
+  isNoAck = false,
+  durable = false,
+  prefetch = null
+) => {
+  // Connect to RabbitMQ using methods in the rabbit.js file
+  const cluster = await rabbit();
+  // Must be able to create a channel to send messages
+  const channel = await cluster.createChannel();
+  // Make a new queue
+  await channel.assertQueue(queue, (durable = false));
 
-    const cluster = await amqp.connect(amqpURL);
-    const channel = await cluster.createChannel();
+  if (prefetch) {
+    channel.prefetch(prefetch);
+  }
 
-    await channel.assertQueue(queue, durable=false);
+  console.log(` [x] Waiting for messages in ${queue}. To exit press CTRL+C`);
 
-    if (prefetch) {
-        channel.prefetch(prefetch);
-    }
+  try {
+    // If there are messages in the queue, consume them asap
+    channel.consume(
+      queue,
+      (message) => {
+        if (message !== null) {
+          // Parse the message content from the JSON then log in locally in file.log
+          const weather = JSON.parse(message.content.toString());
+          const result =
+            "[ " +
+            new Date().toISOString() +
+            " ] --- " +
+            weather.locationObject.city +
+            " --- " +
+            weather.weatherData[0].weather_condition +
+            "\n";
+          fs.appendFile("file.log", result, (err) => {
+            if (err) {
+              console.error(err);
+            }
+          });
+          console.log(" [x] Received ", queue);
+          channel.ack(message);
+          return null;
+        } else {
+          console.log(error, "Queue is empty!");
+          channel.reject(message);
+        }
+      },
+      { noAck: isNoAck }
+    );
+  } catch (error) {
+    console.log(error, "Failed to consume messages from Queue!");
+    cluster.close();
+  }
+};
 
-    console.log(` [x] Waiting for messages in ${queue}. To exit press CTRL+C`)
-   
-    try {
-        channel.consume(queue, message => {
-      if (message !== null) {
-        console.log(' [x] Received', JSON.parse(message.content.toString()));
-        channel.ack(message);
-        return null;
-      } else {
-        console.log(error, 'Queue is empty!')
-        channel.reject(message);
-      }
-    }, {noAck: isNoAck})
-    } catch (error) {
-        console.log(error, 'Failed to consume messages from Queue!')
-        cluster.close(); 
-    }
-}
-
+// We need this to call the script from the command line
 consumeFromQueue("Q1_weather");
