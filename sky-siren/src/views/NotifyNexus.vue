@@ -12,6 +12,11 @@
             <button @click="subscribeToNotifyNexus('weather-alert')">Subscribe to weather alerts?</button>
         </div>
 
+        <div>
+            <h2>Remove all notifications</h2>
+            <button @click="unsubscribeFromAllInterests()">Remove all</button>
+        </div>
+
     </div>
 </template>
 
@@ -47,6 +52,17 @@ export default {
             .then(() => beamsClient.getDeviceInterests())
             .then((interests) => console.log(`Current interests: ${interests}`))
             .catch(console.error);
+        },
+        unsubscribeFromAllInterests() {
+            const beamsClient = new PusherPushNotifications.Client({
+            instanceId: 'b8e54c3c-7ad0-41ce-9c6f-63f5d8f52dcb',
+            });
+            beamsClient.clearDeviceInterests()
+                .then()
+                .catch(e => console.log(e));
+            beamsClient.getDeviceInterests()
+                .then((interests) => console.log(`Current interests after clear: ${interests}`))
+                .catch(error => console.log(error));
         },
         async postNotificationPreferences(deviceId, schedule) {
             let res = await axios.post("http://localhost:3001/post/notification-preferences", {
