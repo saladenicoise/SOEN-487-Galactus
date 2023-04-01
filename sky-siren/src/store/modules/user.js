@@ -23,7 +23,7 @@ const actions = {
     async signIn(context, payload) {
         console.log('Signing in user', payload.email);
 
-        signInWithEmailAndPassword(auth, payload.email, payload.password)
+        await signInWithEmailAndPassword(auth, payload.email, payload.password)
             .then((userCredential) => {
                 console.log('User signed in');
                 context.commit('setUserId', userCredential.user.uid);
@@ -37,7 +37,7 @@ const actions = {
     async signOut(context) {
         console.log('Signing out user');
 
-        signOut(auth).then(() => {
+        await signOut(auth).then(() => {
             console.log('User signed out');
             context.commit('setUserId', null);
             context.commit('userData', null);
@@ -49,7 +49,7 @@ const actions = {
     async signUp(context, payload) {
         console.log('Signing up user', payload);
 
-        createUserWithEmailAndPassword(auth, payload.email, payload.password)
+        await createUserWithEmailAndPassword(auth, payload.email, payload.password)
             .then((userCredential) => {
                 console.log('User signed up');
                 context.commit('setUserId', userCredential.user.uid);
@@ -66,7 +66,7 @@ const actions = {
         console.log('Saving user data', payload);
         const userRef = ref(db, 'users/' + context.state.userId);
         
-        set(userRef, payload)
+        await set(userRef, payload)
             .then(() => {
                 console.log('User data saved');
                 context.dispatch('syncUserData');
@@ -80,7 +80,7 @@ const actions = {
         console.log('Updating user', payload);
         const userRef = ref(db, 'users/' + context.state.userId);
         
-        update(userRef, payload)
+        await update(userRef, payload)
             .then(() => {
                 console.log('User data updated');
                 context.dispatch('syncUserData');
@@ -94,7 +94,7 @@ const actions = {
         console.log('Syncing user data');
         const userRef = ref(db, 'users/' + context.state.userId);
         
-        get(userRef)
+        await get(userRef)
             .then((snapshot) => {
                 if (snapshot.exists()) {
                     console.log('User data retrieved', snapshot.val());
