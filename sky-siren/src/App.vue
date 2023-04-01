@@ -14,36 +14,36 @@
 				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 					<li class="nav-item">
 						<div class="nav-link" aria-current="page">
-							<router-link to="/" class="bi bi-person-fill no-underline">Home</router-link>
+							<router-link to="/" class="bi bi-house-door-fill no-underline">&nbsp;Home</router-link>
 						</div>
 					</li>
-					<li class="nav-item" v-if="isLoggedIn">
+					<li class="nav-item" v-if="isAuthenticated">
 						<div class="nav-link">
-							<router-link to="/profile" class="bi bi-person-fill no-underline">Profile</router-link>
+							<router-link to="/profile" class="bi bi-person-fill no-underline">&nbsp;Profile</router-link>
 						</div>
 					</li>
-					<li class="nav-item" v-if="isLoggedIn">
+					<li class="nav-item" v-if="isAuthenticated">
 						<div class="nav-link">
-							<router-link to="/preferences" class="bi bi-person-fill no-underline">preferences</router-link>
+							<router-link to="/preferences" class="bi bi-gear-fill no-underline">&nbsp;Preferences</router-link>
 						</div>
 					</li>
 				</ul>
 				<ul class="navbar-nav flex-row">
-					<li class="nav-item" v-if="isLoggedIn">
+					<li class="nav-item" v-if="isAuthenticated">
 						<button type="button" class="btn btn-outline-danger" @click="logout" >
 							<i class="bi bi-box-arrow-right"></i>&nbsp;Sign Out
 						</button>
 					</li>
 
 					<li class="nav-item" v-if="!isLoggedIn">
-						<router-link class="nav-link" to="/sign-in">
+						<a class="nav-link" href="/sign-in">
 							<i class="bi bi-box-arrow-in-right"></i>&nbsp;Sign In
-						</router-link>
+						</a>
 					</li>
 					<li class="nav-item" v-if="!isLoggedIn">
-						<router-link class="nav-link" to="/sign-up">
+						<a class="nav-link" href="/sign-up">
 							<i class="bi bi-person-plus-fill"></i>&nbsp;Sign Up
-						</router-link>
+						</a>
 					</li>
 				</ul>
 			</div>
@@ -65,27 +65,16 @@
 
 <script setup>
 
-import { ref, onMounted } from 'vue';
-import { auth } from '@/firebase';
-import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { computed } from 'vue';
 import router from './router';
+import { useStore } from 'vuex';
+const store = useStore();
 
-const isLoggedIn = ref(false);
-
-onMounted(() => {
-	onAuthStateChanged(auth, (user) => {
-		if (user) {
-			isLoggedIn.value = true;
-		} else {
-			isLoggedIn.value = false;
-		}
-	});
-});
+const isAuthenticated = computed(() => store.getters['user/isAuthenticated']);
 
 const logout = () => {
-	signOut(auth).then(() => {
-		router.push('/');
-	});
+	store.dispatch('user/signOut');
+	router.push('/sign-in');
 };
 
 </script>

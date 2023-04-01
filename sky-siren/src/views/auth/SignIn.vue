@@ -1,42 +1,37 @@
 <template>
     <main >
         <div class="login-box">
+            <h1>Login</h1>
+            <form  @submit.prevent="signIn">
+                <div class="alert alert-danger mb-4" role="alert" v-if="errorMsg">
+                    {{ errorMsg }}
+                </div>
+                <div class="user-box">
+                    <input type="email" name=""  d="email" v-model="email">
+                    <label>Username</label>
+                </div>
+                <div class="user-box">
+                    <input type="password" name=""  id="password" v-model="password">
+                    <label>Password</label>
+                </div>
 
-<h1>Login</h1>
-<form  @submit.prevent="signIn">
-    <div class="alert alert-danger mb-4" role="alert" v-if="errorMsg">
-                {{ errorMsg }}
-            </div>
-  <div class="user-box">
-    <input type="email" name=""  d="email" v-model="email">
-    <label>Username</label>
-  </div>
-  <div class="user-box">
-    <input type="password" name=""  id="password" v-model="password">
-    <label>Password</label>
-  </div>
-
-<button type="submit" class="center">
-
-   <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    Sign in
-</button>
-</form>
+                <button type="submit" class="center">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Sign in
+                </button>
+            </form>
 
             <p class="mt-4">
-                Don't have an account? <router-link to="/sign-up">Sign Up</router-link>
+                Don't have an account? <a href="/sign-up">Sign Up</a>
             </p>
 
             <p class="mt-2">
-                <router-link to="/forgot-password">Forgot Password</router-link>
+                <a href="/forgot-password">Forgot Password?</a>
             </p>
-</div>
-
-
-
+        </div>
     </main>
 </template>
 
@@ -44,35 +39,22 @@
 /* Imports */
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { auth } from '@/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useStore } from 'vuex';
 
 /* Data */
 const email = ref('');
 const password = ref('');
 const errorMsg = ref('');
 const router = useRouter();
+const store = useStore();
 
 /* Authenticates a user */
 const signIn = async () => {
     try {
-        const { user } = await signInWithEmailAndPassword(auth, email.value, password.value);
+        await store.dispatch('user/signIn', { email: email.value, password: password.value });
         router.push('/');
     } catch (error) {
-        switch (error.code) {
-            case 'auth/invalid-email':
-                errorMsg.value = 'Invalid email address';
-            break;
-            case 'auth/user-not-found':
-                errorMsg.value = 'User not found';
-            break;
-            case 'auth/wrong-password':
-                errorMsg.value = 'Wrong password';
-            break;
-            default:
-                errorMsg.value = 'Something went wrong';
-            break;
-        }
+        errorMsg.value = error.message;
     }
 };
 </script>

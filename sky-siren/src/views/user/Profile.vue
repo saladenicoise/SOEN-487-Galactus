@@ -26,47 +26,36 @@
 <script setup>
 /* Imports */
 import { ref, onMounted } from 'vue';
-import { auth, db } from '@/firebase';
-import { ref as dbRef, get, update } from 'firebase/database';
-import { onAuthStateChanged } from 'firebase/auth';
 import router from '@/router';
+import { useStore } from 'vuex';
 
 /* Data */
 const name = ref('');
 const email = ref('');
 const city = ref('');
 const errorMsg = ref('');
+const store = useStore();
 
 /* Once the component is mounted */
 onMounted(() => {
-    // Listen for auth state changes
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            get(dbRef(db, 'users/' + user.uid))
-            .then((snapshot) => {
-                if (snapshot.exists()) {
-                    name.value = snapshot.val().name;
-                    email.value = snapshot.val().email;
-                    city.value = snapshot.val().city;
-                } else {
-                    console.log("No data available");
-                }
-            }).catch((error) => {
-                console.error(error);
-            });
-        }
-    });
-});
+    const userData = store.getters['user/userData'];
 
+    if(userData) {
+        name.value = userData.name;
+        email.value = userData.email;
+        city.value = userData.city;
+    } else {
+        console.error('No user data found');
+    }
+});
 
 /* Update user profile */
 const updateProfile = async () => {
     try {
-        // Update the user's data in the database
-        await update(dbRef(db, 'users/' + auth.currentUser.uid), {
+        await store.dispatch('user/updateUserData', {
             name: name.value,
             email: email.value,
-            city: city.value,
+            city: city.value
         });
 
         router.push('/');

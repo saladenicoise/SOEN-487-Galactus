@@ -61,8 +61,11 @@
             </div>
             <div class="mb-4">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="darkMode" v-model="darkMode">
-                    <label class="form-check-label" for="darkMode">Dark mode</label>
+                    <input class="form-check-input" type="checkbox" role="switch" id="notification" v-model="notification">
+                    <label class="form-check-label" for="notification">Notification alerts</label>
+                </div>
+                <div class="">
+                    <input type="time" class="form-control" v-model="notificationSchedule"/>
                 </div>
             </div>
 
@@ -75,10 +78,8 @@
 
 /* Imports */
 import { ref, onMounted } from 'vue';
-import { auth, db } from '@/firebase';
-import { ref as dbRef, update, get  } from 'firebase/database';
 import router from '@/router';
-import { onAuthStateChanged } from 'firebase/auth';
+import { useStore } from 'vuex';
 
 /* Data */
 const language = ref('');
@@ -86,51 +87,39 @@ const temperatureUnit = ref('');
 const timeFormat = ref('');
 const location = ref('');
 const weatherAlerts = ref(false);
-const darkMode = ref(false);
+const notification = ref(false);
+const notificationSchedule = ref('');
 const errorMsg = ref('');
+const store = useStore();
 
 /* Once the component is mounted */
 onMounted(() => {
-    // Listen for auth state changes
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            get(dbRef(db, 'users/' + user.uid))
-            .then((snapshot) => {
-                if (snapshot.exists()) {
-                    const data = snapshot.val();
-                    language.value = data.language;
-                    temperatureUnit.value = data.temperatureUnit;
-                    timeFormat.value = data.timeFormat;
-                    location.value = data.location;
-                    weatherAlerts.value = data.weatherAlerts;
-                    darkMode.value = data.darkMode;
-                } else {
-                    console.log("No data available");
-                }
-            }).catch((error) => {
-                console.error(error);
-            });
-        }
-    });
+    const userData = store.getters['user/userData'];
+    if (userData) {
+        language.value = userData.language;
+        temperatureUnit.value = userData.temperatureUnit;
+        timeFormat.value = userData.timeFormat;
+        location.value = userData.location;
+        weatherAlerts.value = userData.weatherAlerts;
+        notification.value = userData.notification;
+        notificationSchedule.value = userData.notificationSchedule;
+    }
 });
 
 
 /* Methods */
 const updatePreference = async () => {
     try {
-        const user = auth.currentUser;
-        if (user) {
-            const userRef = dbRef(db, `users/${user.uid}`);
-            await update(userRef, {
-                language: language.value,
-                temperatureUnit: temperatureUnit.value,
-                timeFormat: timeFormat.value,
-                location: location.value,
-                weatherAlerts: weatherAlerts.value,
-                darkMode: darkMode.value,
-            });
-            router.push('/');
-        }
+        await store.dispatch('user/updateUserData', {
+            language: language.value,
+            temperatureUnit: temperatureUnit.value,
+            timeFormat: timeFormat.value,
+            location: location.value,
+            weatherAlerts: weatherAlerts.value,
+            notification: notification.value,
+            notificationSchedule: notificationSchedule.value,
+        });
+        router.push('/');
     } catch (error) {
         errorMsg.value = error.message;
     }
