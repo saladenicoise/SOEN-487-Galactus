@@ -8,6 +8,10 @@ const publishToQueue = async (queue, message, durable = false) => {
     await channel.sendToQueue(queue, Buffer.from(message));
 
     console.info(" [x] Sending message to ", queue);
+    
+    setTimeout(function () {
+      cluster.close();
+    }, 500);
   } catch (error) {
     // handle error response
     console.error(error, "Unable to connect to cluster!");
