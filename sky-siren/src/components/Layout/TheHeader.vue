@@ -1,54 +1,73 @@
 <template>
-      	<nav class="navbar navbar-expand-lg bg-body-tertiary">
-		<div class="container-fluid">
-			<div class="navbar-brand">
-				<router-link to="/" class=" no-underline">
-				<img src="/favicon.ico" alt="Logo" width="30" height="24" class="d-inline-block align-text-top"> <b>Galactus</b> SkySiren
-			</router-link>
-			</div>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-					<li class="nav-item">
-						<div class="nav-link" aria-current="page">
-							<router-link to="/" class="bi bi-house-door-fill no-underline">&nbsp;Home</router-link>
-						</div>
-					</li>
-					<li class="nav-item" v-if="isAuthenticated">
-						<div class="nav-link">
-							<router-link to="/profile" class="bi bi-person-fill link-profile no-underline">&nbsp;Profile</router-link>
-						</div>
-					</li>
-					<li class="nav-item" v-if="isAuthenticated">
-						<div class="nav-link">
-							<router-link to="/preferences" class="bi bi-gear-fill link-preferences no-underline">&nbsp;Preferences</router-link>
-						</div>
-					</li>
-				</ul>
-				<ul class="navbar-nav flex-row">
-					<li class="nav-item" v-if="isAuthenticated">
-						<button type="button" class="btn btn-outline-danger btn-sign-out" @click="logout" >
-							<i class="bi bi-box-arrow-right"></i>&nbsp;Sign Out
-						</button>
-					</li>
+	<aside :class="`${is_expanded ? 'is-expanded' : ''}`">
+<div class="logo">
+		<img src="/favicon.ico" alt="Logo" width="30" height="24" >
+				<p><br> <b>Galactus</b><br>SkySiren</p>
+							</div>
 
-					<li class="nav-item" v-if="!isAuthenticated">
-						<router-link class="nav-link" to="/sign-in">
-							<i class="bi bi-box-arrow-in-right"></i>&nbsp;Sign In
-                        </router-link>>
-					</li>
-					<li class="nav-item" v-if="!isAuthenticated">
-						<router-link class="nav-link" to="/sign-up">
-							<i class="bi bi-person-plus-fill"></i>&nbsp;Sign Up
-                        </router-link>>
-					</li>
-				</ul>
-			</div>
+		<div class="menu-toggle-wrap">
+			<button class="menu-toggle" @click="ToggleMenu">
+				<span class="material-icons">keyboard_double_arrow_right</span>
+			</button>
 		</div>
-	</nav>
+
+		<h3>Menu</h3>
+		<div class="menu">
+			<router-link to="/" class="button">
+				<span class="material-icons">home</span>
+				<span class="text">Home</span>
+			</router-link>
+
+						<router-link to="/about" class="button">
+							<span class="material-icons">group</span>
+							<span class="text">Team</span>
+						</router-link>
+
+			<router-link to="/sign-in" class="button" v-if="!isAuthenticated">
+				<span class="material-icons">login</span>
+				<span class="text">Sign In</span>
+			</router-link>
+
+		</div>
+		<div class="flex"></div>
+
+		<div class="menu">
+
+			<router-link to="/sign-up" class="button" v-if="!isAuthenticated">
+				<span class="material-icons">app_registration</span>
+				<span class="text">Sign Up</span>
+			</router-link>
+			<router-link to="/sign-out" class="button" v-if="isAuthenticated" @click="logout">
+				<a @click="logout">Logout</a>
+				<span class="material-icons" >logout</span>
+				<span class="text">sign-out</span>
+			</router-link>
+
+
+			<router-link to="/settings" class="button">
+				<span class="material-icons">settings</span>
+				<span class="text">Settings</span>
+			</router-link>
+		</div>
+	</aside>
 </template>
+
+
+
+
+<script setup>
+import { ref } from 'vue'
+
+
+const is_expanded = ref(localStorage.getItem("is_expanded") === "true")
+
+const ToggleMenu = () => {
+	is_expanded.value = !is_expanded.value
+	localStorage.setItem("is_expanded", is_expanded.value)
+}
+</script>
+
+
 <script>
 export default {
     computed:{
@@ -63,10 +82,129 @@ export default {
 }
 }
 }
+
 </script>
 
 <style scoped>
-.no-underline {
-  text-decoration: none;
+aside {
+	 display: flex;
+	 flex-direction: column;
+	 background-color: linear-gradient(#243b55,#141e30);
+	 color: var(--light);
+	 width: calc(4rem + 29px);
+	 overflow: hidden;
+	 min-height: 100%;
+	 padding: 1rem;
+	 transition: 0.2s ease-in-out;
 }
+ aside .flex {
+	 flex: 1 1 0%;
+}
+ aside .logo {
+	 margin-bottom: 1rem;
+}
+aside .logo p{
+
+  font-family: verdana;
+
+  color: var(--primary);
+}
+ aside .logo img {
+	 width: 2rem;
+}
+ aside .menu-toggle-wrap {
+	 display: flex;
+	 justify-content: flex-end;
+	 margin-bottom: 1rem;
+	 position: relative;
+	 top: 0;
+	 transition: 0.2s ease-in-out;
+}
+ aside .menu-toggle-wrap .menu-toggle {
+	 transition: 0.2s ease-in-out;
+}
+ aside .menu-toggle-wrap .menu-toggle .material-icons {
+	 font-size: 2rem;
+	 color: var(--light);
+	 transition: 0.2s ease-out;
+}
+ aside .menu-toggle-wrap .menu-toggle:hover .material-icons {
+	 color: var(--primary);
+	 transform: translateX(0.5rem);
+}
+ aside h3, aside .button .text {
+	 opacity: 0;
+	 transition: opacity 0.3s ease-in-out;
+}
+ aside h3 {
+	 color: var(--grey);
+	 font-size: 0.875rem;
+	 margin-bottom: 0.5rem;
+	 text-transform: uppercase;
+}
+ aside .menu {
+	 margin: 0 -1rem;
+}
+ aside .menu .button {
+	 display: flex;
+	 align-items: center;
+	 text-decoration: none;
+	 transition: 0.2s ease-in-out;
+	 padding: 0.5rem 1rem;
+}
+ aside .menu .button .material-icons {
+	 font-size: 2rem;
+	 color: var(--light);
+	 transition: 0.2s ease-in-out;
+}
+ aside .menu .button .text {
+	 color: var(--light);
+	 transition: 0.2s ease-in-out;
+}
+ aside .menu .button:hover {
+	 background-color: var(--dark-alt);
+}
+ aside .menu .button:hover .material-icons, aside .menu .button:hover .text {
+	 color: var(--primary);
+}
+ aside .menu .button.router-link-exact-active {
+	 background-color: var(--dark-alt);
+	 border-right: 5px solid var(--primary);
+}
+ aside .menu .button.router-link-exact-active .material-icons, aside .menu .button.router-link-exact-active .text {
+	 color: var(--primary);
+}
+ aside .footer {
+	 opacity: 0;
+	 transition: opacity 0.3s ease-in-out;
+}
+ aside .footer p {
+	 font-size: 0.875rem;
+	 color: var(--grey);
+}
+ aside.is-expanded {
+	 width: var(--sidebar-width);
+}
+ aside.is-expanded .menu-toggle-wrap {
+	 top: -3rem;
+}
+ aside.is-expanded .menu-toggle-wrap .menu-toggle {
+	 transform: rotate(-180deg);
+}
+ aside.is-expanded h3, aside.is-expanded .button .text {
+	 opacity: 1;
+}
+ aside.is-expanded .button .material-icons {
+	 margin-right: 1rem;
+}
+ aside.is-expanded .footer {
+	 opacity: 0;
+}
+ @media (max-width: 1024px) {
+	 aside {
+		 position: absolute;
+		 z-index: 99;
+	}
+}
+
 </style>

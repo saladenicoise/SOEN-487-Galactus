@@ -1,5 +1,5 @@
 <template>
-    <main class="container flex-shrink-0 text-center mt-4">
+    <main id="mainHomePage">
         <h1 class="h3 mb-3 fw-normal">Lock up the weather forecast</h1>
         <form class="mx-auto col-lg-4 col-md-6 col-sm-8 col-xs-12" @submit.prevent="searchWeather">
             <div class="row">
@@ -26,6 +26,11 @@
     </main>
 </template>
 
-<script setup>
-
-</script>
+<style scoped>
+#mainHomePage {
+	background-image: url('https://wallpapercave.com/wp/UkpUlVc.jpg');
+    background-repeat: no-repeat;
+  height: 100%;
+width: 100%;
+}
+</style>
