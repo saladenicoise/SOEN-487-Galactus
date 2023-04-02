@@ -20,9 +20,7 @@ const publishToQueue = async (queue, message, durable = false) => {
   } catch (error) {
     // handle error response
     console.error(error, "Unable to connect to cluster!");
-    
-    process.exit(0);
-    // process.exit(1);
+    process.exit(1);
   }
 };
 
