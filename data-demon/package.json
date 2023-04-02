@@ -10,9 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.10.3",
     "express": "^4.18.2",
     "nodemon": "^2.0.22",
-    "amqplib": "^0.10.3"
+    "amqplib": "^0.10.3",
+    "redis": "^4.6.5"
   },
   "devDependencies": {
     "jest": "^29.5.0"
