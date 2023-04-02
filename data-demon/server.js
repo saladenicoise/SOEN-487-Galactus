@@ -23,7 +23,6 @@ client.on('connect', function() {
 });
 
 // Routes
-
 /**
  * Make sure before running the server at port 3000, you have the following servers open:
  * 1) Redis server installed in docker, run instance at port 6379

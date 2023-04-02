@@ -22,5 +22,6 @@ const publishToQueue = async (queue, message, durable = false) => {
     process.exit(1);
   }
 };
+
 // export this function so we can use it in other files
 module.exports = publishToQueue;
