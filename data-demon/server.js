@@ -1,12 +1,12 @@
 // All imports needed for the server
 const express = require("express");
-const geoCoding = require("./geoCodingAPI.js");
-const weatherRetrieval = require("./weatherRetrievalAPIs.js");
+const geoCoding = require("./weather-utility/geoCodingAPI.js");
+const weatherRetrieval = require("./weather-utility/weatherRetrievalAPIs.js");
 const url = require("url");
 const app = express();
 const path = require("path");
 const router = express.Router();
-const produce = require("./producer");
+const produce = require("./rabbitmq-utility/logger/producer-logger.js");
 const redis = require("redis");
 
 // Middleware to start the server

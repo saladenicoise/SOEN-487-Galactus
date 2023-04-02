@@ -1,4 +1,5 @@
-const rabbit = require("./rabbit.js");
+const rabbit = require("../rabbit.js");
+
 const publishToQueue = async (queue, message, durable = false) => {
   try {
     // Connect to RabbitMQ using methods in the rabbit.js file

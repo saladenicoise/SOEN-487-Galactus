@@ -1,4 +1,4 @@
-const rabbit = require("./rabbit.js");
+const rabbit = require("../rabbit.js");
 const fs = require("fs");
 
 const consumeFromQueue = async (
@@ -57,5 +57,5 @@ const consumeFromQueue = async (
   }
 };
 
-// We need this to call the script from the command line
-consumeFromQueue("Q1_weather");
+// export this function so we can use it in other files
+module.exports = consumeFromQueue;
