@@ -60,9 +60,8 @@ router.get("/fromIp", (req, res) => {
       if (err) console.log(err);
       if (data != null) { // data exists in the cache, return it
         console.log(" [x] Available in Redis. Retreiving from cache...");
-        let cachedData = JSON.parse(data);
-        produce("Q1_weather", cachedData, (durable = false));
-        res.status(200).send(cachedData);
+        produce("Q1_weather", data, (durable = false));
+        res.status(200).send(data);
       } else {  // data does not exist in the cache, fetch it from the API and cache it
         console.log(
           " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
@@ -81,7 +80,7 @@ router.get("/fromIp", (req, res) => {
               weatherData: weatherData,
             };
             let jsonString = JSON.stringify(jsonObject);
-            client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
+            client.SETEX(`${cityName}`, 3600, jsonString);
             produce("Q1_weather", jsonString, (durable = false));
             res.status(200).send(jsonString);
             return;
@@ -128,9 +127,8 @@ router.get("/fromAddress", async (req, res) => {
       if (err) console.log(err);
       if (data != null) { // data exists in the cache, return it
         console.log(" [x] Available in Redis. Retreiving from cache...");
-        let cachedData = JSON.parse(data);
-        produce("Q1_weather", cachedData, (durable = false));
-        res.status(200).send(cachedData);
+        produce("Q1_weather", data, (durable = false));
+        res.status(200).send(data);
       } else {  // data does not exist in the cache, fetch it from the API and cache it
         console.log(
           " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
@@ -149,7 +147,7 @@ router.get("/fromAddress", async (req, res) => {
               weatherData: weatherData,
             };
             let jsonString = JSON.stringify(jsonObject);
-            client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
+            client.SETEX(`${cityName}`, 3600, jsonString);
             produce("Q1_weather", jsonString, (durable = false));
             res.status(200).send(jsonString);
             return;
@@ -191,9 +189,8 @@ router.get("/fromIpHistorical", (req, res) => {
       if (err) console.log(err);
       if (data != null) { // data exists in the cache, return it
         console.log(" [x] Available in Redis. Retreiving from cache...");
-        let cachedData = JSON.parse(data);
-        produce("Q1_weather", cachedData, (durable = false));
-        res.status(200).send(cachedData);
+        produce("Q1_weather", data, (durable = false));
+        res.status(200).send(data);
       } else {  // data does not exist in the cache, fetch it from the API and cache it
         console.log(
           " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
@@ -213,7 +210,7 @@ router.get("/fromIpHistorical", (req, res) => {
               weatherData: weatherData,
             };
             let jsonString = JSON.stringify(jsonObject);
-            client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
+            client.SETEX(`${cityName}`, 3600, jsonString);
             produce("Q1_weather", jsonString, (durable = false));
             res.status(200).send(jsonString);
             return;
@@ -257,9 +254,8 @@ router.get("/fromAddressHistorical", (req, res) => {
       if (err) console.log(err);
       if (data != null) { // data exists in the cache, return it
         console.log(" [x] Available in Redis. Retreiving from cache...");
-        let cachedData = JSON.parse(data);
-        produce("Q1_weather", cachedData, (durable = false));
-        res.status(200).send(cachedData);
+        produce("Q1_weather", data, (durable = false));
+        res.status(200).send(data);
       } else {  // data does not exist in the cache, fetch it from the API and cache it
         console.log(
           " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
@@ -279,7 +275,7 @@ router.get("/fromAddressHistorical", (req, res) => {
               weatherData: weatherData,
             };
             let jsonString = JSON.stringify(jsonObject);
-            client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
+            client.SETEX(`${cityName}`, 3600, jsonString);
             produce("Q1_weather", jsonString, (durable = false));
             res.status(200).send(jsonString);
             return;
