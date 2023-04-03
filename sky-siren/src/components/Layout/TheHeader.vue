@@ -22,7 +22,10 @@
 							<span class="material-icons">group</span>
 							<span class="text">Team</span>
 						</router-link>
-
+			<router-link to="/preferences" class="button" v-if="isAuthenticated">
+				<span class="material-icons">widgets</span>
+				<span class="text">Preferences</span>
+			</router-link>
 			<router-link to="/sign-in" class="button" v-if="!isAuthenticated">
 				<span class="material-icons">login</span>
 				<span class="text">Sign In</span>

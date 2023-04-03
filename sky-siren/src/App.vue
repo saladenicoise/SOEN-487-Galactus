@@ -52,7 +52,7 @@ button {
 
 .app {
 	display: flex;
-
+}
 	main {
 		flex: 1 1 0;
 		padding: 2rem;
@@ -60,6 +60,6 @@ button {
 		@media (max-width: 1024px) {
 			padding-left: 6rem;
 		}
-	}
+	
 }
 </style>
