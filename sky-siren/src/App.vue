@@ -7,28 +7,24 @@
 </template>
 
 <script>
-import TheHeader from './components/Layout/TheHeader.vue';
-import TheFooter from './components/Layout/TheFooter.vue';
+import TheHeader from './components/TheHeader.vue';
+import TheFooter from './components/TheFooter.vue';
 export default {
 	components: {TheHeader, TheFooter},
 }
 </script>
 
 
-<style >
+
+<style lang="scss">
 :root {
-	--primary: #4ade80;
-	--primary-alt: #22c55e;
+	--primary: #42c271;
+	--primary-alt: #1ca54e;
 	--grey: #64748b;
 	--dark: #1e293b;
 	--dark-alt: #334155;
-	--light: #f1f5f9;
+	--light: linear-gradient(#141e30, #243b55);;
 	--sidebar-width: 300px;
-
-
-}
-#app {
-  height: 100vh;
 }
 
 * {

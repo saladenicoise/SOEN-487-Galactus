@@ -15,14 +15,21 @@
             </div>
         </form>
 
-        <div class="card mx-auto col-lg-4 col-md-6 col-sm-8 col-xs-12">
-            <div class="card-body p-4">
+
+            <div class="card-body">
                 <h4 class="mb-1 sfw-normal">Montreal, CA</h4>
                 <p class="mb-2">Current temperature: <strong>5°C</strong></p>
                 <p>Feels like: <strong>4°C</strong></p>
                 <p>Max: <strong>9°C</strong>, Min: <strong>3°C</strong></p>
-            </div>
-        </div>
+          </div>
+        <div class="wrap">
+  <div class="container">
+  <div class="box">
+    <div class='smoke'>
+    </div>
+  </div>
+</div>
+</div>
     </main>
 </template>
 
@@ -30,7 +37,65 @@
 #mainHomePage {
 	background-image: url('https://wallpapercave.com/wp/UkpUlVc.jpg');
     background-repeat: no-repeat;
-  height: 100%;
-width: 100%;
+ -moz-background-clip: border-box;
+ background-size:cover;
+  overflow: hidden;
 }
+
+*, body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.wrap {
+  height: 100vh;
+  margin-bottom: 100px;
+}
+
+.box {
+  border-radius: 100%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 50%;
+  height: 50%;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/537051/smoke_texture2714-min.jpg") center center no-repeat;
+  background-size: cover;
+  box-shadow: 0 3rem 5rem -2rem rgba(0, 0, 0, 0.8);
+  z-index: 1;
+  overflow: hidden;
+}
+.box .smoke {
+  border-radius: 100%;
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  transform: translate3d(0, 0, 0) rotate(0.01deg);
+  width: 50%;
+  height: 50%;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/537051/smoke-min.png") center center no-repeat;
+  background-size: cover;
+  z-index: -10;
+  opacity: 0.5;
+  animation: smokebg 60s infinite alternate;
+}
+@keyframes smokebg {
+  25% {
+    transform: translate3d(100px, 0, 0) rotate(0.01deg);
+  }
+  50% {
+    transform: translate3d(75px, -25px, 0) rotate(0.01deg);
+  }
+  75% {
+    transform: translate3d(45px, 30px, 0) rotate(0.01deg);
+  }
+  100% {
+    transform: translate3d(25px, -15px, 0) rotate(0.01deg);
+  }
+}
+
 </style>

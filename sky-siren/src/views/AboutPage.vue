@@ -22,12 +22,13 @@
 }
 
 #mainAboutPage {
-   z-index:-1;
+  z-index:-1;
    align-items: center;
   font-family: monospace;
   justify-content: center;
 overflow:hidden;
   background-color: #1d212b;
+  background-size:cover;
 }
 
 #mainAboutPage div {
@@ -35,18 +36,19 @@ overflow:hidden;
   max-width: 60vw;
   font-size: xx-large;
 display: block;
-  line-height: 6.5vw;
+line-height: 150%;
   text-align:center;
   color: #252B37;
   background-color: #151823;
   animation: textColor 10s ease infinite;
 }
 #mainAboutPage h1 {
- display:block;
+  display:block;
    max-width: 60vw;
   font-size: xx-large;
   text-align:center;
   animation: textColor 10s ease infinite;
+
 }
 #mainAboutPage div:after {
   position:relative;
