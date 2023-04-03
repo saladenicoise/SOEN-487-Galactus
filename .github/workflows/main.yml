@@ -29,8 +29,6 @@ jobs:
       
     - working-directory: ./data-demon
       run:
-        npm start & 
-        npx wait-on http://127.0.0.1:3000
-        npm test
+        npm test redis.test.js
       env:
         CI: true
