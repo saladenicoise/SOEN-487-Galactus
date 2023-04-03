@@ -7,7 +7,7 @@ function getAllDistinctAlertLocations(throwAwayNumber, queryCallback = getLocati
 }
 
 function getLocationsStub() {
-    const locations = [ "montreal,qc,canada", "london,uk", "brisbane,australia" ];
+    const locations = [ "montreal", "london", "brisbane" ];
     return locations;
 }
 
