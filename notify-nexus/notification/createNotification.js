@@ -2,8 +2,8 @@ const PushNotifications = require("@pusher/push-notifications-server");
 
 // alert creating message is an object expected to be formatted { "location": string, "alertContent": string}
 module.exports = function createNotification(weatherAlert) {
-    console.log("DEBUG checking shape of weatherAlert in createNotification: ");
-    console.log(JSON.stringify(weatherAlert));
+    console.log(` [x] DEBUG notify-nexus.notification.createNotification: alert-${weatherAlert.location}`);
+    // console.log(JSON.stringify(weatherAlert));
 
     // Create notification using user beam
     let beamsClient = new PushNotifications({

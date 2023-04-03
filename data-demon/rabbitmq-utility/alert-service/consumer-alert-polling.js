@@ -30,10 +30,6 @@ const consumeFromPollingQueue = async (
           Message format: location as city
         */
         if (message !== null) {
-          // Parse the message content from the JSON then log in locally in file.log
-          
-          // Get weather alerts by city
-
 
           // LOGGER commented out, to update if want to use it
           // const result =
@@ -50,8 +46,11 @@ const consumeFromPollingQueue = async (
           //   }
           // });
 
-          // TODO Task: retrieve weather alerts from location
-          task(message)
+          // Parse message into js object
+          // data expected format: ex. {location: "montreal,qc"}
+          data = JSON.parse(message.content.toString());
+          // Task
+          task(data)
 
           console.log(" [x] Received ", queue);
           channel.ack(message);

@@ -23,7 +23,7 @@ function startScheduler(pollingUserServiceResult, producerMessagesToDataService,
  * 2) produce message to the Data service to fetch alerts and weather data in real-time using RabbitMQ producer
  */
   
-    const task = new Task('notifyEach5mins', () => { 
+    const task = new Task(`:: Scheduled Task - Push notification every ${frequencyInSeconds/60} min ::`, () => { 
         // User service Polling
         let arrayOfMessages = pollingUserServiceResult(getCurrentTimeIndex());
 

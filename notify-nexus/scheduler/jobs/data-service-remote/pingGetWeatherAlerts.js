@@ -12,7 +12,9 @@ const formatAlertPollingMessageAndPublish = require('../../../rabbitmq/utilities
 module.exports = function (arrayOfAlertLocations) {
     arrayOfAlertLocations.forEach((oneAlertLocationString) => {
         // oneAlertLocationString expected format: "montreal,canada"
-        const message = `alert-${oneAlertLocationString}`;
-        formatAlertPollingMessageAndPublish(message);
+        // const message = `alert-${oneAlertLocationString}`;
+        // console.log('pingGetWeatherAlerts ', message);
+        const data = { location : oneAlertLocationString }
+        formatAlertPollingMessageAndPublish(data);
     })
 }

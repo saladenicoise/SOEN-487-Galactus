@@ -7,8 +7,8 @@ const produce = require('../generic-producer');
 //     produce("alerts-polling-queue", message, (durable = false));
 // }
 
-module.exports = function(alertLocationString) {
-    const message = alertLocationString;
+module.exports = function(data) {
+    const message = JSON.stringify(data);
     produce("alerts-polling-queue", message, (durable = false));
 };
 

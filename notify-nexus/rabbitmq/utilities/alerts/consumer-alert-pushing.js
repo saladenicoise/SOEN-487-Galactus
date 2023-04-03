@@ -21,10 +21,10 @@ const consumeFromQueue = async (queue, task, isNoAck = false, durable = false, p
         console.log(' [x] Received', JSON.parse(message.content.toString()));
         channel.ack(message);
 
-        // DO THE ALERT TASK
-        const alert = message.content;
-        // TODO extra parsing if necessary 
-        // alert is expected to have the format: { "location": string, "alertContent": string}
+        // Parse
+        // Alert is expected to have the format: { "location": string, "alertContent": string}
+        const alert =  JSON.parse(message.content.toString())
+        // Task that needs the alert
         task(alert);
 
         return null;

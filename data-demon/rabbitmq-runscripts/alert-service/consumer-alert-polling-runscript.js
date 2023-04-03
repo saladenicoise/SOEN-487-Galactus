@@ -3,11 +3,11 @@ const consumeFromPollingQueue = require("../../rabbitmq-utility/alert-service/co
 const weatherRetrievalAPIsStub = require("../../weather-utility/weatherRetrievalAPIsStub");
 const publish = require("../../rabbitmq-utility/alert-service/produce-alert-pushing");
 
-function pingCreateAlerts(locationStr) {
-    const alertObj = weatherRetrievalAPIsStub(locationStr);
+function pingCreateAlerts(data) {
+    const alertObj = weatherRetrievalAPIsStub(data);
     // parse alertObj into message
-    const data = { "location": alertObj.location, "alertContent": alertObj.content };
-    const dataStr = JSON.stringify(data);
+    const alert = { "location": alertObj.location, "alertContent": alertObj.content };
+    const dataStr = JSON.stringify(alert);
     publish(dataStr);
 }
 
