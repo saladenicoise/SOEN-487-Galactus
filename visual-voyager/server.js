@@ -23,12 +23,42 @@ app.post('/generateVisual', async (req, res) => {
       // controllers, or other extensions 
       // that should be available to all charts created 
       // with the same Chart.js instance
+      ChartJS.defaults.global.defaultFontFamily = "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
     };
     const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, chartCallback });
     const chartConfiguration = {
-      // Define your chart configuration here
-      // Basically where to define the settings and data 
-      // for an individual chart.
+      type: 'line', // line chart
+      data: {
+        labels: weatherData.map(data => data.date),// An array of labels for the chart x-axis
+        datasets: [{
+          label: 'Temperature',// 
+          data: weatherData.map(data => data.temperature),// An array of data points for the chart y-axis
+          borderColor: 'rgb(255, 99, 132)',
+          borderWidth: 5, 
+          fill: false,
+        }]
+      },
+      options: {
+        responsive: false,
+        title: {
+          display: true,
+          text: 'Temperature over time' //we will specify in the weatherData the time, week? 10 days? month?
+        },
+        scales: {
+          xAxes: [{
+            type: 'time',
+            time: {
+              unit: 'day'
+            }
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Temperature (°C)'
+            }
+          }]
+        }
+      }
     };
 
     // This converts the raw binary data of the chart into a Buffer object.
