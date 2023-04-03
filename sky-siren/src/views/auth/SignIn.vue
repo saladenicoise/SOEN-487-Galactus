@@ -6,12 +6,12 @@
                 <div class="btn__danger" role="alert" v-if="errorMsg">
                     {{ errorMsg }}
                 </div>
-
+                
                 <div class="user-box">
                     <input type="email" name="email" id="email" v-model="email" required>
                     <label>Email</label>
                 </div>
-
+                
                 <div class="user-box">
                     <input type="password" name="password" id="password" v-model="password" required>
                     <label>Password</label>
@@ -117,6 +117,7 @@ const signIn = async () => {
   color: #fff;
   pointer-events: none;
   transition: .5s;
+  
 }
 
 .login-box .user-box input:focus~label,
@@ -125,6 +126,7 @@ const signIn = async () => {
   left: 0;
   color: #03e9f4;
   font-size: 12px;
+  background: transparent;
 }
 
 button {
@@ -191,7 +193,14 @@ button {
   animation: btn-anim2 1s linear infinite;
   animation-delay: .25s
 }
-
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff !important;
+  -webkit-box-shadow: none !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
 @keyframes btn-anim2 {
   0% {
     top: -100%;

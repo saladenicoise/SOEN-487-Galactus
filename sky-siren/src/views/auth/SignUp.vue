@@ -216,7 +216,14 @@ button {
   animation: btn-anim2 1s linear infinite;
   animation-delay: .25s
 }
-
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-text-fill-color: #fff !important;
+  -webkit-box-shadow: none !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
 @keyframes btn-anim2 {
   0% {
     top: -100%;
