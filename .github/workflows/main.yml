@@ -29,7 +29,8 @@ jobs:
       
     - working-directory: ./data-demon
       run:
-        npm start & npx wait-on http://localhost:3000
+        npm start & 
+        npx wait-on http://127.0.0.1:3000
         npm test
       env:
         CI: true
