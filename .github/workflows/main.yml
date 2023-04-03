@@ -28,6 +28,8 @@ jobs:
       run: npm install
       
     - working-directory: ./data-demon
-      run: npm test
+      run:
+        npm start & npx wait-on http://localhost:3000
+        npm test
       env:
         CI: true
