@@ -1,0 +1,7 @@
+{
+  "devDependencies": {
+    "cypress": "^12.9.0",
+    "sass": "^1.60.0",
+    "scss": "^0.2.4"
+  }
+}
