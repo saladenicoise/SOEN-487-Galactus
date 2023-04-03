@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { auth } from '@/firebase';
+
 
 const router = createRouter({
     history: createWebHistory(),
@@ -14,6 +14,5 @@ const router = createRouter({
         { path: "/:pathMatch(.*)*", component: () => import("../views/errors/404.vue") },
     ],
 });
-
 
 export default router;

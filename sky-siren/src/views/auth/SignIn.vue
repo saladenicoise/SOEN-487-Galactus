@@ -50,7 +50,7 @@ const store = useStore();
  const signIn = async () => {
     try {
         await store.dispatch('user/signIn', { email: email.value, password: password.value })
-        router.replace('/preferences');
+        router.replace('/');
     } catch (error) {
         errorMsg.value = error.message;
     }
