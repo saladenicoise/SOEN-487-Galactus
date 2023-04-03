@@ -4,7 +4,7 @@
   "description": "The Data Retrieval Service",
   "main": "server.js",
   "scripts": {
-    "test": "jest --verbose --coverage",
+    "test": "jest --verbose --coverage --forceExit",
     "live-reload": "nodemon server.js"
   },
   "author": "",
