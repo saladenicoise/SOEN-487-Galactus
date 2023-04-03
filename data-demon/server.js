@@ -79,7 +79,6 @@ router.get("/fromIp", (req, res) => {
             let jsonObject = {
               locationObject: locationObject,
               weatherData: weatherData,
-              forecastVisualData: forecastVisualData
             };
             let jsonString = JSON.stringify(jsonObject);
             client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
@@ -114,12 +113,15 @@ router.get("/fromAddress", async (req, res) => {
   const search_params = incomingURL.searchParams;
   let cityName = search_params.get("cityName");
   let language = search_params.get("lang");
+  console.log("In From Address");
   return geoCoding.getLocationFromAddress(cityName).then((locationObject) => {
     // if locationObject is null, send a 404 error
+    console.log("Returned from geocaching")
     if (!locationObject) {
       res.status(404).send(`Error: Could not find location ${cityName}`);
       return;
     }
+    console.log("Geocaching not empty")
     // we can extract the city name from the URL and use it as a key for Redis
     // Redis checks the server at default port 6379 for the key cityName
     client.get(`${cityName}`, async (err, data) => {
@@ -145,7 +147,6 @@ router.get("/fromAddress", async (req, res) => {
             let jsonObject = {
               locationObject: locationObject,
               weatherData: weatherData,
-              forecastVisualData: forecastVisualData
             };
             let jsonString = JSON.stringify(jsonObject);
             client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
@@ -210,7 +211,6 @@ router.get("/fromIpHistorical", (req, res) => {
             let jsonObject = {
               locationObject: locationObject,
               weatherData: weatherData,
-              forecastVisualData: forecastVisualData
             };
             let jsonString = JSON.stringify(jsonObject);
             client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
@@ -241,11 +241,14 @@ router.get("/fromAddressHistorical", (req, res) => {
   const search_params = incomingURL.searchParams;
   let cityName = search_params.get("cityName");
   let language = search_params.get("lang");
+  console.log("In From Address Hisotrical")
   return geoCoding.getLocationFromAddress(cityName).then((locationObject) => {
+    console.log("Returned from location address")
     if (!locationObject) {
       res.status(404).send(`Error: Could not find location ${cityName}`);
       return;
     }
+    console.log("Location object not empty")
     // we want the city name extracted from the locationObject
     let cityName = locationObject.city;
 
@@ -274,7 +277,6 @@ router.get("/fromAddressHistorical", (req, res) => {
             let jsonObject = {
               locationObject: locationObject,
               weatherData: weatherData,
-              forecastVisualData: forecastVisualData
             };
             let jsonString = JSON.stringify(jsonObject);
             client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
