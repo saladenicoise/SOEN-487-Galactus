@@ -47,10 +47,10 @@ const router = useRouter();
 const store = useStore();
 
 /* Authenticates a user */
-const signIn = async () => {
+ const signIn = async () => {
     try {
         await store.dispatch('user/signIn', { email: email.value, password: password.value })
-        router.push('/preferences');
+        router.replace('/preferences');
     } catch (error) {
         errorMsg.value = error.message;
     }

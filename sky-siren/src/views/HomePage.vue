@@ -48,10 +48,7 @@
   box-sizing: border-box;
 }
 
-.wrap {
-  height: 100vh;
-  margin-bottom: 100px;
-}
+
 
 .box {
   border-radius: 100%;

@@ -25,7 +25,7 @@ describe('Sign in', () => {
     cy.get('button[type="submit"]').click();
 
     cy.url().should('eq', 'http://localhost:5173/preferences');
-    cy.get('button.btn-sign-out').click({ force: true});
+    cy.get('[href="/sign-out"] > .material-icons').click({ force: true});
 
     cy.url().should('eq', 'http://localhost:5173/sign-in');
   });

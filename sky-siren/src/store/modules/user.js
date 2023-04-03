@@ -40,7 +40,7 @@ const actions = {
         await signOut(auth).then(() => {
             console.log('User signed out');
             context.commit('setUserId', null);
-            context.commit('userData', null);
+            context.commit('setUserData', null);
         }).catch((error) => {
             console.log('Error signing out', error);
             throw new Error(error.message || 'Failed to sign out');
