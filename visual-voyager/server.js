@@ -1,16 +1,18 @@
 const express = require('express');
+const RPC = require('./rpc');
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 
 const app = express();
 
 // Middleware
 app.use(express.json());
+const rpc = new RPC('http://localhost:3000/rpc');
 
 // This following is the "generateVisual" end-point/procedure
 app.post('/generateVisual', async (req, res) => {
   try {
     const weatherData = req.body.weatherData;
-    const historicalData = req.body.historicalData;
+    //const historicalData = req.body.historicalData;
 
     // Create the chart using chartjs-node-canvas
     const width = 800;
@@ -49,7 +51,22 @@ app.post('/generateVisual', async (req, res) => {
 });
 
 // Start the server
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3002; // why is it port 3002 not 3000
 app.listen(port, () => {
   console.log(`Visual Voyager Server started on port ${port}`);
 });
+
+// Define the RPC endpoint for sending weather data to the data server
+const sendWeatherData = async (weatherData) => {
+  try {
+    const response = await axios.post('http://localhost:3000/weatherData', weatherData);
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error sending weather data to data server');
+  }
+};
+
+module.exports = {
+  sendWeatherData,
+};
