@@ -23,7 +23,7 @@ export default {
 	--grey: #64748b;
 	--dark: #1e293b;
 	--dark-alt: #334155;
-	--light: linear-gradient(#141e30, #243b55);;
+	--light: linear-gradient(#141e30, #243b55);
 	--sidebar-width: 300px;
 }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b5c558bf-b44a-4fb1-b59a-64a93b494e61" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/sky-siren/src/assets/logo.svg" beforeDir="false" />
+    <list default="true" id="b5c558bf-b44a-4fb1-b59a-64a93b494e61" name="Changes" comment="More small changes">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +93,17 @@
       <updated>1680426671271</updated>
       <workItem from="1680426676172" duration="3917000" />
       <workItem from="1680431083670" duration="506000" />
+      <workItem from="1680502873698" duration="796000" />
+      <workItem from="1680504821665" duration="293000" />
     </task>
+    <task id="LOCAL-00001" summary="More small changes">
+      <created>1680503076494</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1680503076494</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -124,5 +134,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="More small changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="More small changes" />
   </component>
 </project>

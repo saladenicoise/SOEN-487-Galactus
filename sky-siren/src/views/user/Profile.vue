@@ -1,24 +1,31 @@
 <template>
-    <main class="container flex-shrink-0 text-center mt-4">
+    <main class="login-box">
         <h1 class="h3 mb-3 fw-normal">Manage Profile</h1>
-        <form class="mx-auto col-lg-4 col-md-6 col-sm-8 col-xs-12" @submit.prevent="updateProfile">
-            <div class="alert alert-danger mb-4" role="alert" v-if="errorMsg">
+        <form  @submit.prevent="updateProfile">
+            <div class="btn_alert" role="alert" v-if="errorMsg">
                 {{ errorMsg }}
             </div>
-            <div class="form-floating mb-4">
-                <input type="text" class="form-control" id="name" v-model="name" placeholder="Name">
+            <div class="user-box">
+                <input type="text" class="form-control" id="name" v-model="name" name="" required>
                 <label for="name">Name</label>
             </div>
-            <div class="form-floating mb-4">
-                <input type="email" class="form-control" id="email" v-model="email" placeholder="Email address">
+            <div class="user-box">
+                <input type="email" class="form-control" id="email" required v-model="email" name="">
                 <label for="email">Email address</label>
             </div>
-            <div class="form-floating mb-4">
-                <input type="text" class="form-control" id="city" v-model="city" placeholder="City">
+            <div class="user-box">
+                <input type="text" class="form-control" id="city" v-model="city" name="" required>
                 <label for="city">City</label>
             </div>
 
-            <button class="btn btn-outline-primary" type="submit">Update</button>
+
+                <button type="submit" class="centered">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Sign in
+                </button>
         </form>
     </main>
 </template>
@@ -64,3 +71,5 @@ const updateProfile = async () => {
     }
 };
 </script>
+
+

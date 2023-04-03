@@ -22,12 +22,8 @@
 							<span class="material-icons">group</span>
 							<span class="text">Team</span>
 						</router-link>
-						<router-link to="/preferences" class="button" v-if="isAuthenticated">
-							<span class="material-icons">widgets</span>
-							<span class="text">Preferences</span>
-						</router-link>
-			<router-link to="/sign-in" class="button" v-if="!isAuthenticated">
-				<span class="material-icons">login</span>
+						<router-link to="/sign-in" class="button" v-if="!isAuthenticated">
+							<span class="material-icons">login</span>
 				<span class="text">Sign In</span>
 			</router-link>
 
@@ -41,16 +37,16 @@
 				<span class="text">Sign Up</span>
 			</router-link>
 			<router-link to="/sign-out" class="button" v-if="isAuthenticated" @click="logout">
-				<a @click="logout">Logout</a>
 				<span class="material-icons" >logout</span>
 				<span class="text">sign-out</span>
 			</router-link>
 
 
-			<router-link to="/settings" class="button">
+			<router-link to="/preferences" class="button" v-if="isAuthenticated">
 				<span class="material-icons">settings</span>
-				<span class="text">Settings</span>
+				<span class="text">Preferences</span>
 			</router-link>
+
 		</div>
 	</aside>
 </template>
