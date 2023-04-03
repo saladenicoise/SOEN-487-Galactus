@@ -1,15 +1,93 @@
 const express = require('express');
-const RPC = require('./rpc');
+
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 
 const app = express();
 
 // Middleware
 app.use(express.json());
-const rpc = new RPC('http://localhost:3000/rpc');
+
+
+//weekly forecast endpoint
+app.post('/weeklyVisual', async(req,res) => {
+
+  try{
+    const weatherData = req.body.weatherData; 
+
+     // Group forecast data by day
+     //reduce() is used to iterate over each item in 
+     const groupedData = weatherData.reduce((collect, data) => { //collect obj is used to collect the data into groups by day
+      const date = new Date(data.date);// takes date string as param,and use Date() to convert string to date
+      const day = date.toLocaleDateString();// will make it in date form ex 4/3/2023, not sure how this will look like in graph
+      if (!collect[day]) { //if groupedData doesn't have a group for the current day.
+        collect[day] = {//the code creates a new group with the day as the key and adds it
+          dates: [], // we got this lil cute JSON format
+          temperatures: [],
+        };
+      }
+      collect[day].dates.push(date);//we push dem babies to the array
+      collect[day].temperatures.push(data.temperature);
+      return collect;//finally we return array
+      //it should look something like this in the JSON
+    }, {});
+
+    // Create the chart using chartjs-node-canvas
+    const width = 800;
+    const height = 600;
+    const chartCallback = (ChartJS) => {
+      // Configure the Chart.js instance here. 
+      // Useful when you need to register plugins,
+      // controllers, or other extensions 
+      // that should be available to all charts created 
+      // with the same Chart.js instance
+      ChartJS.defaults.global.defaultFontFamily = "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
+    };
+    const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, chartCallback });
+    const chartConfiguration = {
+      type: 'line', // line chart
+      data: {
+        labels: weatherData.map(data => data.date),// An array of labels for the chart x-axis
+        datasets: [{
+          label: 'Temperature',// 
+          data: weatherData.map(data => data.temperature),// An array of data points for the chart y-axis
+          borderColor: 'rgb(255, 99, 132)', // we need to know th exact colours from the UI team so we can be in sync with the palette
+          borderWidth: 15, //its gonna be a thicc line 
+          fill: false,// fill up de baby
+        }]
+      },
+      options: {
+        responsive: false, // guess we can actually make it interactive, assigning this false until we can test
+        title: {
+          display: true,
+          text: 'Temperature over time' //time here referes to 365 days
+        },
+        //specifying X aand Y axis of the diagram
+        scales: {
+          xAxes: [{
+            type: 'time',
+            time: {
+              unit: 'month'
+            }
+          }],
+          yAxes: [{
+            scaleLabel: {
+              display: true,
+              labelString: 'Temperature (°C)'
+            }
+          }]
+        }
+      }
+    };
+  // Finally response is sent back
+  res.status(200).json({ chartImage: base64Image });
+} catch (error) {
+  res.status(500).json({ error: 'Error generating chart' });
+}
+});
+
 
 // This following is the "generateVisual" end-point/procedure
-app.post('/generateVisual', async (req, res) => {
+app.post('/historicalVisual', async (req, res) => {
   try {
     const weatherData = req.body.weatherData;
     //const historicalData = req.body.historicalData;
@@ -33,22 +111,23 @@ app.post('/generateVisual', async (req, res) => {
         datasets: [{
           label: 'Temperature',// 
           data: weatherData.map(data => data.temperature),// An array of data points for the chart y-axis
-          borderColor: 'rgb(255, 99, 132)',
-          borderWidth: 5, 
+          borderColor: 'rgb(255, 99, 132)', // we need to know th exact colours from the UI team so we can be in sync with the palette
+          borderWidth: 5, //its gonna be a thicc line 
           fill: false,
         }]
       },
       options: {
-        responsive: false,
+        responsive: false, // guess we can actually make it interactive, assigning this false until we can test
         title: {
           display: true,
-          text: 'Temperature over time' //we will specify in the weatherData the time, week? 10 days? month?
+          text: 'Temperature over time' //time here referes to 365 days
         },
+        //specifying X aand Y axis of the diagram
         scales: {
           xAxes: [{
             type: 'time',
             time: {
-              unit: 'day'
+              unit: 'month'
             }
           }],
           yAxes: [{
@@ -85,18 +164,3 @@ const port = process.env.PORT || 3002; // why is it port 3002 not 3000
 app.listen(port, () => {
   console.log(`Visual Voyager Server started on port ${port}`);
 });
-
-// Define the RPC endpoint for sending weather data to the data server
-const sendWeatherData = async (weatherData) => {
-  try {
-    const response = await axios.post('http://localhost:3000/weatherData', weatherData);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw new Error('Error sending weather data to data server');
-  }
-};
-
-module.exports = {
-  sendWeatherData,
-};
