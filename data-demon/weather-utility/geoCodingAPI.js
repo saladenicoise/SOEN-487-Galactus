@@ -21,7 +21,7 @@ const getLocationFromIp = async (ip) => {
 
 }
 
-const getLocationFromAddress = (cityName) => {
+const getLocationFromAddress = async (cityName) => {
   let url = 'http://api.positionstack.com/v1/forward?access_key=' + CITY_API_KEY + '&query=' + cityName + '&timezone_module=1';
 
   return fetch(url).then((response) => response.json()).then((data) => {
