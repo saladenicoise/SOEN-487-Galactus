@@ -1,10 +1,21 @@
 const express = require('express');
 var cors = require('cors');
+require('console-stamp')(console, '[HH:MM:ss.l]');
 const app = express();
+
+// Alert and Notification scheduler requirements
 const startScheduler = require('./scheduler/control/start-scheduler')
+const getAllDistinctAlertLocations = require('./scheduler/jobs/cipher-chef-remote/getAllDistinctAlertLocations');
+const { getAllScheduledNotifications } = require('./scheduler/jobs/cipher-chef-remote/getAllScheduledNotifications');
+const pingGetWeatherAlerts = require('./scheduler/jobs/data-service-remote/pingGetWeatherAlerts');
+
 
 // In production change to no arguments 
-startScheduler();
+// Alert scheduler
+startScheduler(getAllDistinctAlertLocations, pingGetWeatherAlerts);
+
+// Notification scheduler
+// startScheduler();
 
 // Middleware
 app.use(express.json());

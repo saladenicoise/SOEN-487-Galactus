@@ -1,33 +1,44 @@
 // This is a JavaScript module that exports a function 
 // startScheduler, which starts a toad-scheduler with two jobs to 
 // run periodically: getUsersAndInterests and sendNotifications. 
+
 // The startScheduler function takes an optional argument 
 // frequencyInSeconds which specifies the frequency of the job in 
 // seconds, defaulting to 300 (5 minutes).
 
 const { ToadScheduler, SimpleIntervalJob, Task } = require('toad-scheduler');
-const getUsersAndInterests = require('../jobs/get_users_and_interests');
-const sendNotifications = require('../jobs/send_notifications');
+
+
+const NUMBER_OF_SECONDS_IN_5MIN = 300;
+const NUMBER_OF_SECONDS_IN_1MIN = 60;
 
 
 // This function starts by defining a Task object that runs the getUsersAndInterests and sendNotifications jobs. 
 // It then creates a SimpleIntervalJob that runs the task at the specified frequency.
 // Before starting this SimpleIntervalJob, it waits to the beginning of the next 5 minute interval
-function startScheduler(frequencyInSeconds = 300) {
-    // every five minutes = 300 seconds
+function startScheduler(pollingUserServiceResult, producerMessagesToDataService, frequencyInSeconds = NUMBER_OF_SECONDS_IN_1MIN) {
+/**
+ * The scheduler's goal is:
+ * 1) to poll the User service for alerts and notifications that needs to be send soon
+ * 2) produce message to the Data service to fetch alerts and weather data in real-time using RabbitMQ producer
+ */
+  
+    const task = new Task(`:: Scheduled Task - Push notification every ${frequencyInSeconds/60} min ::`, () => { 
+        // User service Polling
+        let arrayOfMessages = pollingUserServiceResult(getCurrentTimeIndex());
 
-    const task = new Task('notifyEach5mins', () => { 
-        let listOfUsersAndInterests = getUsersAndInterests(getCurrentTimeIndex());
-        sendNotifications(listOfUsersAndInterests);
+        // Producer sends message to alert queue
+        producerMessagesToDataService(arrayOfMessages);
     })
 
     const job = new SimpleIntervalJob({ seconds: frequencyInSeconds, runImmediately: true}, task)
 
-    // wait until the beginning of the next 5 minute interval
+    // Wait until the beginning of the next 5 minute interval
+    // TODO: Improve implementation for real-time scheduled notif
     var currentTime = new Date();
     var secondsToWait = diffInSeconds(currentTime, roundDateToNext5Minutes(currentTime));
 
-    // TO DO : TO BE REPLACED
+    // TODO: TO BE REPLACED
     busyWaitToStartJob(secondsToWait, job);
     // TO BE REPLACED WITH
     // startJobInXSeconds(secondsToWait, job);

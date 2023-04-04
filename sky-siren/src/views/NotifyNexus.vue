@@ -49,6 +49,11 @@ export default {
                     await this.postNotificationPreferences(deviceId, this.schedule).catch(e => console.log(`Can't send notification preferences to notify-nexus service: ${e}`));
             })
             .then(() => beamsClient.addDeviceInterest(interest))
+            // TO DELETE AFTER PR
+            .then(() => beamsClient.addDeviceInterest('alert-montreal'))
+            .then(() => beamsClient.addDeviceInterest('alert-brisbane'))
+            .then(() => beamsClient.addDeviceInterest('alert-london'))
+            // ^ 
             .then(() => beamsClient.getDeviceInterests())
             .then((interests) => console.log(`Current interests: ${interests}`))
             .catch(console.error);
