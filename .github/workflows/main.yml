@@ -24,10 +24,17 @@ jobs:
       with:
         redis-version: ${{ matrix.redis-version }}
 
+    - name: Install redis cli # so we can test the server
+      run: sudo apt-get install -y redis-tools
+
+    - name: Verify that redis is up
+      run: redis-cli ping
+
     - working-directory: ./data-demon 
       run: npm install
       
     - working-directory: ./data-demon
-      run: npm test
+      run:
+       npm test
       env:
         CI: true

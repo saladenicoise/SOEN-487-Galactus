@@ -447,12 +447,14 @@ const fetchOpenMeteoHourlyForecast = async (lat, lon) => {
 
 //Date Format: YYYY-MM-DD
 //For simplicity sake, we only get the data for the America/New_York (EDT) timezone
+//TODO: FIX BUG WITH HISTORICAL RETURNING NULL BEFORE CACHE
 const fetchHistoricalData = async (lat, lon, start_date, end_date) => {
-    let url = 'https://archive-api.open-meteo.com/v1/archive?latitude='+lat+'&longitude='+lon+'&start_date='+start_date+'&end_date='+end_date+'&daily=temperature_2m_max,temperature_2m_min,temperature_2m_mean,apparent_temperature_max,apparent_temperature_min,apparent_temperature_mean,sunrise,sunset,shortwave_radiation_sum,rain_sum,snowfall_sum,precipitation_hours,windspeed_10m_max&timezone=America%2FNew_York';
+    let url = 'https://archive-api.open-meteo.com/v1/archive?latitude='+lat+'&longitude='+lon+'&start_date='+start_date+'&end_date='+end_date+'&daily=temperature_2m_max,temperature_2m_min,temperature_2m_mean,apparent_temperature_max,apparent_temperature_min,apparent_temperature_mean,sunrise,sunset,shortwave_radiation_sum,rain_sum,snowfall_sum,precipitation_hours,windspeed_10m_max,windspeed_10m_min,windspeed_10m_mean&timezone=America%2FNew_York';
     let historicalDataArr = [];
 
     return fetch(url).then(response => response.json()).then(data => {
-        for (let i=0; i < data.daily.time.length; i++) {
+        let data2 = data;
+        for (let i=0; i < data2.daily.time.length; i++) {
             const historicalDataObject = {
                 type: 'historical-day',
                 date: data.daily.time[i],

@@ -15,4 +15,3 @@ test("Redis connection at port 6379", () => {
   });
 
 });
-
