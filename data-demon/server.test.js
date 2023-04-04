@@ -56,7 +56,7 @@ global.fetch = jest.fn(() => Promise.resolve({
     json: () => Promise.resolve(MOCK_RETURN)
 }));
 
-describe('Weather API mock tests', () => {
+describe('Geocaching API mock tests', () => {
     let location;
 
     describe('When calling an IP address to get a city location', () => {
