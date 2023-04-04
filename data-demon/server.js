@@ -48,12 +48,12 @@ router.get("/fromIp", (req, res) => {
   let ip = search_params.get("ip") || req.headers['x-forwarded-for'] || req.socket.remoteAddress ; //Gets us the requester's IP address
   let language = search_params.get("lang");
   return geoCoding.getLocationFromIp(ip).then((locationObject) => {
+    // we want the city name extracted from the locationObject
+    let cityName = locationObject.city;
     if (!locationObject) {
       res.status(404).send(`Error: Could not find location ${cityName}`);
       return;
     }
-    // we want the city name extracted from the locationObject
-    let cityName = locationObject.city;
 
     // Redis checks the server at default port 6379 for the key cityName
     client.get(`${cityName}`, async (err, data) => {
@@ -177,13 +177,11 @@ router.get("/fromIpHistorical", (req, res) => {
   let ip = search_params.get("ip") || req.headers['x-forwarded-for'] || req.socket.remoteAddress ; //Gets us the requester's IP address
   let language = search_params.get("lang");
   return geoCoding.getLocationFromIp(ip).then((locationObject) => {
+    let cityName = locationObject.city;
     if (!locationObject) {
       res.status(404).send(`Error: Could not find location ${cityName}`);
       return;
     }
-    // we want the city name extracted from the locationObject
-    let cityName = locationObject.city;
-
     // Redis checks the server at default port 6379 for the key cityName
     client.get(`${cityName}`, async (err, data) => {
       if (err) console.log(err);
@@ -246,8 +244,6 @@ router.get("/fromAddressHistorical", (req, res) => {
       return;
     }
     console.log("Location object not empty")
-    // we want the city name extracted from the locationObject
-    let cityName = locationObject.city;
 
     // Redis checks the server at default port 6379 for the key cityName
     client.get(`${cityName}`, async (err, data) => {
