@@ -453,6 +453,7 @@ const fetchHistoricalData = async (lat, lon, start_date, end_date) => {
     let historicalDataArr = [];
 
     return fetch(url).then(response => response.json()).then(data => {
+        let data2 = data;
         for (let i=0; i < data2.daily.time.length; i++) {
             const historicalDataObject = {
                 type: 'historical-day',
