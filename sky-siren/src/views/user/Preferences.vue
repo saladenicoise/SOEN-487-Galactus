@@ -17,7 +17,9 @@
                 </div>
             </div>
             <div class="mb-4">
-                <label class="form-label">Temperature unit:&nbsp;</label>
+                <div>
+                <label class="form-label">Temperature unit:&nbsp;&nbsp;</label>
+                
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" id="temperatureUnitCelsius" value="celsius" v-model="temperatureUnit">
                     <label class="form-check-label" for="temperatureUnitCelsius">Celsius</label>
@@ -26,10 +28,7 @@
                     <input class="form-check-input" type="radio" id="temperatureUnitFahrenheit" value="fahrenheit" v-model="temperatureUnit">
                     <label class="form-check-label" for="temperatureUnitFahrenheit">Fahrenheit</label>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="temperatureUnitKelvin" value="kelvin" v-model="temperatureUnit">
-                    <label class="form-check-label" for="temperatureUnitKelvin">Kelvin</label>
-                </div>
+            </div>
             </div>
             <div class="mb-4">
                 <label class="form-label">Time format:&nbsp;</label>
