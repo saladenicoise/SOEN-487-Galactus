@@ -51,10 +51,8 @@ const store = useStore();
         router.replace('/');
     } catch (error) {
       console.log(error.message);
-      if (error.message === 'Firebase: Error (auth/user-not-found).') errorMsg.value = 'Invalid email!';
-      else if (error.message === 'Firebase: Error (auth/wrong-password).') errorMsg.value = 'Invalid password!';
-      else errorMsg.value === 'Faild to login';
-        //errorMsg.value = error.message;
+      if (error.message === 'Firebase: Error (auth/user-not-found).'|| error.message === 'Firebase: Error (auth/wrong-password).')
+             errorMsg.value = "Invalid credentials!";
     }
 };
 </script>

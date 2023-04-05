@@ -4,7 +4,7 @@
         <h1>Sign Up</h1>
         <form  @submit.prevent="signUp">
             <div class="user-box">
-                <input type="text" name="" id="name" v-model="name" required>
+                <input type="text" name="name" id="name" v-model="name" required>
                 <label>Name</label>
             </div>
 
@@ -19,7 +19,7 @@
             </div>
 
             <div class="user-box">
-                <input type="text"  id="city" v-model="city" name="" required>
+                <input type="text"  id="city" v-model="city" name="city" required>
                 <label>City</label>
             </div>
             <div class="btn__danger" role="alert" v-if="errorMsg">

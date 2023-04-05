@@ -45,12 +45,16 @@
                 <label class="form-label">Location:&nbsp;</label>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" id="locationAutoDetect" value="autoDetect" v-model="location">
-                    <label class="form-check-label" for="locationAutoDetect">Auto Detect</label>
+                        <label class="form-check-label" for="locationAutoDetect">Auto Detect</label>
                 </div>
                 <div class="form-check form-check-inline">
                     <input class="form-check-input" type="radio" id="locationManualInput" value="manualInput" v-model="location">
-                    <label class="form-check-label" for="locationManualInput">Manual Input</label>
-                </div>
+                        <label class="form-check-label" for="locationManualInput">Manual Input</label>
+                            <div class="mb-4" v-if="location === 'manualInput'">
+                                <label for="manualLocationInput">Enter City: &nbsp;</label>
+                                    <input type="text" id="manualLocationInput" v-model="manualLocation">
+                            </div>
+                    </div>
             </div>
             <div class="mb-4">
                 <div class="form-check form-switch">
