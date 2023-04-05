@@ -8,11 +8,11 @@
             <div class="mb-4">
                 <label class="form-label">Language:&nbsp;</label>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="languageEn" value="en" v-model="language">
+                    <input class="form-check-input" type="radio" id="languageEn" value="en" v-model="language" name="language">
                     <label class="form-check-label" for="languageEn">EN</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="languageFr" value="fr" v-model="language">
+                    <input class="form-check-input" type="radio" id="languageFr" value="fr" v-model="language" name="language">
                     <label class="form-check-label" for="languageFr">FR</label>
                 </div>
             </div>
@@ -21,11 +21,11 @@
                 <label class="form-label">Temperature unit:&nbsp;&nbsp;</label>
                 
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="temperatureUnitCelsius" value="celsius" v-model="temperatureUnit">
+                    <input class="form-check-input" type="radio" id="temperatureUnitCelsius" value="celsius" v-model="temperatureUnit" name="temperatureUnit">
                     <label class="form-check-label" for="temperatureUnitCelsius">Celsius</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="temperatureUnitFahrenheit" value="fahrenheit" v-model="temperatureUnit">
+                    <input class="form-check-input" type="radio" id="temperatureUnitFahrenheit" value="fahrenheit" v-model="temperatureUnit" name="temperatureUnit">
                     <label class="form-check-label" for="temperatureUnitFahrenheit">Fahrenheit</label>
                 </div>
             </div>
@@ -33,42 +33,42 @@
             <div class="mb-4">
                 <label class="form-label">Time format:&nbsp;</label>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="timeFormat12" value="12" v-model="timeFormat">
+                    <input class="form-check-input" type="radio" id="timeFormat12" value="12" v-model="timeFormat" name="timeFormat">
                     <label class="form-check-label" for="timeFormat12">12-hour</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="timeFormat24" value="24" v-model="timeFormat">
+                    <input class="form-check-input" type="radio" id="timeFormat24" value="24" v-model="timeFormat" name="timeFormat">
                     <label class="form-check-label" for="timeFormat24">24-hour</label>
                 </div>
             </div>
             <div class="mb-4">
                 <label class="form-label">Location:&nbsp;</label>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="locationAutoDetect" value="autoDetect" v-model="location">
+                    <input class="form-check-input" type="radio" id="locationAutoDetect" value="autoDetect" v-model="location" name="location">
                         <label class="form-check-label" for="locationAutoDetect">Auto Detect</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="locationManualInput" value="manualInput" v-model="location">
+                    <input class="form-check-input" type="radio" id="locationManualInput" value="manualInput" v-model="location" name="location">
                         <label class="form-check-label" for="locationManualInput">Manual Input</label>
                             <div class="mb-4" v-if="location === 'manualInput'">
                                 <label for="manualLocationInput">Enter City: &nbsp;</label>
-                                    <input type="text" id="manualLocationInput" v-model="manualLocation">
+                                    <input type="text" id="manualLocationInput" v-model="city" name="city">
                             </div>
                     </div>
             </div>
             <div class="mb-4">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="weatherAlerts" v-model="weatherAlerts">
+                    <input class="form-check-input" type="checkbox" role="switch" id="weatherAlerts" v-model="weatherAlerts" name="weatherAlerts">
                     <label class="form-check-label" for="weatherAlerts">Weather alerts</label>
                 </div>
             </div>
             <div class="mb-4">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="notification" v-model="notification">
+                    <input class="form-check-input" type="checkbox" role="switch" id="notification" v-model="notification" name="notification">
                     <label class="form-check-label" for="notification">Notification alerts</label>
                 </div>
                 <div class="">
-                    <input type="time" class="form-control" v-model="notificationSchedule"/>
+                    <input type="time" class="form-control" v-model="notificationSchedule" name="notificationSchedule "/>
                 </div>
             </div>
 
@@ -89,6 +89,7 @@ const language = ref('');
 const temperatureUnit = ref('');
 const timeFormat = ref('');
 const location = ref('');
+const city = ref('');
 const weatherAlerts = ref(false);
 const notification = ref(false);
 const notificationSchedule = ref('');
@@ -103,6 +104,7 @@ onMounted(() => {
         temperatureUnit.value = userData.temperatureUnit;
         timeFormat.value = userData.timeFormat;
         location.value = userData.location;
+        city.value = userData.city;
         weatherAlerts.value = userData.weatherAlerts;
         notification.value = userData.notification;
         notificationSchedule.value = userData.notificationSchedule;
@@ -118,6 +120,7 @@ const updatePreference = async () => {
             temperatureUnit: temperatureUnit.value,
             timeFormat: timeFormat.value,
             location: location.value,
+            city: city.value,
             weatherAlerts: weatherAlerts.value,
             notification: notification.value,
             notificationSchedule: notificationSchedule.value,
