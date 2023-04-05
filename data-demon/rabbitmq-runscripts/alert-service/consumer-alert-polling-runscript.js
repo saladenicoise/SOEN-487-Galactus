@@ -2,6 +2,7 @@
 const consumeFromPollingQueue = require("../../rabbitmq-utility/alert-service/consumer-alert-polling");
 const weatherRetrievalAPIsStub = require("../../weather-utility/weatherRetrievalAPIsStub");
 const publish = require("../../rabbitmq-utility/alert-service/produce-alert-pushing");
+require('console-stamp')(console, '[HH:MM:ss.l]');
 
 function pingCreateAlerts(data) {
     const alertObj = weatherRetrievalAPIsStub(data);

@@ -2,19 +2,19 @@
     <div class="notify-nexus">
         <!-- TODO Perform check to see if this devide is registed to Pusher Beam -->
         <div>
-            <h2>Notifications scheduler</h2>
+            <h2 style="color: white">Notifications scheduler</h2>
             <input name="schedule" v-model="schedule" type="time">
-            <button @click="subscribeToNotifyNexus('scheduled-notif')">Subscribe to weather notifications?</button>
+            <button style="color: white" @click="subscribeToNotifyNexus('scheduled-notif')">Subscribe to weather notifications?</button>
         </div>
 
         <div>
-            <h2>Alerts</h2>
-            <button @click="subscribeToNotifyNexus('weather-alert')">Subscribe to weather alerts?</button>
+            <h2 style="color: white">Alerts</h2>
+            <button style="color: white" @click="subscribeToNotifyNexus('weather-alert')">Subscribe to weather alerts?</button>
         </div>
 
         <div>
-            <h2>Remove all notifications</h2>
-            <button @click="unsubscribeFromAllInterests()">Remove all</button>
+            <h2 style="color: white">Remove all notifications</h2>
+            <button style="color: white" @click="unsubscribeFromAllInterests()">Remove all</button>
         </div>
 
     </div>
