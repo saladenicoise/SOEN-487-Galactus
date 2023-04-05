@@ -1,18 +1,14 @@
 const express = require('express');
-
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
-
 const app = express();
 
 // Middleware
 app.use(express.json());
 
-
 //weekly forecast endpoint
 app.get('/weeklyVisual', async(req,res) => {
 
   try{
-    //const weatherData = req.body.weatherData; 
 
     //The following line of code results in a javascript array, containing javascript objects containing the data for each of the following 7 days
     const weatherData = require('./weeklyData.json') // Loads the contents of the 'weeklyData.json' file that we will work with for testing
@@ -22,86 +18,19 @@ app.get('/weeklyVisual', async(req,res) => {
     //console.log(weatherData); //<--This will print the contents to the terminal
 
     // Calls the 'createTemperatureChart' function with 'weatherData' as an argument, and waits for the Promise to resolve. The result is an image buffer representing the chart, which contains the raw data needed to construct the image, such as pixel information, color information, and image format.
-    const chartBuffer = await createTemperatureChart(weatherData); 
+    const chart = await createTemperatureChart(weatherData); 
     // Logs the resulting image buffer to the console for debugging purposes.
-    console.log('Generated chart image buffer:', chartBuffer);
+    console.log('Generated chart image buffer:', chart);
+    //console.log('Image buffer to string: ', chart.toString('base64'));
     
-    res.contentType('image/png'); // Sets the response's content type to 'image/png', indicating that the response will be a PNG image.
-    res.send(chartBuffer); // Sends the image buffer as the response body. The client will receive this as a PNG image.
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.send(chart); // Sends the image buffer as the response body. The client will receive this as a PNG image.
     
-    
-    //  // Group forecast data by day
-    //  //reduce() is used to iterate over each item in 
-    //  const groupedData = weatherData.reduce((collect, data) => { //collect obj is used to collect the data into groups by day
-    //   const date = new Date(data.date);// takes date string as param,and use Date() to convert string to date
-    //   const day = date.toLocaleDateString();// will make it in date form ex 4/3/2023, not sure how this will look like in graph
-    //   if (!collect[day]) { //if groupedData doesn't have a group for the current day.
-    //     collect[day] = {//the code creates a new group with the day as the key and adds it
-    //       dates: [], // we got this lil cute JSON format
-    //       temperatures: [],
-    //     };
-    //   }
-      // collect[day].dates.push(date);//we push dem babies to the array
-      // collect[day].temperatures.push(data.temperature);
-      // return collect;//finally we return array
-      //it should look something like this in the JSON
-    // }, {});
-
-    // Create the chart using chartjs-node-canvas
-  //   const width = 800;
-  //   const height = 600;
-  //   const chartCallback = (ChartJS) => {
-  //     // Configure the Chart.js instance here. 
-  //     // Useful when you need to register plugins,
-  //     // controllers, or other extensions 
-  //     // that should be available to all charts created 
-  //     // with the same Chart.js instance
-  //     ChartJS.defaults.global.defaultFontFamily = "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif";
-  //   };
-  //   const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, chartCallback });
-  //   const chartConfiguration = {
-  //     type: 'line', // line chart
-  //     data: {
-  //       labels: weatherData.map(data => data.date),// An array of labels for the chart x-axis
-  //       datasets: [{
-  //         label: 'Temperature',// 
-  //         data: weatherData.map(data => data.temperature),// An array of data points for the chart y-axis
-  //         borderColor: 'rgb(255, 99, 132)', // we need to know th exact colours from the UI team so we can be in sync with the palette
-  //         borderWidth: 15, //its gonna be a thicc line 
-  //         fill: false,// fill up de baby
-  //       }]
-  //     },
-  //     options: {
-  //       responsive: false, // guess we can actually make it interactive, assigning this false until we can test
-  //       title: {
-  //         display: true,
-  //         text: 'Temperature over time' //time here referes to 365 days
-  //       },
-  //       //specifying X aand Y axis of the diagram
-  //       scales: {
-  //         xAxes: [{
-  //           type: 'time',
-  //           time: {
-  //             unit: 'month'
-  //           }
-  //         }],
-  //         yAxes: [{
-  //           scaleLabel: {
-  //             display: true,
-  //             labelString: 'Temperature (°C)'
-  //           }
-  //         }]
-  //       }
-  //     }
-  //   };
-  // // Finally response is sent back
-  // res.status(200).json({ chartImage: base64Image });
  } catch (error) {
    console.error('Error generating chart:', error);
    res.status(500).json({ error: 'Error generating chart' });
 }
 });
-
 
 // This following is the "generateVisual" end-point/procedure
 app.post('/historicalVisual', async (req, res) => {
@@ -183,9 +112,10 @@ app.listen(port, () => {
 });
 
 const createTemperatureChart = async (weatherData) => {
-  const width = 800;
-  const height = 600;
-  const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height });
+
+  const width = 650;
+  const height = 450;
+  const chartJSNodeCanvas = new ChartJSNodeCanvas({ type: 'svg', width, height });
 
   const dates = weatherData.map(day => day.date);
   const maxTemps = weatherData.map(day => day.daily_information.max_temp_c);
@@ -230,7 +160,7 @@ const createTemperatureChart = async (weatherData) => {
     },
   };  
 
-  const image = await chartJSNodeCanvas.renderToBuffer(configuration);
+  const image = await chartJSNodeCanvas.renderToBufferSync(configuration, 'image/svg+xml');
   return image;
 };
 
