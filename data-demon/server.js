@@ -1,5 +1,6 @@
 // All imports needed for the server
 const express = require("express");
+const cors = require("cors");
 const geoCoding = require("./weather-utility/geoCodingAPI.js");
 const weatherRetrieval = require("./weather-utility/weatherRetrievalAPIs.js");
 const forecastUtility = require("./forecast-utility/forecastVisualizationAPI.js");
@@ -12,6 +13,7 @@ const redis = require("redis");
 
 // Middleware to start the server
 app.use(express.json());
+app.use(cors());
 let locationObject = {};
 const client = redis.createClient({
   legacyMode: true,
