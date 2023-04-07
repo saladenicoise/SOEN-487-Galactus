@@ -15,9 +15,17 @@ app.get('/weeklyVisual', async(req,res) => {
     ['weatherData'] // Accesses the 'weatherData' property of the loaded JSON object
     .filter(day => day.type === 'forecast-day'); // Filters the array to only include objects with a 'type' property equal to 'forecast-day'
 
+    //The commented code below is for merging with data-service...when it is uncommented, the line above must be commented (eventually removed)
+
+    // //The following line of code results in a javascript array, containing javascript objects containing the data for each of the historical days
+    // const weatherData = req //Loads the contents of the request
+    // .weatherData // Accesses the 'weatherData' property of the loaded JSON object
+    // .filter(day => day.type === 'forecast-day'); // Filters the array to only include objects with a 'type' property equal to 'historical-day'
+
     // Calls the 'createTemperatureChart' function with 'weatherData' as an argument, and waits for the Promise to resolve. The result is an image buffer representing the chart, which contains the raw data needed to construct the image, such as pixel information, color information, and image format.
     const charts = await handleWeeklyTemperatureCharts(weatherData); 
     
+    console.log('sending weekly');
     //Sets response header to JSON type
     res.setHeader('Content-Type', 'application/json');
     res.send(charts); // Sends the image buffer as the response body. The client will receive this as a PNG image.
@@ -37,9 +45,18 @@ app.get('/historicalVisual', async (req, res) => {
     ['weatherData'] // Accesses the 'weatherData' property of the loaded JSON object
     .filter(day => day.type === 'historical-day'); // Filters the array to only include objects with a 'type' property equal to 'historical-day'
 
+    //The commented code below is for merging with data-service...when it is uncommented, the line above must be commented (eventually removed)
+
+    // //The following line of code results in a javascript array, containing javascript objects containing the data for each of the historical days
+    // const weatherData = req //Loads the contents of the request
+    // .weatherData // Accesses the 'weatherData' property of the loaded JSON object
+    // .filter(day => day.type === 'historical-day'); // Filters the array to only include objects with a 'type' property equal to 'historical-day'
+
     //Sets response header to JSON type
-    res.setHeader('Content-Type', 'application/json');
     const charts = await handleHistoricalTemperatureCharts(weatherData); // Sends the image buffer as the response body. The client will receive this as a PNG image.
+    
+    console.log('sending monthly');
+    res.setHeader('Content-Type', 'application/json');
     res.send(charts);
 
   } catch (error) {
