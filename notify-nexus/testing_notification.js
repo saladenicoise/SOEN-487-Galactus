@@ -6,7 +6,7 @@ let beamsClient = new PushNotifications({
 });
 
 beamsClient
-  .publishToInterests(["weather-alert"], {
+  .publishToInterests(["interest3"], {
     web: {
       notification: {
         title: "ALERT",

@@ -13,9 +13,9 @@ async function getCurrentUsers(currentTime) {
   return Object.values(currentUsers);
 }
 
-// //Usage
-// getCurrentUsers('15-10')
-//   .then((currentUsers) => console.log(currentUsers))
-//   .catch((error) => console.error(error));
+//Usage
+getCurrentUsers('15h10')
+  .then((currentUsers) => console.log(currentUsers))
+  .catch((error) => console.error(error));
 
 module.exports = getCurrentUsers;
