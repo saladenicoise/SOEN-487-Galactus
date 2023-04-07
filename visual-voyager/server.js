@@ -1,9 +1,12 @@
 const express = require('express');
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
+const { createTemperatureChart, handleTemperatureCharts } = require('./chart_util');
 const app = express();
 
 // Middleware
 app.use(express.json());
+
+
 
 //weekly forecast endpoint
 app.get('/weeklyVisual', async(req,res) => {
@@ -28,7 +31,7 @@ app.get('/weeklyVisual', async(req,res) => {
     
  } catch (error) {
    console.error('Error generating chart:', error);
-   res.status(500).json({ error: 'Error generating chart' });
+   res.status(500).json({ error: 'Error generating weekly chart' });
 }
 });
 
@@ -54,70 +57,13 @@ app.get('/historicalVisual', async (req, res) => {
 
 
   } catch (error) {
-    res.status(500).json({ error: 'Error generating chart' });
+    res.status(500).json({ error: 'Error generating historical chart' });
   }
 });
 
+
 // Start the server
-const port = process.env.PORT || 3002; // why is it port 3002 not 3000
+const port = process.env.PORT || 3002;
 app.listen(port, () => {
   console.log(`Visual Voyager Server started on port ${port}`);
 });
-
-const createTemperatureChart = async (weatherData) => {
-  
-  const isForecastDay = weatherData[0].type === 'forecast-day';
-
-  const width = (isForecastDay ? 800 : 10000);
-  const height = (isForecastDay ? 600 : 600);
-  
-  const chartJSNodeCanvas = new ChartJSNodeCanvas({ type: 'svg', width, height });
-
-  const dates = weatherData.map(day => day.date);
-  const maxTemps = weatherData.map(day => isForecastDay ? day.daily_information.max_temp_c : day.max_temp_c);
-  const minTemps = weatherData.map(day => isForecastDay ? day.daily_information.min_temp_c : day.min_temp_c);
-
-  // This configuration defines a line chart with two datasets, one for maximum temperatures and one for minimum temperatures, with smooth lines and different colors for each dataset. The x-axis represents dates, and the y-axis represents temperatures in degrees Celsius. Both axes have titles displayed.
-
-  const configuration = {
-    type: 'line', // Specifies the type of chart - in this case, a line chart
-    data: {
-      labels: dates, // Sets the labels for the x-axis, which are the dates
-      datasets: [
-        {
-          label: 'Max Temperature (°C)', // Label for the first dataset (max temperatures)
-          data: maxTemps, // Data points for the first dataset (max temperatures)
-          borderColor: 'rgba(255, 99, 132, 1)', // Color of the line for the first dataset
-          tension: 0.1, // Controls the line smoothness for the first dataset (0 for straight lines, 1 for maximum smoothness)
-        },
-        {
-          label: 'Min Temperature (°C)', // Label for the second dataset (min temperatures)
-          data: minTemps, // Data points for the second dataset (min temperatures)
-          borderColor: 'rgba(75, 192, 192, 1)', // Color of the line for the second dataset
-          tension: 0.1, // Controls the line smoothness for the second dataset
-        },
-      ],
-    },
-    options: {
-      scales: {
-        x: {
-          title: {
-            display: true, // Enables the display of the x-axis title
-            text: 'Date', // Sets the text for the x-axis title
-          },
-        },
-        y: {
-          title: {
-            display: true, // Enables the display of the y-axis title
-            text: 'Temperature (°C)', // Sets the text for the y-axis title
-          },
-        },
-      },
-    },
-  };  
-
-  const image = await chartJSNodeCanvas.renderToBufferSync(configuration, 'image/svg+xml');
-  return image;
-};
-
-
