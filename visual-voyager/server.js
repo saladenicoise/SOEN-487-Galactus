@@ -1,12 +1,9 @@
 const express = require('express');
-//const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 const { handleWeeklyTemperatureCharts, handleHistoricalTemperatureCharts } = require('./chart_util');
 const app = express();
 
 // Middleware
 app.use(express.json());
-
-
 
 //weekly forecast endpoint
 app.get('/weeklyVisual', async(req,res) => {
@@ -20,8 +17,6 @@ app.get('/weeklyVisual', async(req,res) => {
 
     // Calls the 'createTemperatureChart' function with 'weatherData' as an argument, and waits for the Promise to resolve. The result is an image buffer representing the chart, which contains the raw data needed to construct the image, such as pixel information, color information, and image format.
     const charts = await handleWeeklyTemperatureCharts(weatherData); 
-    // Logs the resulting image buffer to the console for debugging purposes.
-    console.log('Generated chart image buffer:', chart);
     
     //Sets response header to JSON type
     res.setHeader('Content-Type', 'application/json');
@@ -48,6 +43,7 @@ app.get('/historicalVisual', async (req, res) => {
     res.send(charts);
 
   } catch (error) {
+    console.log('Error generating historical chart:', error);
     res.status(500).json({ error: 'Error generating historical chart' });
   }
 });

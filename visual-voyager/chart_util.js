@@ -1,5 +1,3 @@
-//const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
-
 // Modify createTemperatureChart function to handle Fahrenheit and return base64-encoded string
 const createTemperatureChart = async (weatherData, unit = 'F') => {
 
@@ -85,7 +83,6 @@ const createTemperatureChart = async (weatherData, unit = 'F') => {
 
     } catch (error) {
       console.error('Error generating chart:', error);// Log the error to the console
-      // res.status(500).json({ error: 'Error generating chart' });// Send a 500 status code with an error message in the response
     }
   };
 
@@ -98,6 +95,7 @@ const createTemperatureChart = async (weatherData, unit = 'F') => {
 
       //Checks if there is less than a month of data, and adjusts to a daily scale
       if(weeklyWeather.length <= 3){
+        //console.log('Generating daily');
 
         // Generate the daily charts for Celsius and Fahrenheit
         const dailyCelsiusChartBuffer = await createTemperatureChart(weatherData, 'C');
@@ -111,6 +109,7 @@ const createTemperatureChart = async (weatherData, unit = 'F') => {
       }
       //Checks if there is between a month and 6 months(exclusively) of data, and adjusts to a weekly scale
       else if(monthlyWeather.length >= 1 && monthlyWeather.length< 6) {
+        //console.log('Generating weekly');
 
         // Generate the weekly charts for Celsius and Fahrenheit
         const weeklyCelsiusChartBuffer = await createTemperatureChart(weeklyWeather, 'C');
@@ -124,6 +123,8 @@ const createTemperatureChart = async (weatherData, unit = 'F') => {
       } 
       //Else, this means that the data is 6 months or more, and adjusts to a monthly scale
       else{
+
+        //console.log('Generating monthly');
       // Generate the monthly charts for Celsius and Fahrenheit
       const monthlyCelsiusChartBuffer = await createTemperatureChart(monthlyWeather, 'C');
       const monthlyFahrenheitChartBuffer = await createTemperatureChart(monthlyWeather, 'F');
@@ -137,7 +138,6 @@ const createTemperatureChart = async (weatherData, unit = 'F') => {
 
     } catch (error) {
       console.error('Error generating chart:', error);// Log the error to the console
-      // res.status(500).json({ error: 'Error generating chart' });// Send a 500 status code with an error message in the response
     }
   };
 
