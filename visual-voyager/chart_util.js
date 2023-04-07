@@ -1,14 +1,14 @@
-const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
+//const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
 
-
-//we should maybe place this in a different js file
 // Modify createTemperatureChart function to handle Fahrenheit and return base64-encoded string
 const createTemperatureChart = async (weatherData, unit = 'F') => {
+
+    const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
   
     const isForecastDay = weatherData[0].type === 'forecast-day';
   
-    const width = (isForecastDay ? 800 : 10000);
-    const height = (isForecastDay ? 600 : 600);
+    const width = 68 * weatherData.length;
+    const height = 600;
     
     const chartJSNodeCanvas = new ChartJSNodeCanvas({ type: 'svg', width, height });
   
@@ -31,13 +31,13 @@ const createTemperatureChart = async (weatherData, unit = 'F') => {
         labels: dates, // Sets the labels for the x-axis, which are the dates
         datasets: [
           {
-            label: `Max Temperature (°${unit}) `, // Label for the first dataset (max temperatures)
+            label: `Max (°${unit}) `, // Label for the first dataset (max temperatures)
             data: maxTemps, // Data points for the first dataset (max temperatures)
             borderColor: 'rgba(255, 99, 132, 1)', // Color of the line for the first dataset
             tension: 0.1, // Controls the line smoothness for the first dataset (0 for straight lines, 1 for maximum smoothness)
           },
           {
-            label: `Min Temperature (°${unit})` , // Label for the second dataset (min temperatures)
+            label: `Min (°${unit})` , // Label for the second dataset (min temperatures)
             data: minTemps, // Data points for the second dataset (min temperatures)
             borderColor: 'rgba(75, 192, 192, 1)', // Color of the line for the second dataset
             tension: 0.1, // Controls the line smoothness for the second dataset
@@ -55,7 +55,7 @@ const createTemperatureChart = async (weatherData, unit = 'F') => {
           y: {
             title: {
               display: true, // Enables the display of the y-axis title
-              text: `Temperature (°${unit})` , // Sets the text for the y-axis title
+              text: `°${unit})` , // Sets the text for the y-axis title
             },
           },
         },
@@ -68,7 +68,7 @@ const createTemperatureChart = async (weatherData, unit = 'F') => {
   
   //also should be in another js file with createTemperatureChart just to make this file more readable
   // Create a new function to handle both Celsius and Fahrenheit charts
-  const handleTemperatureCharts = async (req, res, weatherData) => {
+  const handleWeeklyTemperatureCharts = async (weatherData) => {
     try {
       // Generate the charts for Celsius and Fahrenheit
       const celsiusChartBuffer = await createTemperatureChart(weatherData, 'C');
@@ -78,15 +78,125 @@ const createTemperatureChart = async (weatherData, unit = 'F') => {
       const celsiusChart = celsiusChartBuffer.toString('base64');
       const fahrenheitChart = fahrenheitChartBuffer.toString('base64');
   
-      // Set the response content type to JSON 
-      res.setHeader('Content-Type', 'application/json');
-      //and send both charts as a JSON object
-      res.send({ celsiusChart, fahrenheitChart }); // actually Express automatically converts the object to a JSON string and sends it as the response body
+      // Send response as a JSON object 
+      return{ 
+      'celsiusChart':celsiusChart, 
+      'fahrenheitChart':fahrenheitChart };
+
     } catch (error) {
       console.error('Error generating chart:', error);// Log the error to the console
-      res.status(500).json({ error: 'Error generating chart' });// Send a 500 status code with an error message in the response
+      // res.status(500).json({ error: 'Error generating chart' });// Send a 500 status code with an error message in the response
     }
   };
+
+  const handleHistoricalTemperatureCharts = async (weatherData) => {
+    try {
+
+      //Weekly and monthly weather aggregators, which return a JSON object containing the data aggregated per week and per month
+      const weeklyWeather = aggregateByWeeks(weatherData);
+      const monthlyWeather = aggregateByMonths(weatherData);
+
+      //Checks if there is less than a month of data, and adjusts to a daily scale
+      if(weeklyWeather.length <= 3){
+
+        // Generate the daily charts for Celsius and Fahrenheit
+        const dailyCelsiusChartBuffer = await createTemperatureChart(weatherData, 'C');
+        const dailyFahrenheitChartBuffer = await createTemperatureChart(weatherData, 'F');
+        
+        //Returns a JSON object containing the daily celsius and fahrenheit charts 
+        return {
+          'celsiusChart': dailyCelsiusChartBuffer.toString('base64'),
+          'fahrenheitChart':dailyFahrenheitChartBuffer.toString('base64')
+        };
+      }
+      //Checks if there is between a month and 6 months(exclusively) of data, and adjusts to a weekly scale
+      else if(monthlyWeather.length >= 1 && monthlyWeather.length< 6) {
+
+        // Generate the weekly charts for Celsius and Fahrenheit
+        const weeklyCelsiusChartBuffer = await createTemperatureChart(weeklyWeather, 'C');
+        const weeklyFahrenheitChartBuffer = await createTemperatureChart(weeklyWeather, 'F');
+        
+        //Returns a JSON object containing the weekly celsius and fahrenheit charts 
+        return {
+            'celsiusChart': weeklyCelsiusChartBuffer.toString('base64'),
+            'fahrenheitChart':weeklyFahrenheitChartBuffer.toString('base64')
+          };
+      } 
+      //Else, this means that the data is 6 months or more, and adjusts to a monthly scale
+      else{
+      // Generate the monthly charts for Celsius and Fahrenheit
+      const monthlyCelsiusChartBuffer = await createTemperatureChart(monthlyWeather, 'C');
+      const monthlyFahrenheitChartBuffer = await createTemperatureChart(monthlyWeather, 'F');
+
+      //Returns a JSON object containing the monthly celsius and fahrenheit charts 
+      return {
+        'celsiusChart':monthlyCelsiusChartBuffer.toString('base64'),
+        'fahrenheitCharts':monthlyFahrenheitChartBuffer.toString('base64')
+      };
+      }
+
+    } catch (error) {
+      console.error('Error generating chart:', error);// Log the error to the console
+      // res.status(500).json({ error: 'Error generating chart' });// Send a 500 status code with an error message in the response
+    }
+  };
+
+// This function takes the daily weather data and aggregates it into weekly data.
+const aggregateByWeeks = (weatherData) => {
+  const weeklyData = [];
+
+  // Calculate the number of weeks in the given data
+  const weeks = Math.ceil(weatherData.length / 7);
+
+  // Loop through each week
+  for (let i = 0; i < weeks; i++) {
+    const start = i * 7;
+    const end = Math.min(start + 7, weatherData.length);
+    const weekSlice = weatherData.slice(start, end);
+
+    // Calculate the average maximum and minimum temperatures for the week
+    const avgMaxTemp = weekSlice.reduce((acc, day) => acc + day.max_temp_c, 0) / weekSlice.length;
+    const avgMinTemp = weekSlice.reduce((acc, day) => acc + day.min_temp_c, 0) / weekSlice.length;
+
+    // Add the aggregated data for the week to the weeklyData array
+    weeklyData.push({
+      date: weekSlice[0].date,
+      max_temp_c: avgMaxTemp,
+      max_temp_f: avgMaxTemp * 9 / 5 + 32,
+      min_temp_c: avgMinTemp,
+      min_temp_f: avgMinTemp * 9 / 5 + 32,
+    });
+  }
+  return weeklyData;
+};
+
+// This function takes the daily weather data and aggregates it into monthly data.
+const aggregateByMonths = (weatherData) => {
+  const monthlyData = [];
+
+  // Get a unique set of months from the weather data
+  const months = new Set(weatherData.map(day => day.date.slice(0, 7)));
+
+  // Loop through each month
+  for (const month of months) {
+    // Filter the data to only include the current month
+    const monthData = weatherData.filter(day => day.date.startsWith(month));
+
+    // Calculate the average maximum and minimum temperatures for the month
+    const avgMaxTemp = monthData.reduce((acc, day) => acc + day.max_temp_c, 0) / monthData.length;
+    const avgMinTemp = monthData.reduce((acc, day) => acc + day.min_temp_c, 0) / monthData.length;
+
+    // Add the aggregated data for the month to the monthlyData array
+    monthlyData.push({
+      date: month + '-01',
+      max_temp_c: avgMaxTemp,
+      max_temp_f: avgMaxTemp * 9 / 5 + 32,
+      min_temp_c: avgMinTemp,
+      min_temp_f: avgMinTemp * 9 / 5 + 32,
+    });
+  }
+  return monthlyData;
+};
   
   // Export the createTemperatureChart and handleTemperatureCharts functions 
-  module.exports = { createTemperatureChart, handleTemperatureCharts };
+  module.exports = { handleWeeklyTemperatureCharts, handleHistoricalTemperatureCharts};
