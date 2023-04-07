@@ -87,7 +87,7 @@
             <button class="btn btn-outline-info" type="button" @click="resetPreference()">Reset</button>
         </form>
 
-        <!-- <div>
+        <div>
             <h3>Debugging utility functions. Comment this out</h3>
             <div>
                 <button class="btn btn-outline-primary" @click="getDeviceInterests()">Get interests</button>
@@ -98,7 +98,7 @@
             <div>
                 <button class="btn btn-outline-primary" @click="getLocationSelected()">Get location selected</button>
             </div>
-        </div> -->
+        </div>
     </main>
 </template>
 
@@ -205,11 +205,42 @@ const updatePreference = async () => {
             notification: notification.value,
             notificationSchedule: notificationSchedule.value,
         });
+        setCities();
         router.push('/preferences');
     } catch (error) {
         errorMsg.value = error.message;
     }
+
 };
+const setCities = () => {
+        {
+            console.log(store);
+            const userId = store.getters['user/userId'];
+            fetch(`https://galactus-eaece-default-rtdb.firebaseio.com/Cities/${userId}.json`,
+                {
+                    method: 'PUT',
+                    headers: { 'Content-type': 'application/json' },
+                    body: JSON.stringify({ 
+                        city: city.value, 
+                        isAlert: weatherAlerts.value,
+                        isNotification: notification.value,
+                        notificationSchedule: notificationSchedule.value,
+                        language: language.value
+                     })
+                })
+                .then((Response) => {
+                    console.log("SUCCESS");
+                    if (!Response.ok) {
+                        throw new Error('Could not save data!');
+                    }
+                    
+                })
+                .catch((error) => {
+                    console.log(error);
+                    
+                })
+        }
+    };
 // TODO
 // Add call to data-service when Location is updated to autoDetect -> /fromIP
 // The city input is disabled but its value is changed to the current city
