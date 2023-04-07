@@ -38,7 +38,7 @@
 			</router-link>
 			<router-link to="/sign-out" class="button" v-if="isAuthenticated" @click="logout">
 				<span class="material-icons" >logout</span>
-				<span class="text">sign-out</span>
+				<span class="text">Sign Out</span>
 			</router-link>
 
 

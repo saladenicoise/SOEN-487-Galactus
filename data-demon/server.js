@@ -183,7 +183,7 @@ router.get("/fromIpHistorical", (req, res) => {
       return;
     }
     // Redis checks the server at default port 6379 for the key cityName
-    client.get(`${cityName}`, async (err, data) => {
+    client.get(`${cityName}-historical`, async (err, data) => {
       if (err) console.log(err);
       if (data != null) { // data exists in the cache, return it
         console.log(" [x] Available in Redis. Retreiving from cache...");
@@ -206,9 +206,10 @@ router.get("/fromIpHistorical", (req, res) => {
             let jsonObject = {
               locationObject: locationObject,
               weatherData: weatherData,
+              
             };
             let jsonString = JSON.stringify(jsonObject);
-            client.SETEX(`${cityName}`, 3600, jsonString);
+            client.SETEX(`${cityName}-historical`, 3600, jsonString);
             produce("Q1_weather", jsonString, (durable = false));
             res.status(200).send(jsonString);
             return;
@@ -246,7 +247,7 @@ router.get("/fromAddressHistorical", (req, res) => {
     console.log("Location object not empty")
 
     // Redis checks the server at default port 6379 for the key cityName
-    client.get(`${cityName}`, async (err, data) => {
+    client.get(`${cityName}-historical`, async (err, data) => {
       if (err) console.log(err);
       if (data != null) { // data exists in the cache, return it
         console.log(" [x] Available in Redis. Retreiving from cache...");
@@ -271,7 +272,7 @@ router.get("/fromAddressHistorical", (req, res) => {
               weatherData: weatherData,
             };
             let jsonString = JSON.stringify(jsonObject);
-            client.SETEX(`${cityName}`, 3600, jsonString);
+            client.SETEX(`${cityName}-historical`, 3600, jsonString);
             produce("Q1_weather", jsonString, (durable = false));
             res.status(200).send(jsonString);
             return;

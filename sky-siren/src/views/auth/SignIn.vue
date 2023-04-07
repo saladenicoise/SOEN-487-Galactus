@@ -3,10 +3,6 @@
         <div class="login-box">
             <h1>Sign in</h1>
             <form  @submit.prevent="signIn">
-                <div class="btn__danger" role="alert" v-if="errorMsg">
-                    {{ errorMsg }}
-                </div>
-                
                 <div class="user-box">
                     <input type="email" name="email" id="email" v-model="email" required>
                     <label>Email</label>
@@ -25,7 +21,9 @@
                     Sign in
                 </button>
             </form>
-
+            <div class="btn__danger" role="alert" v-if="errorMsg">
+                    {{ errorMsg }}
+                </div>
             <p>
                 Don't have an account? <router-link to="/sign-up" class="sign-up-link">Sign Up</router-link>
             </p>
@@ -52,7 +50,9 @@ const store = useStore();
         await store.dispatch('user/signIn', { email: email.value, password: password.value })
         router.replace('/');
     } catch (error) {
-        errorMsg.value = error.message;
+      console.log(error.message);
+      if (error.message === 'Firebase: Error (auth/user-not-found).'|| error.message === 'Firebase: Error (auth/wrong-password).')
+             errorMsg.value = "Invalid credentials!";
     }
 };
 </script>
