@@ -1,4 +1,5 @@
 const express = require('express');
+const axios = require('axios')
 var cors = require('cors');
 require('console-stamp')(console, '[HH:MM:ss.l]');
 const app = express();
@@ -12,14 +13,14 @@ const pingGetWeatherAlerts = require('./scheduler/jobs/data-service-remote/pingG
 
 // In production change to no arguments 
 // Alert scheduler
-startScheduler(getAllDistinctAlertLocations, pingGetWeatherAlerts);
+startScheduler(getAllDistinctAlertLocations, pingGetWeatherAlerts, axios, 60);
 
 // Notification scheduler
 // startScheduler();
 
 // Middleware
 app.use(express.json());
-app.use(express.static('public'));
+// app.use(express.static('public'));
 app.use(cors({origin: 'http://localhost:5173'}))
 
 
@@ -43,7 +44,7 @@ app.post('/post/notification-preferences', (req, res) => {
 })
 
 // TO-DO In production change to no arguments 
-startScheduler();
+// startScheduler();
 
 // Start the server
 const port = process.env.PORT || 3001;
