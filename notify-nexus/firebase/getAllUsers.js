@@ -1,8 +1,7 @@
 // get the list of users subscribed for current 5-minute period
 // get location, language
-const axios = require( 'axios');
 
-module.exports = async function getAllUsers() {
+module.exports = async function getAllUsers(axios) {
     try {
         const response = await axios.get('https://galactus-eaece-default-rtdb.firebaseio.com/Cities.json');
         const processedCitiesData = processCitiesData(response.data);
