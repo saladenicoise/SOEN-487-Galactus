@@ -8,36 +8,42 @@
             <div class="mb-4">
                 <label class="form-label">Language:&nbsp;</label>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="languageEn" value="en" v-model="language" name="language">
+                    <input class="form-check-input" type="radio" id="languageEn" value="en" v-model="language"
+                        name="language">
                     <label class="form-check-label" for="languageEn">EN</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="languageFr" value="fr" v-model="language" name="language">
+                    <input class="form-check-input" type="radio" id="languageFr" value="fr" v-model="language"
+                        name="language">
                     <label class="form-check-label" for="languageFr">FR</label>
                 </div>
             </div>
             <div class="mb-4">
                 <div>
-                <label class="form-label">Temperature unit:&nbsp;&nbsp;</label>
-                
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="temperatureUnitCelsius" value="celsius" v-model="temperatureUnit" name="temperatureUnit">
-                    <label class="form-check-label" for="temperatureUnitCelsius">Celsius</label>
+                    <label class="form-label">Temperature unit:&nbsp;&nbsp;</label>
+
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="temperatureUnitCelsius" value="celsius"
+                            v-model="temperatureUnit" name="temperatureUnit">
+                        <label class="form-check-label" for="temperatureUnitCelsius">Celsius</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" id="temperatureUnitFahrenheit" value="fahrenheit"
+                            v-model="temperatureUnit" name="temperatureUnit">
+                        <label class="form-check-label" for="temperatureUnitFahrenheit">Fahrenheit</label>
+                    </div>
                 </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="temperatureUnitFahrenheit" value="fahrenheit" v-model="temperatureUnit" name="temperatureUnit">
-                    <label class="form-check-label" for="temperatureUnitFahrenheit">Fahrenheit</label>
-                </div>
-            </div>
             </div>
             <div class="mb-4">
                 <label class="form-label">Time format:&nbsp;</label>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="timeFormat12" value="12" v-model="timeFormat" name="timeFormat">
+                    <input class="form-check-input" type="radio" id="timeFormat12" value="12" v-model="timeFormat"
+                        name="timeFormat">
                     <label class="form-check-label" for="timeFormat12">12-hour</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="timeFormat24" value="24" v-model="timeFormat" name="timeFormat">
+                    <input class="form-check-input" type="radio" id="timeFormat24" value="24" v-model="timeFormat"
+                        name="timeFormat">
                     <label class="form-check-label" for="timeFormat24">24-hour</label>
                 </div>
             </div>
@@ -54,40 +60,34 @@
                         v-model="location">
                     <label class="form-check-label" for="locationManualInput">Manual Input</label>
                 </div>
-                <!-- ^above: my version -->
-                    <input class="form-check-input" type="radio" id="locationAutoDetect" value="autoDetect" v-model="location" name="location">
-                        <label class="form-check-label" for="locationAutoDetect">Auto Detect</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" id="locationManualInput" value="manualInput" v-model="location" name="location">
-                        <label class="form-check-label" for="locationManualInput">Manual Input</label>
-                            <div class="mb-4" v-if="location === 'manualInput'">
-                                <label for="manualLocationInput">Enter City: &nbsp;</label>
-                                    <input type="text" id="manualLocationInput" v-model="city" name="city">
-                            </div>
-                    </div>
-            <!-- above: main -->
-
+            </div>
             <div class="mb-4">
                 <div class="form-text">
-                    <input class="form-text-input" type="text" id="city" v-model="city" :disabled="location === 'autoDetect'">
-                    <label class="form-text-label" for="city">Location manual input</label>
+                    <div>
+                        <label :hidden="location === 'autoDetect'" class="form-text-label" for="city">Enter a city: </label>
+                    </div>
+                    <div>
+                        <input class="form-text-input" type="text" id="city" v-model="city"
+                            :disabled="location === 'autoDetect'">
+                    </div>
                 </div>
             </div>
             <div class="mb-4">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="weatherAlerts" v-model="weatherAlerts" name="weatherAlerts">
+                    <input class="form-check-input" type="checkbox" role="switch" id="weatherAlerts" v-model="weatherAlerts"
+                        name="weatherAlerts">
                     <label class="form-check-label" for="weatherAlerts">Weather alerts</label>
                 </div>
             </div>
 
             <div class="mb-4">
                 <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="notification" v-model="notification" name="notification">
+                    <input class="form-check-input" type="checkbox" role="switch" id="notification" v-model="notification"
+                        name="notification">
                     <label class="form-check-label" for="notification">Notification alerts</label>
                 </div>
                 <div class="">
-                    <input type="time" class="form-control" v-model="notificationSchedule" name="notificationSchedule "/>
+                    <input type="time" class="form-control" v-model="notificationSchedule" name="notificationSchedule " />
                 </div>
             </div>
 
@@ -183,13 +183,13 @@ const cancelPreferenceUpdate = async () => {
 
 const resetPreference = async () => {
     city.value = '';
-        language.value = '';
-        temperatureUnit.value = '';
-        timeFormat.value = '';
-        location.value = '';
-        weatherAlerts.value = false;
-        notification.value = false;
-        notificationSchedule.value = '';
+    language.value = '';
+    temperatureUnit.value = '';
+    timeFormat.value = '';
+    location.value = '';
+    weatherAlerts.value = false;
+    notification.value = false;
+    notificationSchedule.value = '';
 }
 
 const updatePreference = async () => {
@@ -224,34 +224,34 @@ const updatePreference = async () => {
 
 };
 const setCities = () => {
-        {
-            console.log(store);
-            const userId = store.getters['user/userId'];
-            fetch(`https://galactus-eaece-default-rtdb.firebaseio.com/Cities/${userId}.json`,
-                {
-                    method: 'PUT',
-                    headers: { 'Content-type': 'application/json' },
-                    body: JSON.stringify({ 
-                        city: city.value, 
-                        isAlert: weatherAlerts.value,
-                        isNotification: notification.value,
-                        notificationSchedule: notificationSchedule.value,
-                        language: language.value
-                     })
+    {
+        console.log(store);
+        const userId = store.getters['user/userId'];
+        fetch(`https://galactus-eaece-default-rtdb.firebaseio.com/Cities/${userId}.json`,
+            {
+                method: 'PUT',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify({
+                    city: city.value,
+                    isAlert: weatherAlerts.value,
+                    isNotification: notification.value,
+                    notificationSchedule: notificationSchedule.value,
+                    language: language.value
                 })
-                .then((Response) => {
-                    console.log("SUCCESS");
-                    if (!Response.ok) {
-                        throw new Error('Could not save data!');
-                    }
-                    
-                })
-                .catch((error) => {
-                    console.log(error);
-                    
-                })
-        }
-    };
+            })
+            .then((Response) => {
+                console.log("SUCCESS");
+                if (!Response.ok) {
+                    throw new Error('Could not save data!');
+                }
+
+            })
+            .catch((error) => {
+                console.log(error);
+
+            })
+    }
+};
 // TODO
 // Add call to data-service when Location is updated to autoDetect -> /fromIP
 // The city input is disabled but its value is changed to the current city
@@ -265,7 +265,7 @@ const onChangeToAutoDetect = () => {
 }
 
 const onUpdateAutoDetectValue = () => {
-    
+
 }
 
 const getDeviceInterests = () => {
