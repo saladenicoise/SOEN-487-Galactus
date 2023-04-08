@@ -1,0 +1,40 @@
+name: Run data demon tests
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+        redis-version: [6]
+
+    steps:
+    - name: Git checkout
+      uses: actions/checkout@v2
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Start Redis
+      uses: supercharge/redis-github-action@1.5.0
+      with:
+        redis-version: ${{ matrix.redis-version }}
+
+    - name: Install redis cli # so we can test the server
+      run: sudo apt-get install -y redis-tools
+
+    - name: Verify that redis is up
+      run: redis-cli ping
+
+    - working-directory: ./data-demon 
+      run: npm install
+      
+    - working-directory: ./data-demon
+      run:
+       npm test
+      env:
+        CI: true
