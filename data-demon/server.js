@@ -181,7 +181,6 @@ router.get("/fromIpHistorical", (req, res) => {
   const incomingURL = new URL(req.url, `http://${req.headers.host}`);
   const search_params = incomingURL.searchParams;
   let ip = search_params.get("ip") || req.ip.substring(req.ip.lastIndexOf(":")+1, req.ip.length) || req.headers['x-forwarded-for']; //Gets us the requester's IP address
-  let language = search_params.get("lang");
   let startDate = search_params.get("startDate");
   let endDate = search_params.get("endDate");
   return geoCoding.getLocationFromIp(ip).then((locationObject) => {
@@ -243,7 +242,6 @@ router.get("/fromAddressHistorical", (req, res) => {
   const incomingURL = new URL(req.url, `http://${req.headers.host}`);
   const search_params = incomingURL.searchParams;
   let cityName = search_params.get("cityName");
-  let language = search_params.get("lang");
   let startDate = search_params.get("startDate");
   let endDate = search_params.get("endDate");
   console.log("In From Address Hisotrical")
