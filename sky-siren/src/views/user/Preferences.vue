@@ -308,6 +308,8 @@ const addInterest = (interest) => {
                 newInterest = newInterest.replace(':', 'h');
             }
             if (interest === 'notification' || interest === 'alert') {
+                newInterest += '-'
+                newInterest += language.value;
                 console.log(newInterest);
                 beamsClient.addDeviceInterest(newInterest);
             }

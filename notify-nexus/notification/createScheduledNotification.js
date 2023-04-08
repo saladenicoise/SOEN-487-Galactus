@@ -6,8 +6,8 @@ function createScheduledNotification(weatherNotifications) {
 
     // Create notification using user beam
     let beamsClient = new PushNotifications({
-        instanceId: "b5d262e1-0b5e-40f0-b3ac-0ccab70181bb",
-        secretKey: "6DC3CD49E3C398E3772E20582B795A620D40A296648C31C0707A60B85D3FC20E",
+        instanceId: "b8e54c3c-7ad0-41ce-9c6f-63f5d8f52dcb",
+        secretKey: "F022DF8BDA529184A0F88E4C8750396914A195ACB0F6EABFF7562594D6154A9B",
     });
 
 
