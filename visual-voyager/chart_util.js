@@ -43,17 +43,28 @@ const createTemperatureChart = async (weatherData, unit = 'F') => {
         ],
       }, 
       options: {
+        plugins: {
+          legend: {
+            labels: {
+              color: 'white', // Changes the color of the legend labels to white
+            },
+          },
+        },
         scales: {
           x: {
+            color: 'white', // Changes the color of the x-axis labels and grid lines to white
             title: {
-              display: true, // Enables the display of the x-axis title
-              text: 'Date', // Sets the text for the x-axis title
+              display: true,
+              text: 'Date',
+              color: 'white', // Changes the color of the x-axis title to white
             },
           },
           y: {
+            color: 'white', // Changes the color of the y-axis labels and grid lines to white
             title: {
-              display: true, // Enables the display of the y-axis title
-              text: `°${unit})` , // Sets the text for the y-axis title
+              display: true,
+              text: `°${unit}`,
+              color: 'white', // Changes the color of the y-axis title to white
             },
           },
         },
