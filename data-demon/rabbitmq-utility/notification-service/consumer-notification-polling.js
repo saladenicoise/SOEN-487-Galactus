@@ -50,6 +50,7 @@ const consumeFromPollingQueue = async (
           // data expected format: ex. {"location": string, "language": string, "content": notificationObj.content}
           data = JSON.parse(message.content.toString());
           // Task
+          console.log("[X]DEBUG D-D/rabbitmq-util/n-s/cnp received from queue: ", data);
           task(data)
 
           console.log(" [x] Received ", queue);

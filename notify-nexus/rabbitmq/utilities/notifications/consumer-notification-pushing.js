@@ -25,7 +25,7 @@ const consumeFromQueue = async (queue, task, isNoAck = false, durable = false, p
         channel.ack(message);
 
         // Parse
-        // Notification is expected to have the format: { "location": string, "language": string, "time":string, "content": string}
+        // Notification is expected to have the format: [{"location":"Montreal","language":"en","time":"13h10","content":"-1C/30.2F Sunny"},{"location":"Montreal","language":"en","time":"13h10","content":"-1C/30.2F Sunny"}]
         const notif =  JSON.parse(message.content.toString())
         // Task that needs the notification
         task(notif);
