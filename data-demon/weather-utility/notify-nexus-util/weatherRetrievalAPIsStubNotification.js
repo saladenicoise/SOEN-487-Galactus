@@ -1,4 +1,4 @@
-function queryWeatherNotificationStubNotification (cityName, language, time) {
+function queryWeatherNotificationStubNotification (cityName, language, time, client) {
 
     // const res = {"type": "notification", "location": data.location, "language": data.language, "content": "STUB Notification: Successful polling of user-service and data-service for notification every 5min." }
     const res = {
