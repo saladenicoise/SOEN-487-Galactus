@@ -13,27 +13,29 @@
 // COMMENTS BELOW TO DELETE ??
 // This function does a JSON-RPC call to the User service (cipher-chief) or directly to its Firebase user collection
 // The expected input data format could be a JSON array of key-value pairs, with key location and value is an array of times
-// ex.    [ 
-//     { "montreal,qc,canada": [ "08:00", "15:05" ] },
-//     { "brisbane,australia": [ "12:55" ]}
-// ]
+// "location": string, "language": string
+//     {"location": "montreal,qc,canada", "language": "FR"},
+//     {"location": "brisbane,australia", "language": "EN"},
+//     {"location": "bombai,india", "language": "FR"}
 
 // ???
 // The expected return a dictionary of similar format ^^ ?? or an array
 // ex. { 
-//        "montreal,qc,canada": [ "08:00", "15:05" ],
-//        "brisbane,australia": [ "12:55" ]
-// }
+// "location": string, "language": string
+//     {"location": "montreal,qc,canada", "language": "FR"},
+//     {"location": "brisbane,australia", "language": "EN"},
+//     {"location": "bombai,india", "language": "FR"}
+
 function getAllScheduledNotifications(timeIndex, queryCallback = getSchedulesStub) {
     return queryCallback(timeIndex);
 }
 
 function getSchedulesStub(timeIndex) {
-
+// "location": string, "language": string
     return [
-        {"montreal,qc,canada": [ "15:01", "15:05" ]},
-        {"brisbane,australia": [ "15:01", "15:02", "15:03", "15:04" ]},
-        {"bombai,india": [ "15:03", "15:04", "15:05" ]}
+        {"location": "montreal,qc,canada", "language": "FR"},
+        {"location": "brisbane,australia", "language": "EN"},
+        {"location": "bombai,india", "language": "FR"}
     ];
 }
 

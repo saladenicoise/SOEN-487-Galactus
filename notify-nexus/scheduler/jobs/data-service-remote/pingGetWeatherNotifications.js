@@ -3,10 +3,10 @@ const publishToQueue = require('../../../rabbitmq/utilities/notifications/produc
 // 
 module.exports = function pingGetWeatherNotifications(arrayOfLocationAndTimePair) {
     arrayOfLocationAndTimePair.forEach((locationAndTimePair) => {
-        // expected object { "location": "montreal,canada" , "time": "8:00" }
+        // expected object { "location": string, "language": string }
 
         // parsing
-        let message = `notification-${locationAndTimePair.location}-${locationAndTimePair.time}`;
+        let message = `notification-${locationAndTimePair.location}-${locationAndTimePair.language}`;
         publishToQueue(message);
     })
 }
