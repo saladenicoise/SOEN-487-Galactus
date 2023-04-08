@@ -2,9 +2,17 @@ const geoCoding = require("../geoCodingAPI.js");
 const {fetchWeatherData, fetchHistoricalData} = require("../weatherRetrievalAPIs.js");
 const redisProm = require('redis-promisify');
 
-async function getCurrentWeather(cityName, language, time, client){
-    
-    let jsonObject = await client.getAsync(`${cityName}-notif`);
+async function getCurrentWeather(cityName, language, time){
+    console.log("Called getCurrentWeather with: ", cityName, language, time);
+
+    const client = redisProm.createClient({
+        legacyMode: true,
+    });
+    client.on('connect', function() {
+        console.log(' [x] Connected to Redis!');
+    });
+
+    let jsonObject = await client.getAsync(`${cityName}-${language}-notif`);
 
     if (jsonObject != null) { // data exists in the cache, return it
         console.log(" [x] Available in Redis. Retreiving from cache...");
@@ -43,24 +51,25 @@ async function getCurrentWeather(cityName, language, time, client){
         };
 
         let jsonString = JSON.stringify(jsonObject);
-        client.SETEX(`${cityName}-notif`, 3600, jsonString);    
+        client.SETEX(`${cityName}-${language}-notif`, 3600, jsonString);    
     }
-
+    client.quit();
     return jsonObject;
 
 }
 
 
-const client = redisProm.createClient({
-    legacyMode: true,
-});
+// const client = redisProm.createClient({
+//     legacyMode: true,
+// });
 
 
-// Connect to Redis and log a message
-client.on('connect', function() {
-    console.log(' [x] Connected to Redis!');
-    getCurrentWeather('Montreal', 'en', '13h10', client).then(console.log);
-});
+// // Connect to Redis and log a message
+// client.on('connect', function() {
+//     console.log(' [x] Connected to Redis!');
+//     getCurrentWeather('Montreal', 'en', '13h10', client).then(console.log);
+// });
 
+module.exports = getCurrentWeather;
 
 

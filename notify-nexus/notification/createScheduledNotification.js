@@ -6,8 +6,8 @@ function createScheduledNotification(weatherNotifications) {
 
     // Create notification using user beam
     let beamsClient = new PushNotifications({
-        instanceId: "b8e54c3c-7ad0-41ce-9c6f-63f5d8f52dcb",
-        secretKey: "F022DF8BDA529184A0F88E4C8750396914A195ACB0F6EABFF7562594D6154A9B",
+        instanceId: "b5d262e1-0b5e-40f0-b3ac-0ccab70181bb",
+        secretKey: "6DC3CD49E3C398E3772E20582B795A620D40A296648C31C0707A60B85D3FC20E",
     });
 
 
@@ -40,13 +40,14 @@ function createScheduledNotification(weatherNotifications) {
     });
 
     Object.entries(interestsToNotificationsMap).forEach(([interest, notification]) => {
+        console.log(interest, notification);
         beamsClient
             .publishToInterests([interest], {
                 web: {
                     notification: {
-                        title: `${notification.location} Weather`,
-                        body: notification.content,
-                        deep_link: "https://www.pusher.com",
+                        title: notification.title,
+                        body: notification.body,
+                        deep_link: notification.deep_link,
                     },
                 },
             })
@@ -63,7 +64,7 @@ function createScheduledNotification(weatherNotifications) {
 
 }
 
-// const result = [{"location":"Montreal","language":"fr","time":"13h10","content":"-1C/30.2F Sunny"},{"location":"Montreal","language":"en","time":"13h10","content":"-1C/30.2F Sunny"}];
-// createScheduledNotification(result)
+const result = [{"location":"Montreal","language":"fr","time":"13h10","content":"-1C/30.2F Sunny"},{"location":"Montreal","language":"en","time":"13h10","content":"-1C/30.2F Sunny"}];
+createScheduledNotification(result)
 
 module.exports = createScheduledNotification;
