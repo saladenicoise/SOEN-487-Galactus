@@ -10,48 +10,48 @@ describe('Preferences', () => {
         
     });
 
-    it.only('allows a user to change the language', () => {
+    it('allows a user to change the language', () => {
         cy.visit('/preferences');
         
-        cy.get('input[name="language"]').check('fr');
+        cy.get('#languageFr').check('fr');
 
-        cy.get('input[name="language"]').should('be.checked');
+        cy.get('#languageFr').should('be.checked');
     });
 
     it('allows a user to change the temperature unit', () => {
-        cy.get('input[name="temperatureUnit"]').check('fahrenheit');
-        cy.get('button[type="submit"]').click();
+        cy.get('#temperatureUnitFahrenheit').check('fahrenheit');
+        cy.get('.btn').click();
 
-        cy.get('input[name="temperatureUnit"]').should('be.checked');
+        cy.get('#temperatureUnitFahrenheit').should('be.checked');
     });
 
     it('allows a user to change the time format', () => {
-        cy.get('input[name="timeFormat"]').check('24');
-        cy.get('button[type="submit"]').click();
+        cy.get('#timeFormat24').check('24');
+        cy.get('.btn').click();
 
-        cy.get('input[name="timeFormat"]').should('be.checked');
+        cy.get('#timeFormat24').should('be.checked');
     });
 
     it('allows a user to change the location', () => {
-        cy.get('input[name="location"]').check('manual');
-        cy.get('button[type="submit"]').click();
+        cy.get('#locationManualInput').check('manualInput');
+        cy.get('.btn').click();
 
-        cy.get('input[name="location"]').should('be.checked');
+        cy.get('#locationManualInput').should('be.checked');
     });
 
     it('allows a user to change the weather alerts', () => {
-        cy.get('input[name="weatherAlerts"]').check();
-        cy.get('button[type="submit"]').click();
+        cy.get('#weatherAlerts').check();
+        cy.get('.btn').click();
 
-        cy.get('input[name="weatherAlerts"]').should('be.checked');
+        cy.get('#weatherAlerts').should('be.checked');
     });
 
     it('allows a user to change the notifications', () => {
-        cy.get('input[name="notifications"]').check();
-        cy.get('input[name="time"]').type('12:00');
-        cy.get('button[type="submit"]').click();
+        cy.get('#notification').check();
+        cy.get('.form-control').type('12:00');
+        cy.get('.btn').click();
 
-        cy.get('input[name="notifications"]').should('be.checked');
+        cy.get('#notification').should('be.checked');
     });
 
 });
