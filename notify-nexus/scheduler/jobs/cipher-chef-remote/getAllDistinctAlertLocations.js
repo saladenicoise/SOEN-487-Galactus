@@ -2,12 +2,17 @@
 // The expected data format is an array of string location
 // ex. [ "montreal,qc,canada", "london,uk", "brisbane,australia" ]
 
-function getAllDistinctAlertLocations(throwAwayNumber, queryCallback = getLocationsStub) {
-    return queryCallback();
+// TODO delete and add axios as parameter (axios should be setup in server instead)
+const getCitiesAlerts = require('../../../firebase/getCitiesAlerts');
+
+function getAllDistinctAlertLocations(throwAwayNumber, axios, queryCallback = getCitiesAlerts) {
+
+    return queryCallback(axios)
+
 }
 
 function getLocationsStub() {
-    const locations = [ "montreal", "london", "brisbane" ];
+    const locations = ["montreal", "london", "brisbane"];
     return locations;
 }
 

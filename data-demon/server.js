@@ -1,5 +1,6 @@
 // All imports needed for the server
 const express = require("express");
+const cors = require("cors");
 const geoCoding = require("./weather-utility/geoCodingAPI.js");
 const weatherRetrieval = require("./weather-utility/weatherRetrievalAPIs.js");
 const forecastUtility = require("./forecast-utility/forecastVisualizationAPI.js");
@@ -12,6 +13,7 @@ const redis = require("redis");
 
 // Middleware to start the server
 app.use(express.json());
+app.use(cors());
 let locationObject = {};
 const client = redis.createClient({
   legacyMode: true,
@@ -45,7 +47,7 @@ router.get("/", (req, res) => {
 router.get("/fromIp", (req, res) => {
   const incomingURL = new URL(req.url, `http://${req.headers.host}`);
   const search_params = incomingURL.searchParams;
-  let ip = search_params.get("ip") || req.headers['x-forwarded-for'] || req.socket.remoteAddress ; //Gets us the requester's IP address
+  let ip = search_params.get("ip") || req.ip.substring(req.ip.lastIndexOf(":")+1, req.ip.length) || req.headers['x-forwarded-for']; //Gets us the requester's IP address
   let language = search_params.get("lang");
   return geoCoding.getLocationFromIp(ip).then((locationObject) => {
     // we want the city name extracted from the locationObject
@@ -174,7 +176,7 @@ router.get("/fromAddress", async (req, res) => {
 router.get("/fromIpHistorical", (req, res) => {
   const incomingURL = new URL(req.url, `http://${req.headers.host}`);
   const search_params = incomingURL.searchParams;
-  let ip = search_params.get("ip") || req.headers['x-forwarded-for'] || req.socket.remoteAddress ; //Gets us the requester's IP address
+  let ip = search_params.get("ip") || req.ip.substring(req.ip.lastIndexOf(":")+1, req.ip.length) || req.headers['x-forwarded-for']; //Gets us the requester's IP address
   let language = search_params.get("lang");
   return geoCoding.getLocationFromIp(ip).then((locationObject) => {
     let cityName = locationObject.city;
@@ -183,7 +185,7 @@ router.get("/fromIpHistorical", (req, res) => {
       return;
     }
     // Redis checks the server at default port 6379 for the key cityName
-    client.get(`${cityName}`, async (err, data) => {
+    client.get(`${cityName}-historical`, async (err, data) => {
       if (err) console.log(err);
       if (data != null) { // data exists in the cache, return it
         console.log(" [x] Available in Redis. Retreiving from cache...");
@@ -206,9 +208,10 @@ router.get("/fromIpHistorical", (req, res) => {
             let jsonObject = {
               locationObject: locationObject,
               weatherData: weatherData,
+              
             };
             let jsonString = JSON.stringify(jsonObject);
-            client.SETEX(`${cityName}`, 3600, jsonString);
+            client.SETEX(`${cityName}-historical`, 3600, jsonString);
             produce("Q1_weather", jsonString, (durable = false));
             res.status(200).send(jsonString);
             return;
@@ -246,7 +249,7 @@ router.get("/fromAddressHistorical", (req, res) => {
     console.log("Location object not empty")
 
     // Redis checks the server at default port 6379 for the key cityName
-    client.get(`${cityName}`, async (err, data) => {
+    client.get(`${cityName}-historical`, async (err, data) => {
       if (err) console.log(err);
       if (data != null) { // data exists in the cache, return it
         console.log(" [x] Available in Redis. Retreiving from cache...");
@@ -271,7 +274,7 @@ router.get("/fromAddressHistorical", (req, res) => {
               weatherData: weatherData,
             };
             let jsonString = JSON.stringify(jsonObject);
-            client.SETEX(`${cityName}`, 3600, jsonString);
+            client.SETEX(`${cityName}-historical`, 3600, jsonString);
             produce("Q1_weather", jsonString, (durable = false));
             res.status(200).send(jsonString);
             return;
@@ -294,7 +297,7 @@ router.get("/fromAddressHistorical", (req, res) => {
   });
 });
 // Start the server
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3001;
 app.use("/", router);
 app.listen(port, () => {
   console.log(`Data Demon Server started on port ${port}`);
