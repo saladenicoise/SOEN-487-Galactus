@@ -182,6 +182,8 @@ router.get("/fromIpHistorical", (req, res) => {
   const search_params = incomingURL.searchParams;
   let ip = search_params.get("ip") || req.ip.substring(req.ip.lastIndexOf(":")+1, req.ip.length) || req.headers['x-forwarded-for']; //Gets us the requester's IP address
   let language = search_params.get("lang");
+  let startDate = search_params.get("startDate");
+  let endDate = search_params.get("endDate");
   return geoCoding.getLocationFromIp(ip).then((locationObject) => {
     let cityName = locationObject.city;
     if (!locationObject) {
@@ -203,8 +205,8 @@ router.get("/fromIpHistorical", (req, res) => {
           .fetchHistoricalData(
             locationObject.latitude,
             locationObject.longitude,
-            "2022-04-01", //Start Date
-            "2023-04-01" //End Date
+            startDate, //Start Date
+            endDate //End Date
           )
           .then((weatherData) => {
             if(!weatherData) return res.status(404).send("Error: Could not find weather data for this location");
@@ -242,6 +244,8 @@ router.get("/fromAddressHistorical", (req, res) => {
   const search_params = incomingURL.searchParams;
   let cityName = search_params.get("cityName");
   let language = search_params.get("lang");
+  let startDate = search_params.get("startDate");
+  let endDate = search_params.get("endDate");
   console.log("In From Address Hisotrical")
   return geoCoding.getLocationFromAddress(cityName).then((locationObject) => {
     console.log("Returned from location address")
@@ -266,8 +270,8 @@ router.get("/fromAddressHistorical", (req, res) => {
           .fetchHistoricalData(
             locationObject.latitude,
             locationObject.longitude,
-            "2022-04-01", //Start Date
-            "2023-04-01" //End Date
+            startDate, //Start Date
+            endDate //End Date
           )
           .then((weatherData) => {
             if(!weatherData) return res.status(404).send("Error: Could not find weather data for this location");
