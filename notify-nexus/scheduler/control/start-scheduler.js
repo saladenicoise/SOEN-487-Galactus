@@ -28,12 +28,15 @@ function startScheduler(pollingUserServiceResult, producerMessagesToDataService,
     // User service Polling. Since this function does an axios call that returns a promise...
     pollingUserServiceResult(getCurrentTimeIndex(), axios)
       .then((arrayOfMessages) => {
-      // Producer sends message to alert queue
-      producerMessagesToDataService(arrayOfMessages);
-    })
-    .catch((err) => console.error('debug scheduler. Cannot get pollingUserServiceResult', err))
-
-
+      // Producer sends message to alert queueif
+        if (Array.isArray(arrayOfMessages) && arrayOfMessages.length) {
+          // Producer sends message to alert queue
+          producerMessagesToDataService(arrayOfMessages);
+        } else {
+          console.log("No messages to send.");
+        }
+      })
+      .catch((err) => console.error('debug scheduler. Cannot get pollingUserServiceResult', err))
   })
 
   const job = new SimpleIntervalJob({ seconds: frequencyInSeconds, runImmediately: true }, task)

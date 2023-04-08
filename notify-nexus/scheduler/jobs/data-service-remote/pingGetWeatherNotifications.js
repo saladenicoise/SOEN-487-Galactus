@@ -14,8 +14,8 @@ function pingGetWeatherNotifications(array) {
         time: pair.time
       }));
       
-    const message = JSON.stringify(data);
-    publishToQueue(message);
+    console.log("In pingGetWeatherNotifications: ", data);
+    publishToQueue(data);
     // sends a message in the format:
     // [{"location":"Montreal","language":"fr","time":"03h10"},{"location":"Montreal","language":"en","time":"03h10"}]
 }

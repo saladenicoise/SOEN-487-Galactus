@@ -64,7 +64,7 @@ function createScheduledNotification(weatherNotifications) {
 
 }
 
-const result = [{"location":"Montreal","language":"fr","time":"13h10","content":"-1C/30.2F Sunny"},{"location":"Montreal","language":"en","time":"13h10","content":"-1C/30.2F Sunny"}];
-createScheduledNotification(result)
+// const result = [{"location":"Montreal","language":"fr","time":"13h10","content":"-1C/30.2F Sunny"},{"location":"Montreal","language":"en","time":"13h10","content":"-1C/30.2F Sunny"}];
+// createScheduledNotification(result)
 
 module.exports = createScheduledNotification;

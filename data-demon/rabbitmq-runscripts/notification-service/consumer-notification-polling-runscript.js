@@ -16,6 +16,11 @@ const processReceivedJSON = require("../../rabbitmq-utility/notification-service
 async function pingCreateNotifications(receivedJSON) {
     const data = processReceivedJSON(receivedJSON);
 
+    if (!data) {
+        console.log("Data is null. Exiting function.");
+        return;
+    }
+
     const notifications = await Promise.all(data.map(async ({cityName, language, time}) => {
         const notificationObj = await getWeather(cityName, language, time);
         return { "location": notificationObj.location, "language": notificationObj.language, "time": notificationObj.time, "content": notificationObj.content };

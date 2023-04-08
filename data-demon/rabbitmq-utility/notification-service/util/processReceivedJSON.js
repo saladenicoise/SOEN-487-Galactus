@@ -5,6 +5,7 @@
 function processReceivedJSON(receivedJSON){
     let data = receivedJSON;
 
+
     if (!Array.isArray(data)) {
         console.error('JSON data is not an array');
         return null;
