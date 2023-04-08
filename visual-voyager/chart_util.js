@@ -143,7 +143,7 @@ const createTemperatureChart = async (weatherData, unit = 'F') => {
       //Returns a JSON object containing the monthly celsius and fahrenheit charts 
       return {
         'celsiusChart':monthlyCelsiusChartBuffer.toString('base64'),
-        'fahrenheitCharts':monthlyFahrenheitChartBuffer.toString('base64')
+        'fahrenheitChart':monthlyFahrenheitChartBuffer.toString('base64')
       };
       }
 
