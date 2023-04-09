@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --verbose --coverage --forceExit",
-    "live-reload": "nodemon server.js"
+    "live-reload": "nodemon server.js",
+    "start": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",

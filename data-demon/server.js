@@ -81,24 +81,24 @@ router.get("/fromIp", (req, res) => {
               locationObject: locationObject,
               weatherData: weatherData,
             };
-            let jsonString = JSON.stringify(jsonObject);
-            client.SETEX(`${cityName}`, 3600, jsonString);
-            produce("Q1_weather", jsonString, (durable = false));
-            res.status(200).send(jsonString);
-            return;
-            // COMMENT OUT BELOW CODE TO TEST WITHOUT FORECAST SERVICE
-            // return forecastUtility.getHistoricalVisualData(JSON.stringify(weatherData)).then((forecastVisualData) => {   
-            //   if(!forecastVisualData) res.status(404).send(`Error: Could not find forecast visual data for location`);
-            //   let jsonObject = {
-            //     locationObject: locationObject,
-            //     weatherData: weatherData,
-            //     forecastVisualData: forecastVisualData
-            //   };
-            //   let jsonString = JSON.stringify(jsonObject);
-            //   client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
-            //   produce("Q1_weather", jsonString, (durable = false));
-            //   res.status(200).send(jsonString);
-            // });
+            // let jsonString = JSON.stringify(jsonObject);
+            // client.SETEX(`${cityName}`, 3600, jsonString);
+            // produce("Q1_weather", jsonString, (durable = false));
+            // res.status(200).send(jsonString);
+            // return;
+            // // COMMENT OUT BELOW CODE TO TEST WITHOUT FORECAST SERVICE
+            return forecastUtility.getWeeklyVisualData(JSON.stringify(jsonObject)).then((forecastVisualData) => {   
+              if(!forecastVisualData) res.status(404).send(`Error: Could not find forecast visual data for location`);
+              let jsonObject = {
+                locationObject: locationObject,
+                weatherData: weatherData,
+                forecastVisualData: forecastVisualData
+              };
+              let jsonString = JSON.stringify(jsonObject);
+              client.SETEX(`${cityName}`, 3600, jsonString);
+              produce("Q1_weather", jsonString, (durable = false));
+              res.status(200).send(jsonString);
+            });
           });
       }
     });
@@ -143,29 +143,33 @@ router.get("/fromAddress", async (req, res) => {
           )
           .then((weatherData) => {
             if(!weatherData) res.status(404).send(`Error: Could not find weather data for location`);
-            //FOR TESTING WITHOUT FORECAST SERVICE
             let jsonObject = {
               locationObject: locationObject,
               weatherData: weatherData,
-            };
-            let jsonString = JSON.stringify(jsonObject);
-            client.SETEX(`${cityName}`, 3600, jsonString);
-            produce("Q1_weather", jsonString, (durable = false));
-            res.status(200).send(jsonString);
-            return;
+            }
+            //FOR TESTING WITHOUT FORECAST SERVICE
+            // let jsonObject = {
+            //   locationObject: locationObject,
+            //   weatherData: weatherData,
+            // };
+            // let jsonString = JSON.stringify(jsonObject);
+            // client.SETEX(`${cityName}`, 3600, jsonString);
+            // produce("Q1_weather", jsonString, (durable = false));
+            // res.status(200).send(jsonString);
+            // return;
             // COMMENT OUT BELOW CODE TO TEST WITHOUT FORECAST SERVICE
-            // return forecastUtility.getHistoricalVisualData(JSON.stringify(weatherData)).then((forecastVisualData) => {   
-            //   if(!forecastVisualData) res.status(404).send(`Error: Could not find forecast visual data for location`);
-            //   let jsonObject = {
-            //     locationObject: locationObject,
-            //     weatherData: weatherData,
-            //     forecastVisualData: forecastVisualData
-            //   };
-            //   let jsonString = JSON.stringify(jsonObject);
-            //   client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
-            //   produce("Q1_weather", jsonString, (durable = false));
-            //   res.status(200).send(jsonString);
-            // });
+            return forecastUtility.getWeeklyVisualData(JSON.stringify(jsonObject)).then((forecastVisualData) => {   
+              if(!forecastVisualData) res.status(404).send(`Error: Could not find forecast visual data for location`);
+              let jsonObject = {
+                locationObject: locationObject,
+                weatherData: weatherData,
+                forecastVisualData: forecastVisualData
+              };
+              let jsonString = JSON.stringify(jsonObject);
+              client.SETEX(`${cityName}`, 3600, jsonString);
+              produce("Q1_weather", jsonString, (durable = false));
+              res.status(200).send(jsonString);
+            });
           });
       }
     });
@@ -177,7 +181,8 @@ router.get("/fromIpHistorical", (req, res) => {
   const incomingURL = new URL(req.url, `http://${req.headers.host}`);
   const search_params = incomingURL.searchParams;
   let ip = search_params.get("ip") || req.ip.substring(req.ip.lastIndexOf(":")+1, req.ip.length) || req.headers['x-forwarded-for']; //Gets us the requester's IP address
-  let language = search_params.get("lang");
+  let startDate = search_params.get("startDate");
+  let endDate = search_params.get("endDate");
   return geoCoding.getLocationFromIp(ip).then((locationObject) => {
     let cityName = locationObject.city;
     if (!locationObject) {
@@ -199,8 +204,8 @@ router.get("/fromIpHistorical", (req, res) => {
           .fetchHistoricalData(
             locationObject.latitude,
             locationObject.longitude,
-            "2022-04-01", //Start Date
-            "2023-04-01" //End Date
+            startDate, //Start Date
+            endDate //End Date
           )
           .then((weatherData) => {
             if(!weatherData) return res.status(404).send("Error: Could not find weather data for this location");
@@ -208,26 +213,25 @@ router.get("/fromIpHistorical", (req, res) => {
             let jsonObject = {
               locationObject: locationObject,
               weatherData: weatherData,
-              
             };
-            let jsonString = JSON.stringify(jsonObject);
-            client.SETEX(`${cityName}-historical`, 3600, jsonString);
-            produce("Q1_weather", jsonString, (durable = false));
-            res.status(200).send(jsonString);
-            return;
+            // let jsonString = JSON.stringify(jsonObject);
+            // client.SETEX(`${cityName}-historical`, 3600, jsonString);
+            // produce("Q1_weather", jsonString, (durable = false));
+            // res.status(200).send(jsonString);
+            // return;
             // COMMENT OUT BELOW CODE TO TEST WITHOUT FORECAST SERVICE
-            // return forecastUtility.getHistoricalVisualData(JSON.stringify(weatherData)).then((forecastVisualData) => {           
-            //   if(!forecastVisualData) return res.status(404).send("Error: Could not generate visual data for this location");
-            //   let jsonObject = {
-            //     locationObject: locationObject,
-            //     weatherData: weatherData,
-            //     forecastVisualData: forecastVisualData
-            //   };
-            //   let jsonString = JSON.stringify(jsonObject);
-            //   client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
-            //   produce("Q1_weather", jsonString, (durable = false));
-            //   res.status(200).send(jsonString);
-            // });
+            return forecastUtility.getHistoricalVisualData(JSON.stringify(jsonObject)).then((forecastVisualData) => {           
+              if(!forecastVisualData) return res.status(404).send("Error: Could not generate visual data for this location");
+              let jsonObject = {
+                locationObject: locationObject,
+                weatherData: weatherData,
+                forecastVisualData: forecastVisualData
+              };
+              let jsonString = JSON.stringify(jsonObject);
+              client.SETEX(`${cityName}-historical`, 3600, jsonString);
+              produce("Q1_weather", jsonString, (durable = false));
+              res.status(200).send(jsonString);
+            });
           });
       }
     });
@@ -238,7 +242,8 @@ router.get("/fromAddressHistorical", (req, res) => {
   const incomingURL = new URL(req.url, `http://${req.headers.host}`);
   const search_params = incomingURL.searchParams;
   let cityName = search_params.get("cityName");
-  let language = search_params.get("lang");
+  let startDate = search_params.get("startDate");
+  let endDate = search_params.get("endDate");
   console.log("In From Address Hisotrical")
   return geoCoding.getLocationFromAddress(cityName).then((locationObject) => {
     console.log("Returned from location address")
@@ -263,8 +268,8 @@ router.get("/fromAddressHistorical", (req, res) => {
           .fetchHistoricalData(
             locationObject.latitude,
             locationObject.longitude,
-            "2022-04-01", //Start Date
-            "2023-04-01" //End Date
+            startDate, //Start Date
+            endDate //End Date
           )
           .then((weatherData) => {
             if(!weatherData) return res.status(404).send("Error: Could not find weather data for this location");
@@ -273,24 +278,24 @@ router.get("/fromAddressHistorical", (req, res) => {
               locationObject: locationObject,
               weatherData: weatherData,
             };
-            let jsonString = JSON.stringify(jsonObject);
-            client.SETEX(`${cityName}-historical`, 3600, jsonString);
-            produce("Q1_weather", jsonString, (durable = false));
-            res.status(200).send(jsonString);
-            return;
+            // let jsonString = JSON.stringify(jsonObject);
+            // client.SETEX(`${cityName}-historical`, 3600, jsonString);
+            // produce("Q1_weather", jsonString, (durable = false));
+            // res.status(200).send(jsonString);
+            // return;
             // COMMENT OUT BELOW CODE TO TEST WITHOUT FORECAST SERVICE
-            // return forecastUtility.getWeeklyVisualData(JSON.stringify(weatherData)).then((forecastVisualData) => {           
-            //   if(!forecastVisualData) return res.status(404).send("Error: Could not generate visual data for this location");
-            //   let jsonObject = {
-            //     locationObject: locationObject,
-            //     weatherData: weatherData,
-            //     forecastVisualData: forecastVisualData
-            //   };
-            //   let jsonString = JSON.stringify(jsonObject);
-            //   client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
-            //   produce("Q1_weather", jsonString, (durable = false));
-            //   res.status(200).send(jsonString);
-            // });
+            return forecastUtility.getHistoricalVisualData(JSON.stringify(jsonObject)).then((forecastVisualData) => {           
+              if(!forecastVisualData) return res.status(404).send("Error: Could not generate visual data for this location");
+              let jsonObject = {
+                locationObject: locationObject,
+                weatherData: weatherData,
+                forecastVisualData: forecastVisualData
+              };
+              let jsonString = JSON.stringify(jsonObject);
+              client.SETEX(`${cityName}-historical`, 3600, jsonString);
+              produce("Q1_weather", jsonString, (durable = false));
+              res.status(200).send(jsonString);
+            });
           });
       }
     });
