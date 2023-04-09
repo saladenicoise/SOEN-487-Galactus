@@ -91,8 +91,9 @@ aside {
 	display: flex;
 	flex-direction: column;
 z-index: 101;
-	background: rgba(0, 0, 0, 0.5);
-	color: var(--light);
+background: rgb(23,31,43);
+background: linear-gradient(360deg, rgba(23,31,43,1) 20%, rgba(32,46,60,1) 50%, rgba(39,57,72,1) 60%, rgba(51,78,95,1) 75%, rgba(36,59,85,1) 85%, rgba(23,31,43,1) 95%);
+	color: var(--primary);
 
 	width: calc(2rem + 32px);
 	overflow: hidden;
@@ -126,7 +127,7 @@ z-index: 101;
 			transition: 0.2s ease-in-out;
 			.material-icons {
 				font-size: 2rem;
-				color: var(--light);
+				color: var(--grey);
 				transition: 0.2s ease-out;
 			}
 
@@ -174,10 +175,10 @@ z-index: 101;
 			}
 
 			&:hover {
-				background-color: rgba(255, 255, 255, 0.2);
-				box-shadow: inset 5px 0px 0px teal;
+				background-color: rgba(255, 255, 255, 0.1);
+				box-shadow: inset 5px 0px 0px rgba(32,46,60,1) ;
 				.material-icons, .text {
-					color: var(--primary);
+					color: aliceblue;
 				}
 			}
 

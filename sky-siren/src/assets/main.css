@@ -13,9 +13,9 @@ body{
 	padding: 0;
   z-index: -1000;
   font-family: 'Roboto', sans-serif;
-  background: #17262b;
-  background: -webkit-linear-gradient(to right, #17262b, #43585d);
-  background: linear-gradient(to right, #17262b, #43585d);
+ background: -webkit-linear-gradient(#17262b, #243b55);
+ background: rgb(23,31,43);
+background: linear-gradient(to top, #17262b, #243b55);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

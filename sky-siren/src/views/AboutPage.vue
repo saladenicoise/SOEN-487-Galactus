@@ -24,6 +24,7 @@
   background-size: cover;
   width: 100vw;
   height: 100vh;
+  opacity: 0.9;
 }
 
 
@@ -39,9 +40,9 @@ width: fit-content;
     text-align: center;
     margin: auto;
     overflow: hidden;
-    box-shadow: #151823fa 40px 46px 35px 0px;
-    background: #151823dc;
-
+    box-shadow: #151823fa 0px 40px 40px 40px;
+    background: #151823;
+    animation: animateGlow 10s ease infinite;
     animation: textColor 10s ease infinite;
   }
 
