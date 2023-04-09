@@ -5,11 +5,13 @@
   "main": "server.js",
   "scripts": {
     "test": "jest --watchAll --verbose --coverage",
-    "live-reload": "nodemon server.js"
+    "live-reload": "nodemon server.js",
+    "start": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "chartjs-node-canvas": "^4.1.6",
     "express": "^4.18.2",
     "nodemon": "^2.0.22"
   },
