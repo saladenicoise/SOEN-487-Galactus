@@ -25,6 +25,7 @@
   width: 100vw;
   height: 100vh;
   opacity: 0.9;
+  z-index: -100;
 }
 
 

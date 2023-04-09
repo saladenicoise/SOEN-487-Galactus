@@ -86,9 +86,20 @@
                         name="notification">
                     <label class="form-check-label" for="notification">Notification alerts</label>
                 </div>
-                <div class="">
+
+
+                <!--<div class="">
                     <input type="time" class="form-control" v-model="notificationSchedule" name="notificationSchedule " />
-                </div>
+                </div>-->
+                <!-- preparing for a scrollable-->
+                <div class="dropdown">
+  <button class="dropbtn">Schedule</button>
+  <div class="dropdown-content">
+    <a href="#">00:00</a>
+  </div>
+</div>
+
+
             </div>
 
             <button class="btn btn-outline-primary" type="submit">Update</button>

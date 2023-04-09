@@ -1,12 +1,12 @@
 <template>
-  <form class="searchbar" @submit.prevent="searchWeather">
+  <form  @submit.prevent="searchWeather">
     <h1>Look up the weather forecast</h1>
 
-            <input type="city" id="city" v-model="city" placeholder="City">
+            <input class=" searchbar"  type="city" id="city" v-model="city" placeholder="City">
 
-        <div class="user-box">
+        <div >
 
-          <button type="submit" ><i class="bi bi-search"></i> Search</button>
+          <button style="width: auto;" type="submit"> Search</button>
         </div>
 
     </form>
@@ -46,38 +46,27 @@
 
 .searchbar {
   position: absolute;
-  box-shadow: 0 1px 3px var(--dark);
-top: 10%;
+  display: flex;
+   justify-content: center;
+  align-items: center;
+  top: 10vh;
   left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  max-width: 500px;
-  text-align: center;
-  padding: 1rem;
-  background-color: #fff;
-  border-radius: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  z-index: 1;
-}
-
-h1{
+  width: 15vw;
+  background: var(--dark);
+  border-block-color: var(--light);
+  border-radius: 10px;
   font-family: 'Montserrat', sans-serif;
   line-height: 130%;
   font-stretch: semi-expanded;
-  font-size: 0.7rem;
+  font-size: 1.5rem;
   font-weight: 600;
   z-index: 1;
-  color: var(--dark);
+  color: var(--primary);
 
 }
 
-button {
-  background: transparent;
-  border: none;
-  outline: none;
-}
 
-.searchbar form button {
+.searchbar button {
   position: relative;
   display: inline-block;
   padding: 10px 20px;
@@ -101,43 +90,9 @@ button {
     0 0 100px #03e9f4;
 }
 
-.searchbar button span {
-  position: absolute;
-  display: block;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 2px;
-}
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-text-fill-color: #fff !important;
-  -webkit-box-shadow: none !important;
-  transition: background-color 5000s ease-in-out 0s;
-}
-@keyframes btn-anim2 {
-  0% {
-    top: -100%;
-  }
 
-  50%,
-  100% {
-    top: 100%;
-  }
-}
 
-@keyframes animate {
-  0% {
-    filter: hue-rotate(0deg);
-  }
-
-  100% {
-    filter: hue-rotate(360deg);
-  }
-}
 </style>
 <script>
 export default {
