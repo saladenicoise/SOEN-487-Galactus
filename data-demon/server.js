@@ -95,7 +95,7 @@ router.get("/fromIp", (req, res) => {
                 forecastVisualData: forecastVisualData
               };
               let jsonString = JSON.stringify(jsonObject);
-              client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
+              client.SETEX(`${cityName}`, 3600, jsonString);
               produce("Q1_weather", jsonString, (durable = false));
               res.status(200).send(jsonString);
             });
@@ -166,7 +166,7 @@ router.get("/fromAddress", async (req, res) => {
                 forecastVisualData: forecastVisualData
               };
               let jsonString = JSON.stringify(jsonObject);
-              client.SETEX(`${cityName}`, 3600, JSON.stringify(jsonString));
+              client.SETEX(`${cityName}`, 3600, jsonString);
               produce("Q1_weather", jsonString, (durable = false));
               res.status(200).send(jsonString);
             });
@@ -228,7 +228,7 @@ router.get("/fromIpHistorical", (req, res) => {
                 forecastVisualData: forecastVisualData
               };
               let jsonString = JSON.stringify(jsonObject);
-              client.SETEX(`${cityName}-historical`, 3600, JSON.stringify(jsonString));
+              client.SETEX(`${cityName}-historical`, 3600, jsonString);
               produce("Q1_weather", jsonString, (durable = false));
               res.status(200).send(jsonString);
             });
@@ -292,7 +292,7 @@ router.get("/fromAddressHistorical", (req, res) => {
                 forecastVisualData: forecastVisualData
               };
               let jsonString = JSON.stringify(jsonObject);
-              client.SETEX(`${cityName}-historical`, 3600, JSON.stringify(jsonString));
+              client.SETEX(`${cityName}-historical`, 3600, jsonString);
               produce("Q1_weather", jsonString, (durable = false));
               res.status(200).send(jsonString);
             });
