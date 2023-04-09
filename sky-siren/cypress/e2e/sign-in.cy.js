@@ -8,7 +8,7 @@ describe('Sign in', () => {
     cy.get('input[name="password"]').type('password');
     cy.get('button[type="submit"]').click();
   
-    cy.url().should('eq', 'http://localhost:5173/preferences');
+    cy.url().should('eq', 'http://localhost:5173/');
   })
 
   it('displays an error message when the user enters incorrect credentials', () => {
@@ -24,7 +24,7 @@ describe('Sign in', () => {
     cy.get('input[name="password"]').type('password');
     cy.get('button[type="submit"]').click();
 
-    cy.url().should('eq', 'http://localhost:5173/preferences');
+    cy.url().should('eq', 'http://localhost:5173/');
     cy.get('[href="/sign-out"] > .material-icons').click({ force: true});
 
     cy.url().should('eq', 'http://localhost:5173/sign-in');

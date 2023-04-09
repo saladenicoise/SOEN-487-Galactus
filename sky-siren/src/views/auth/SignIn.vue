@@ -3,15 +3,11 @@
         <div class="login-box">
             <h1>Sign in</h1>
             <form  @submit.prevent="signIn">
-                <div class="btn__danger" role="alert" v-if="errorMsg">
-                    {{ errorMsg }}
-                </div>
-
                 <div class="user-box">
                     <input type="email" name="email" id="email" v-model="email" required>
                     <label>Email</label>
                 </div>
-
+                
                 <div class="user-box">
                     <input type="password" name="password" id="password" v-model="password" required>
                     <label>Password</label>
@@ -25,7 +21,9 @@
                     Sign in
                 </button>
             </form>
-
+            <div class="btn__danger" role="alert" v-if="errorMsg">
+                    {{ errorMsg }}
+                </div>
             <p>
                 Don't have an account? <router-link to="/sign-up" class="sign-up-link">Sign Up</router-link>
             </p>
@@ -52,14 +50,22 @@ const store = useStore();
         await store.dispatch('user/signIn', { email: email.value, password: password.value })
         router.replace('/');
     } catch (error) {
-        errorMsg.value = error.message;
+      console.log(error.message);
+      if (error.message === 'Firebase: Error (auth/user-not-found).'|| error.message === 'Firebase: Error (auth/wrong-password).')
+             errorMsg.value = "Invalid credentials!";
     }
 };
 </script>
 <style scoped>
 
 /*SignIn*/
-
+.centered {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	/* bring your own prefixes */
+	transform: translate(-50%, -50%);
+}
 .login-box {
   position: absolute;
   top: 50%;
@@ -111,7 +117,7 @@ const store = useStore();
   color: #fff;
   pointer-events: none;
   transition: .5s;
-
+  
 }
 
 .login-box .user-box input:focus~label,
@@ -134,7 +140,7 @@ button {
   display: inline-block;
   padding: 10px 20px;
   color: #03e9f4;
-  font-size: 32px;
+  font-size: 16px;
   text-decoration: none;
   text-transform: uppercase;
   overflow: hidden;
@@ -188,8 +194,8 @@ button {
   animation-delay: .25s
 }
 input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
 input:-webkit-autofill:active {
   -webkit-text-fill-color: #fff !important;
   -webkit-box-shadow: none !important;
