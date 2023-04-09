@@ -1,0 +1,18 @@
+version: '3'
+services:
+  redis:
+    container_name: redis
+    hostname: redis
+    image: redis
+    ports:
+    - "6379:6379"
+  data-demon:
+    container_name: data-demon
+    build: 
+      context: ./data-demon/
+    ports:
+    - "3001:3001"
+    links:
+    - redis
+    environment:
+    - PORT=3001

@@ -10,6 +10,8 @@ const path = require("path");
 const router = express.Router();
 const produce = require("./rabbitmq-utility/logger/producer-logger.js");
 const redis = require("redis");
+const consumeFromQueue = require("./rabbitmq-utility/logger/consumer-logger.js");
+
 
 // Middleware to start the server
 app.use(express.json());
@@ -17,6 +19,10 @@ app.use(cors());
 let locationObject = {};
 const client = redis.createClient({
   legacyMode: true,
+  socket: {
+    host: "redis",
+    port: 6379
+  }
 });
 
 // Connect to Redis and log a message
@@ -303,6 +309,10 @@ router.get("/fromAddressHistorical", (req, res) => {
     });
   });
 });
+
+
+consumeFromQueue("Q1_weather");
+
 // Start the server
 const port = process.env.PORT || 3001;
 app.use("/", router);
