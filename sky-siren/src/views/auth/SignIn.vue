@@ -6,12 +6,12 @@
                 <div class="btn__danger" role="alert" v-if="errorMsg">
                     {{ errorMsg }}
                 </div>
-                
+
                 <div class="user-box">
                     <input type="email" name="email" id="email" v-model="email" required>
                     <label>Email</label>
                 </div>
-                
+
                 <div class="user-box">
                     <input type="password" name="password" id="password" v-model="password" required>
                     <label>Password</label>
@@ -59,13 +59,7 @@ const store = useStore();
 <style scoped>
 
 /*SignIn*/
-.centered {
-	position: fixed;
-	top: 50%;
-	left: 50%;
-	/* bring your own prefixes */
-	transform: translate(-50%, -50%);
-}
+
 .login-box {
   position: absolute;
   top: 50%;
@@ -117,7 +111,7 @@ const store = useStore();
   color: #fff;
   pointer-events: none;
   transition: .5s;
-  
+
 }
 
 .login-box .user-box input:focus~label,
@@ -140,7 +134,7 @@ button {
   display: inline-block;
   padding: 10px 20px;
   color: #03e9f4;
-  font-size: 16px;
+  font-size: 32px;
   text-decoration: none;
   text-transform: uppercase;
   overflow: hidden;
@@ -194,8 +188,8 @@ button {
   animation-delay: .25s
 }
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-text-fill-color: #fff !important;
   -webkit-box-shadow: none !important;

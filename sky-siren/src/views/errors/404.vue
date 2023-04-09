@@ -94,36 +94,36 @@
 
 <style scoped>
 /*404Page.vue*/
-main {
-	height: 100%;
-	width: 100%;
 
-}
+
 
 .centered {
 	position: fixed;
 	top: 50%;
 	left: 50%;
+
 	/* bring your own prefixes */
 	transform: translate(-50%, -50%);
 }
 
+
+
 #errortitle {
 	text-align: center;
-	position: absolute;
 	color: white;
-	position: static
-
-
+	position: relative;
+	font-size: 100px;
+	top: 10vh;
 }
 
 #cubecontainer {
 position:static;
 	display: block;
 	position: relative;
-	top: -80px;
+	top: 10vh;
 	transform: skewY(-20deg);
 	animation: animate 5s linear infinite;
+	z-index: 1;
 }
 
 #cubecontainer .cube {

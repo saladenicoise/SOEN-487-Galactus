@@ -36,6 +36,7 @@ import { ref, onMounted } from 'vue';
 import router from '@/router';
 import { useStore } from 'vuex';
 
+
 /* Data */
 const name = ref('');
 const email = ref('');
@@ -73,3 +74,8 @@ const updateProfile = async () => {
 </script>
 
 
+<script>
+export default {
+   name: "ProfileComponent",
+}
+</script>

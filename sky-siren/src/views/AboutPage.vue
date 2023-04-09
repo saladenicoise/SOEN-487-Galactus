@@ -1,94 +1,96 @@
 <template>
-   <main id="mainAboutPage">
-
-<h1 style=" top: 0; font-weight: 800; font-stretch: expanded;">[ L'équipe ]</h1>
-      <div >
- || 40110945 | Jules Petit<br>
- || 40110044 |Elias Sabbagh <br>
- || 40045833 | Jaskaran Dhadda <br>
- || 40133600 | Christopher Di Giacomo<br>
- || 40099828 | Carolina Quesada Vilchez<br>
- || 29199160 | Khaled Al Koudmani<br>
- || 40158506 | Mikhail Ovsyannikov <br>
- || 40128079 | Noah-James Dinh<br>
- || 40116096 | Rama Alrifai<br>
-</div>
-   </main>
+  <main id="mainAboutPage">
+    <div>
+      <h1>[ L'équipe ]</h1><br>
+      || 40110945 | Jules Petit<br>
+      || 40110044 |Elias Sabbagh <br>
+      || 40045833 | Jaskaran Dhadda <br>
+      || 40133600 | Christopher Di Giacomo<br>
+      || 40099828 | Carolina Quesada Vilchez<br>
+      || 29199160 | Khaled Al Koudmani<br>
+      || 40158506 | Mikhail Ovsyannikov<br>
+      || 40128079 | Noah-James Dinh<br>
+      || 40116096 | Rama Alrifai<br><br>
+    </div>
+  </main>
 </template>
 
 <style scoped>
-* {
-  box-sizing: border-box;
-}
 
 #mainAboutPage {
-  z-index:-1;
-   align-items: center;
-  font-family: monospace;
-  justify-content: center;
-overflow:hidden;
-  background-color: #1d212b;
-  background-size:cover;
+  margin: 0;
+  padding: 0;
+  background: url("https://static.pexels.com/photos/1227/night-dark-blur-blurred.jpg") no-repeat center center;
+  background-size: cover;
+  width: 100vw;
+  height: 100vh;
 }
 
-#mainAboutPage div {
-  position: relative;
-  max-width: 60vw;
-  font-size: xx-large;
-display: block;
-line-height: 150%;
-  text-align:center;
-  color: #252B37;
-  background-color: #151823;
-  animation: textColor 10s ease infinite;
-}
-#mainAboutPage h1 {
-  display:block;
-   max-width: 60vw;
-  font-size: xx-large;
-  text-align:center;
-  animation: textColor 10s ease infinite;
+
+  #mainAboutPage div {
+    position: relative;
+  height: fit-content;
+width: fit-content;
+    font-size: 2vw;
+     line-height: 150%;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    font-size: xx-large;
+    text-align: center;
+    margin: auto;
+    overflow: hidden;
+    box-shadow: #151823fa 40px 46px 35px 0px;
+    background: #151823dc;
+
+    animation: textColor 10s ease infinite;
+  }
+
+  #mainAboutPage div:after {
+    position: relative;
+    content: "";
+    top: 5vw;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    height: 100%;
+    width: 100%;
+    margin: 0 auto;
+    transform: scale(1);
+  }
+
+  @keyframes animateGlow {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  @keyframes textColor {
+    0% {
+      color: #00a68a;
+    }
+    25%{
+
+      color: #83d47d;
+
+
+    }
+
+    50% {
+      color:#007480
+    }
+
+75%{
+  color: #9aae95;
 
 }
-#mainAboutPage div:after {
-  position:relative;
-  content: "";
-  top: 5vw;
-  left: 0;
-  right: 0;
-  z-index: -1;
-  height: 100%;
-  width: 100%;
-  margin: 0 auto;
-  transform: scale(1);
-  -webkit-filter: blur(5vw);
-  -moz-filter: blur(5vw);
-  -ms-filter: blur(5vw);
-  filter: blur(5vw);
-  background: linear-gradient(270deg, #0fffc1, #7e0fff);
-  background-size: 200% 200%;
-  animation: animateGlow 10s ease infinite;
-}
-@keyframes animateGlow {
-  0% {
-    background-position: 0% 50%;
+    100% {
+color:#00a68a
+    }
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-@keyframes textColor {
-  0% {
-    color: #7e0fff;
-  }
-  50% {
-    color: #0fffc1;
-  }
-  100% {
-    color: #7e0fff;
-  }
-}
 </style>

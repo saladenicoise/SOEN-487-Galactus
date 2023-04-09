@@ -15,13 +15,14 @@ text-align: center;
   position: absolute;
   bottom: 0%;
   color: white;
-  background: rgba(0, 0, 0, .5);
-  z-index: -1;
-  font-size: 0.7em;
+  background: rgba(0, 0, 0);
+  z-index: 100;
+  font-size: 0.8em;
   margin: 0%;
   padding: 0.5%;
   width: 100%;
   align-content: center;
-  height: 2.5rem;            /* Footer height */
+  height: 4rem;            /* Footer height */
 }
+
 </style>

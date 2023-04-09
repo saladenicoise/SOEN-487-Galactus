@@ -71,6 +71,11 @@
 
             <button class="btn btn-outline-primary" type="submit">Update</button>
         </form>
+
+<ProfileComponent/>
+
+
+
     </main>
 </template>
 
@@ -126,3 +131,7 @@ const updatePreference = async () => {
 };
 
 </script>
+
+
+
+

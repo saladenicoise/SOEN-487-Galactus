@@ -1,15 +1,13 @@
 <template>
 	<main id="Home-page" class="lines ">
 
-		<h1 style="color: aliceblue;">Local News</h1>
-
-	<div class="interface">
+		<div class="interface">
 
 	</div>
   <div class="line one"></div>
   <div class="line two"></div>
 
-
+  <iframe id="news" class="centered" width="660" height="415" src="https://www.youtube.com/embed/pocRVuNxhMY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 </main>
 </template>
 
@@ -23,12 +21,22 @@
     @return unquote($value);
    }
 
-$color: #00FF7B;
+$color: #83d47d;
+
+#news{
+  position: relative;
+  left: 50%;
+  right: 50%;
+  top:auto;
+  z-index: 1;
+
+}
 
 body { margin: 0; }
 
 .lines {
-  background-color: #000;
+
+  background-color: #17262b;
   height: 100vh;
   overflow: hidden;
 }
@@ -47,7 +55,7 @@ body { margin: 0; }
   box-shadow: boxShadow(50);
 }
 .overlay {
-  background-image: radial-gradient(#193326, black);
+  background-image: radial-gradient(#00a68a, #283f47);
   height: 100vh;
   opacity: 0.7;
   position: absolute;

@@ -9,7 +9,7 @@ const router = createRouter({
         { path: "/sign-up", component: () => import("../views/auth/SignUp.vue") },
         { path: "/about", component: () => import("../views/AboutPage.vue") },
         { path: "/news", component: () => import("../views/user/LocalNews.vue") },
-        { path: "/profile", component: () => import("../views/user/Profile.vue"), meta: { requiresAuth: true }},
+        { path: "/profile", component: () => import("../components/ProfileComponent.vue"), meta: { requiresAuth: true }},
         { path: "/preferences", component: () => import("../views/user/Preferences.vue"), meta: { requiresAuth: true } },
         { path: "/:pathMatch(.*)*", component: () => import("../views/errors/404.vue") },
     ],

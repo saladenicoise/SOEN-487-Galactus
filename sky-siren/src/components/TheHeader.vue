@@ -27,6 +27,11 @@
 				<span class="text">Sign In</span>
 			</router-link>
 
+			<router-link to="/news" class="button" v-if="isAuthenticated">
+				<span class="material-icons">newspaper</span>
+				<span class="text">Local News</span>
+			</router-link>
+
 		</div>
 		<div class="flex"></div>
 
@@ -40,7 +45,6 @@
 				<span class="material-icons" >logout</span>
 				<span class="text">sign-out</span>
 			</router-link>
-
 
 			<router-link to="/preferences" class="button" v-if="isAuthenticated">
 				<span class="material-icons">settings</span>
@@ -86,8 +90,8 @@ export default {
 aside {
 	display: flex;
 	flex-direction: column;
-
-	background: linear-gradient( #243b55,#141e30);
+z-index: 101;
+	background: rgba(0, 0, 0, 0.5);
 	color: var(--light);
 
 	width: calc(2rem + 32px);
@@ -161,40 +165,30 @@ aside {
 
 			.material-icons {
 				font-size: 2rem;
-				color: var(--light);
+				color: var(--grey);
 				transition: 0.2s ease-in-out;
 			}
 			.text {
-				color: var(--light);
+				color: var(--grey);
 				transition: 0.2s ease-in-out;
 			}
 
 			&:hover {
-				background-color: var(--dark-alt);
-
+				background-color: rgba(255, 255, 255, 0.2);
+				box-shadow: inset 5px 0px 0px teal;
 				.material-icons, .text {
 					color: var(--primary);
 				}
 			}
 
 			&.router-link-exact-active {
-				background-color: var(--dark-alt);
-				border-right: 5px solid var(--primary);
+				background: var(--primary);
+  transition: all 0.5s;
 
 				.material-icons, .text {
-					color: var(--primary);
+					color: white;
 				}
 			}
-		}
-	}
-
-	.footer {
-		opacity: 0;
-		transition: opacity 0.3s ease-in-out;
-
-		p {
-			font-size: 0.875rem;
-			color: var(--grey);
 		}
 	}
 
