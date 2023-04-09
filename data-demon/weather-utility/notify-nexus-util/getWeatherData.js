@@ -48,7 +48,7 @@ async function getCurrentWeather(cityName, language, time){
         let content = `${currentWeather.temperature_c}C/${currentWeather.temperature_f}F ${currentWeather.weather_condition}`;
     
         jsonObject = {
-            location: cityName,
+            cityName: cityName,
             language: language,
             time: time,
             content: content
@@ -58,9 +58,10 @@ async function getCurrentWeather(cityName, language, time){
         let jsonString = JSON.stringify(jsonObject);
         client.SETEX(`${cityName}-${language}-notif`, 3600, jsonString);    
     }
-
+    
+    
     const result = {
-        location: jsonObject.cityName,
+        cityName: jsonObject.cityName,
         language: jsonObject.language,
         time: time,
         content: jsonObject.content

@@ -23,7 +23,7 @@ async function pingCreateNotifications(receivedJSON) {
 
     const notifications = await Promise.all(data.map(async ({cityName, language, time}) => {
         const notificationObj = await getWeather(cityName, language, time);
-        return { "location": notificationObj.location, "language": notificationObj.language, "time": notificationObj.time, "content": notificationObj.content };
+        return { "location": notificationObj.cityName, "language": notificationObj.language, "time": notificationObj.time, "content": notificationObj.content };
     }));
 
     const dataStr = JSON.stringify(notifications);
