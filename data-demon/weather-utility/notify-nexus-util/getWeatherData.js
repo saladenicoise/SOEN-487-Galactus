@@ -7,6 +7,10 @@ async function getCurrentWeather(cityName, language, time){
 
     const client = redisProm.createClient({
         legacyMode: true,
+        socket: {
+            host: "redis",
+            port: 6379
+        }
     });
     client.on('connect', function() {
         console.log(' [x] Connected to Redis!');
