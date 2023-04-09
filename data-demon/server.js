@@ -10,6 +10,7 @@ const path = require("path");
 const router = express.Router();
 const produce = require("./rabbitmq-utility/logger/producer-logger.js");
 const redis = require("redis");
+const consumeFromQueue = require("./rabbitmq-utility/logger/consumer-logger.js");
 
 // RabbitMQ consumer runscripts
 const consumeFromQueue = require("./rabbitmq-utility/logger/consumer-logger.js");
