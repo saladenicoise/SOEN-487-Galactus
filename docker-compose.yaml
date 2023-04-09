@@ -1,4 +1,9 @@
 version: '3'
+
+networks:
+  default:
+    driver: bridge
+
 services:
   redis:
     container_name: redis
@@ -6,6 +11,18 @@ services:
     image: redis
     ports:
     - "6379:6379"
+    networks:
+    - default
+  visual-voyager:
+    container_name: visual-voyager
+    build: 
+      context: ./visual-voyager/
+    ports:
+    - "3002:3002"
+    environment:
+    - PORT=3002  
+    networks:
+    - default
   data-demon:
     container_name: data-demon
     build: 
@@ -14,5 +31,8 @@ services:
     - "3001:3001"
     links:
     - redis
+    - visual-voyager
     environment:
     - PORT=3001
+    networks:
+      - default
