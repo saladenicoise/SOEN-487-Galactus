@@ -1,5 +1,5 @@
 const geoCoding = require("../geoCodingAPI.js");
-const {fetchWeatherData, fetchHistoricalData} = require("../weatherRetrievalAPIs.js");
+const { fetchWeatherData } = require("../weatherRetrievalAPIs.js");
 const redisProm = require('redis-promisify');
 
 async function getCurrentWeather(cityName, language, time){
