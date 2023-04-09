@@ -1,7 +1,7 @@
 <template>
 
 
-
+<h1 class="centered" style="font-size: 32px; color: black; font-weight: 800; ">Test weather circles</h1>
 
 
 
@@ -11,7 +11,7 @@
 
 <script>
 export default {
-   name: "WeatherInfo",
+   name: "WeatherCircles",
 }
 </script>
 

@@ -4,13 +4,13 @@
 		<img src="/favicon.ico" alt="Logo" width="30" height="24" >
 	</div>
 	<h3> <b>Galactus</b><br>SkySiren</h3>
-
+<!--arrow on the top-->
 		<div class="menu-toggle-wrap">
 			<button class="menu-toggle" @click="ToggleMenu">
 				<span class="material-icons">keyboard_double_arrow_right</span>
 			</button>
 		</div>
-
+<!--top part of the menu-->
 		<h3>Menu</h3>
 		<div class="menu">
 			<router-link to="/" class="button">
@@ -33,8 +33,9 @@
 			</router-link>
 
 		</div>
+		<!--keeps both parts in place-->
 		<div class="flex"></div>
-
+<!--bottom part of the menu-->
 		<div class="menu">
 
 			<router-link to="/sign-up" class="button" v-if="!isAuthenticated">
@@ -59,8 +60,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import logoURL from '../assets/logo.png'
 
+/*opens and closes the menu*/
 const is_expanded = ref(localStorage.getItem("is_expanded") === "true")
 
 const ToggleMenu = () => {
@@ -70,6 +71,7 @@ const ToggleMenu = () => {
 </script>
 
 <script>
+/*imports the store and validates authentication*/
 export default {
     computed:{
         isAuthenticated(){
@@ -88,9 +90,10 @@ export default {
 
 <style lang="scss" scoped>
 aside {
+	/*general style */
 	display: flex;
 	flex-direction: column;
-z-index: 101;
+z-index: 1010;
 background: rgb(23,31,43);
 background: linear-gradient(360deg, rgba(23,31,43,1) 20%, rgba(32,46,60,1) 50%, rgba(39,57,72,1) 60%, rgba(51,78,95,1) 75%, rgba(36,59,85,1) 85%, rgba(23,31,43,1) 95%);
 	color: var(--primary);
@@ -175,6 +178,7 @@ background: linear-gradient(360deg, rgba(23,31,43,1) 20%, rgba(32,46,60,1) 50%, 
 			}
 
 			&:hover {
+/*gray for the overlay and green for the bar on the left */
 				background-color: rgba(255, 255, 255, 0.1);
 				box-shadow: inset 5px 0px 0px rgba(32,46,60,1) ;
 				.material-icons, .text {

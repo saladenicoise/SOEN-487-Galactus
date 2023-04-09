@@ -10,8 +10,8 @@ const router = createRouter({
         { path: "/about", component: () => import("../views/AboutPage.vue") },
         { path: "/news", component: () => import("../views/user/LocalNews.vue") },
         { path: "/preferences", component: () => import("../views/user/Preferences.vue"), meta: { requiresAuth: true } },
-        { path: "/:pathMatch(.*)*", component: () => import("../views/errors/404.vue") },
-        { path: "/notify-nexus", component: () => import("../views/NotifyNexus.vue")} // route to delete -> preferences is enough
+        { path: "/:pathMatch(.*)*", component: () => import("../views/errors/404.vue") }
+         // route to delete -> preferences is enough
     ],
 });
 

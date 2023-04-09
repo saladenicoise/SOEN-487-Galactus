@@ -1,5 +1,5 @@
 <template>
-    <main class="container flex-shrink-0  mt-4">
+    <main >
         <h1 class="h3 mb-3 fw-normal text-center" style="color: white">Manage Preferences</h1>
         <form class="mx-auto col-lg-4 col-md-6 col-sm-8 col-xs-12" style="color: white" @submit.prevent="updatePreference">
             <div class="alert alert-danger mb-4" role="alert" v-if="errorMsg">
@@ -108,16 +108,32 @@
                 <button class="btn btn-outline-primary" @click="getLocationSelected()">Get location selected</button>
             </div>
         </div>
+        <notify-nexus></notify-nexus>
     </main>
 </template>
 
-<script setup>
 
+
+<script>
+import NotifyNexus from '../../components/NotifyNexus.vue';
+
+/*Component import for notification preferences */
+export default {
+  name: 'Preference',
+  components: {
+    'NotifyNexus': NotifyNexus,
+  },
+  };
+</script>
+
+<script setup>
 /* Imports */
 import { ref, onMounted } from 'vue';
 import router from '@/router';
 import { useStore } from 'vuex';
 import axios from 'axios'
+
+
 
 /* Data */
 const language = ref('');

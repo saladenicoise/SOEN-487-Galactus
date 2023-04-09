@@ -1,6 +1,9 @@
 <template>
   <main id="mainHomePage">
-
+<div>
+<weather-data></weather-data>
+<weather-circles></weather-circles>
+</div>
 
   </main>
 </template>
@@ -22,12 +25,14 @@
 
 
 </style>
-
 <script>
-import WeatherInfo from '../components/WeatherInfo.vue'
-
-
+import WeatherData from '../components/WeatherData.vue';
+import WeatherCircles from '../components/WeatherCircles.vue';
 export default {
-  components: { WeatherInfo }
+  name: 'HomePage',
+  components: {
+   'WeatherData': WeatherData,
+   'WeatherCircles': WeatherCircles
+  },
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
 <footer  id="footer">
-
+<!-- bi-heart-fill is the heart icon from bootstrap-icons-->
 		<span class="text-muted"> Made with <i class="bi bi-heart-fill text-danger"></i> by L'equipe<br> </span>
 
 		<span class="text-muted">&copy; {{ new Date().getFullYear() }} All Rights Reserved.</span>
@@ -23,6 +23,7 @@ text-align: center;
   width: 100%;
   align-content: center;
   height: 4rem;            /* Footer height */
+
 }
 
 </style>
