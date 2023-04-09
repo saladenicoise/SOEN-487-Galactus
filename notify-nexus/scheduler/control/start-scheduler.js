@@ -54,6 +54,8 @@ function startScheduler(pollingUserServiceResult, producerMessagesToDataService,
 
 // This function takes two Date objects as arguments and returns the difference in seconds between them.
 function diffInSeconds(date1, date2) {
+  // uncomment this line for instant alerts (testing)
+  // return 1;
   if (!(date1 instanceof Date) || !(date2 instanceof Date)) {
     throw new Error('Both arguments must be Date objects.');
   }

@@ -11,9 +11,9 @@ const getSchedules = require('./firebase/getCitiesScheduledNotifications');
 const pingGetWeatherAlerts = require('./scheduler/jobs/data-service-remote/pingGetWeatherAlerts');
 const pingGetWeatherNotification = require('./scheduler/jobs/data-service-remote/pingGetWeatherNotifications');
 
-// In production change to no arguments 
+
 // Alert scheduler
-startScheduler(getAllDistinctAlertLocations, pingGetWeatherAlerts, axios, 60);
+startScheduler(getAllDistinctAlertLocations, pingGetWeatherAlerts, axios, 20);
 // Notification scheduler
 startScheduler(getSchedules, pingGetWeatherNotification, axios);
 
