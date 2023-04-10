@@ -23,3 +23,15 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+
+// Add sign in command
+Cypress.Commands.add('signIn', (email, password) => {
+    cy.session([email, password], () => {
+        cy.visit('/sign-in');
+        cy.get('input[name="email"]').type(email);
+        cy.get('input[name="password"]').type(password);
+        cy.get('button[type="submit"]').click();
+
+        cy.url().should('eq', Cypress.config().baseUrl + '/');
+    });
+});
