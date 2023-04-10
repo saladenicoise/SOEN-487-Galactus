@@ -134,4 +134,11 @@ const teamMembers = ref([
     color: #00a68a
   }
 }
+
+@media (max-width: 600px) {
+  #mainAboutPage {
+  
+    margin-left: 20%;
+}
+}
 </style>

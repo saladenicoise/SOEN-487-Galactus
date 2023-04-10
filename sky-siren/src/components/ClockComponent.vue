@@ -82,5 +82,45 @@ const getTime = () => {
    100% {
       color: var(--light);
    }
+   
 }
+@media (max-width: 600px) {
+    /* adjust the styles for smaller screens */
+     #clock {
+      margin-left: 10%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      margin-top: 2%;
+    }
+  }
+  @media (max-width: 786px) {
+    /* adjust the styles for smaller screens */
+     #clock {
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+  @media (max-width: 820px) {
+    /* adjust the styles for smaller screens */
+     #clock {
+      left: 50%;
+      transform: translate(-50%, -50%);
+      top: 5%;
+    }
+  }
+  @media (max-width: 920px) {
+    /* adjust the styles for smaller screens */
+     #clock {
+      left: 50%;
+      transform: translate(-50%, -50%);
+      top: 5%;
+    }
+  }
+  @media (max-width: 1024px) {
+    /* adjust the styles for smaller screens */
+     #clock {
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
 </style>
