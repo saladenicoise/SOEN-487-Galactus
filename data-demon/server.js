@@ -10,7 +10,11 @@ const path = require("path");
 const router = express.Router();
 const produce = require("./rabbitmq-utility/logger/producer-logger.js");
 const redis = require("redis");
+
+// RabbitMQ consumer runscripts
 const consumeFromQueue = require("./rabbitmq-utility/logger/consumer-logger.js");
+const runAlertConsumer = require("./rabbitmq-runscripts/alert-service/consumer-alert-polling-runscript.js");
+const runNotificationConsumer = require("./rabbitmq-runscripts/notification-service/consumer-notification-polling-runscript.js");
 
 
 // Middleware to start the server
@@ -310,6 +314,8 @@ router.get("/fromAddressHistorical", (req, res) => {
 
 
 consumeFromQueue("Q1_weather");
+runAlertConsumer();
+runNotificationConsumer();
 
 // Start the server
 const port = process.env.PORT || 3001;
