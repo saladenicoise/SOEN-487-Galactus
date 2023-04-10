@@ -1,5 +1,5 @@
 <template>
-    <main style="color: aliceblue;">
+    <main class="home-main" style="color: aliceblue;">
 
         <ClockComponent />
 
