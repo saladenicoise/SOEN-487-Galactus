@@ -21,7 +21,7 @@
 
 <script>
 export default {
-   name: "WeatherCircles",
+   name: "WeatherCircles"
 }
 </script>
 
@@ -41,31 +41,35 @@ body, html {
 /* Eye */
 .iris-container {
     position: relative;
-bottom:55vh;
+bottom:60vh;
     transform: perspective(1px) translateY(-50%);
 }
 
 .iris-container .border {
-    background-color: rgba(112, 166, 219, 0.3);
+    background-color: rgba(0, 0, 0, 0.5);
+    top:1vh;
     height: 365px;
     width: 365px;
-    border: 15px inset rgba(0, 255, 128, 0.5);
+    border: 10px inset var(--primary);
     border-radius: 50%;
     margin: 0 auto;
-    box-shadow: 0 0 50px rgba(0, 255, 128, 0.5);
+    box-shadow: 0 0 50px var(--primary-alt);
     animation: glow 2.8s infinite backwards;
 }
 
 .outer-circle {
     position: relative;
-    background-color: rgba(112, 166, 219, 0.3);
-    height: 345px;
-    width: 345px;
-    border: 10px dotted rgba(0, 0, 0, 0.9);
-    border-radius: 50%;
-    bottom: 3%;
+    top: 0;
+    bottom: 0;
+    left: 0;
     right: 0;
-    margin: auto;
+
+    background-color: rgba(112, 166, 219, 0.3);
+    height: 360px;
+    width: 360px;
+    border: 15px dashed rgba(0, 0, 0, 0.9);
+    border-radius: 50%;
+    margin: 0 auto;
     box-shadow: 0 0 50px rgba(0, 255, 128, 0.5);
     animation: rotateClock 30s infinite reverse;
 }
@@ -79,11 +83,12 @@ bottom:55vh;
     height: 300px;
     width: 300px;
     margin: auto;
-    background-color: rgba(112, 219, 219, 0.4);
+    box-sizing:content-box;
+    border: 1px groove var(--dark);
     border-radius: 50%;
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.7);
-    border: 5px dotted rgba(112, 219, 219, 0.9);
-    animation: rotateClock-2 20s infinite;
+    border: 15px dashed rgba(112, 219, 219, 0.9);
+    animation: rotateClock-2 30s infinite;
 }
 
 .inner-circle {

@@ -163,7 +163,6 @@ background: linear-gradient(360deg, rgba(23,31,43,1) 20%, rgba(32,46,60,1) 50%, 
 			display: flex;
 			align-items: center;
 			text-decoration: none;
-
 			transition: 0.2s ease-in-out;
 			padding: 0.5rem 1rem;
 
@@ -178,7 +177,7 @@ background: linear-gradient(360deg, rgba(23,31,43,1) 20%, rgba(32,46,60,1) 50%, 
 			}
 
 			&:hover {
-/*gray for the overlay and green for the bar on the left */
+/*grey for the overlay and green for the bar on the left */
 				background-color: rgba(255, 255, 255, 0.1);
 				box-shadow: inset 5px 0px 0px rgba(32,46,60,1) ;
 				.material-icons, .text {

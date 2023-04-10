@@ -2,10 +2,9 @@
   <main id="mainHomePage">
     <div>
       <Clock-component></Clock-component>
-      <div id="currentweather">
+      <SearchBar></SearchBar>
         <WeatherData></WeatherData>
         <weather-circles ></weather-circles>
-      </div>
 
     </div>
   </main>
@@ -36,16 +35,18 @@
 
 </style>
 <script>
-  import WeatherData from '../components/WeatherData.vue';
+/*Importing components */
   import WeatherCircles from '../components/WeatherCircles.vue';
  import ClockComponent from '../components/ClockComponent.vue';
+import SearchBar from '../components/SearchBar.vue';
 
   export default {
    name: 'HomePage',
     components: {
-      'WeatherData': WeatherData,
+
       'Clock-component': ClockComponent,
-      'WeatherCircles': WeatherCircles
+      'WeatherCircles': WeatherCircles,
+      'SearchBar': SearchBar,
     },
   }
 </script>

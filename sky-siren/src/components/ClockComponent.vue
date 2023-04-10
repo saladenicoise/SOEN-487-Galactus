@@ -4,7 +4,7 @@
 
 
       <div id="clock">
-         <div class="test">{{ time }}</div>
+         <div class="time">{{ time }}</div>
          <div class="date">{{ date }}</div>
 
       </div>
