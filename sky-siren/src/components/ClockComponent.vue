@@ -1,11 +1,11 @@
 <template>
 
-   <main>
+   <main id="clockmain">
 
 
       <div id="clock">
-         <p class="date">{{ date }}</p>
-         <p class="time">{{ time }}</p>
+         <div class="test">{{ time }}</div>
+         <div class="date">{{ date }}</div>
 
       </div>
    </main>
@@ -35,26 +35,55 @@ export default {
 
 </script>
 <style scoped>
+#clockmain {
+  box-sizing: border-box;
+}
 
-#clock {
+#clockmain #clock {
   font-family: "Share Tech Mono", monospace;
+  background-color:  #000000;
+   box-shadow: 0 0 60px black, 0 0 60px black, 0 0 60px black, 0 0 60px black;
+   border-radius: 15px;
+   width: fit-content;
+   height: fit-content;
   color: #ffffff;
   text-align: center;
-  position: absolute;
-  left: 80%;
-  bottom: 15vh;
-  transform: translate(-50%, -50%);
+  position: relative;
+   top: 10vh;
+   left: 20vw;
+   transform: translate(-50%, -50%);
   color: #daf6ff;
-  text-shadow: 0 0 20px #0aafe6, 0 0 30px rgba(10, 175, 230, 0);
+   animation: textColor 10s infinite;
+
 }
+
 #clock .time {
   letter-spacing: 0.05em;
   font-size: 32px;
+
 
 }
 #clock .date {
   letter-spacing: 0.1em;
   font-size: 14px;
 }
+
+
+@keyframes textColor {
+    0% {
+      color: var(--light);
+    }
+
+    50% {
+      color: var(--grey);
+    }
+
+75%{
+
+}
+    100% {
+color: var(--light);
+    }
+  }
 
 </style>

@@ -26,7 +26,8 @@
   height: 100vh;
   opacity: 0.9;
   z-index: -100;
-}
+
+   }
 
 
   #mainAboutPage div {

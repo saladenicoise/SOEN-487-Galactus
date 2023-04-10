@@ -93,7 +93,7 @@ aside {
 	/*general style */
 	display: flex;
 	flex-direction: column;
-z-index: 1010;
+z-index: 1000;
 background: rgb(23,31,43);
 background: linear-gradient(360deg, rgba(23,31,43,1) 20%, rgba(32,46,60,1) 50%, rgba(39,57,72,1) 60%, rgba(51,78,95,1) 75%, rgba(36,59,85,1) 85%, rgba(23,31,43,1) 95%);
 	color: var(--primary);
