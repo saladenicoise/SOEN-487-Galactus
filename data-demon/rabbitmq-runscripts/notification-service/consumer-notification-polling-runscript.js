@@ -21,16 +21,18 @@ async function pingCreateNotifications(receivedJSON) {
         return;
     }
 
-    const notifications = await Promise.all(data.map(async ({cityName, language, time}) => {
+    const notifications = await Promise.all(data.map(async ({ cityName, language, time }) => {
         const notificationObj = await getWeather(cityName, language, time);
         return { "location": notificationObj.cityName, "language": notificationObj.language, "time": notificationObj.time, "content": notificationObj.content };
     }));
 
     const dataStr = JSON.stringify(notifications);
-    console.log("dataStr: ",dataStr)
+    console.log("dataStr: ", dataStr)
     publish(dataStr);
     // client.quit();
-// published format: [{"location":"Montreal","language":"en","time":"13h10","content":"-1C/30.2F Sunny"},{"location":"Montreal","language":"en","time":"13h10","content":"-1C/30.2F Sunny"}]
+    // published format: [{"location":"Montreal","language":"en","time":"13h10","content":"-1C/30.2F Sunny"},{"location":"Montreal","language":"en","time":"13h10","content":"-1C/30.2F Sunny"}]
 }
 
-consumeFromPollingQueue("notification-polling-queue", pingCreateNotifications);
+module.exports = function () {
+    consumeFromPollingQueue("notification-polling-queue", pingCreateNotifications);
+};
