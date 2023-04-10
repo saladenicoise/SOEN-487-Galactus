@@ -18,13 +18,13 @@ export default {
 
 <style lang="scss">
 :root {
-	--primary: #42c271;
-	--primary-alt: #1ca54e;
-	--grey: #64748b;
-	--dark: #1e293b;
-	--dark-alt: #334155;
-	--light: linear-gradient(#141e30, #243b55);
-	--sidebar-width: 300px;
+	--primary: rgba(2, 161, 161, 0.5);
+	--primary-alt: teal;
+	--grey: #848d98;
+	--dark: #17262b;
+	--dark-alt: #283f47;
+	--light: teal;
+	--sidebar-width: 200px;
 }
 
 * {
@@ -34,9 +34,7 @@ export default {
 	font-family: 'Fira sans', sans-serif;
 }
 
-body {
-	background: var(--light);
-}
+
 
 button {
 	cursor: pointer;

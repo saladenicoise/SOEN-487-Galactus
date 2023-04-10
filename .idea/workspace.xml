@@ -2,7 +2,50 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b5c558bf-b44a-4fb1-b59a-64a93b494e61" name="Changes" comment="More small changes">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notify-nexus/firebase/getAllUsers.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notify-nexus/firebase/getCities.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notify-nexus/firebase/getCitiesAlerts.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notify-nexus/firebase/getCitiesScheduledNotifications.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/notify-nexus/firebase/testing.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visual-voyager/ReadMe.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visual-voyager/chart_util.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visual-voyager/historicalData.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visual-voyager/historicalData1mth.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visual-voyager/historicalData21.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visual-voyager/historicalData5mths.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visual-voyager/historicalData6mths.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visual-voyager/historicalData7days.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visual-voyager/newHistoricalFileCreator.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/visual-voyager/weeklyData.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data-demon/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/data-demon/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data-demon/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/data-demon/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data-demon/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/data-demon/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data-demon/rabbitmq-runscripts/alert-service/consumer-alert-polling-runscript.js" beforeDir="false" afterPath="$PROJECT_DIR$/data-demon/rabbitmq-runscripts/alert-service/consumer-alert-polling-runscript.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data-demon/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/data-demon/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data-demon/test-views/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/data-demon/test-views/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notify-nexus/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/notify-nexus/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notify-nexus/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/notify-nexus/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notify-nexus/rabbitmq/runscripts/consumer-alert-pushing-runscript.js" beforeDir="false" afterPath="$PROJECT_DIR$/notify-nexus/rabbitmq/runscripts/consumer-alert-pushing-runscript.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notify-nexus/scheduler/control/start-scheduler.js" beforeDir="false" afterPath="$PROJECT_DIR$/notify-nexus/scheduler/control/start-scheduler.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notify-nexus/scheduler/jobs/cipher-chef-remote/getAllDistinctAlertLocations.js" beforeDir="false" afterPath="$PROJECT_DIR$/notify-nexus/scheduler/jobs/cipher-chef-remote/getAllDistinctAlertLocations.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notify-nexus/scheduler/jobs/data-service-remote/pingGetWeatherAlerts.js" beforeDir="false" afterPath="$PROJECT_DIR$/notify-nexus/scheduler/jobs/data-service-remote/pingGetWeatherAlerts.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notify-nexus/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/notify-nexus/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sky-siren/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/sky-siren/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sky-siren/cypress/e2e/sign-in.cy.js" beforeDir="false" afterPath="$PROJECT_DIR$/sky-siren/cypress/e2e/sign-in.cy.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sky-siren/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/sky-siren/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sky-siren/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/sky-siren/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sky-siren/src/components/ProfileComponent.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sky-siren/src/components/TheHeader.vue" beforeDir="false" afterPath="$PROJECT_DIR$/sky-siren/src/components/TheHeader.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sky-siren/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/sky-siren/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sky-siren/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/sky-siren/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sky-siren/src/views/NotifyNexus.vue" beforeDir="false" afterPath="$PROJECT_DIR$/sky-siren/src/views/NotifyNexus.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sky-siren/src/views/auth/SignIn.vue" beforeDir="false" afterPath="$PROJECT_DIR$/sky-siren/src/views/auth/SignIn.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sky-siren/src/views/auth/SignUp.vue" beforeDir="false" afterPath="$PROJECT_DIR$/sky-siren/src/views/auth/SignUp.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sky-siren/src/views/user/Preferences.vue" beforeDir="false" afterPath="$PROJECT_DIR$/sky-siren/src/views/user/Preferences.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visual-voyager/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/visual-voyager/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visual-voyager/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/visual-voyager/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/visual-voyager/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/visual-voyager/server.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,13 +71,7 @@
             <value>
               <list>
                 <branch-info repo="$PROJECT_DIR$" source="Authentication" />
-              </list>
-            </value>
-          </entry>
-          <entry type="REMOTE">
-            <value>
-              <list>
-                <branch-info repo="$PROJECT_DIR$" source="origin/Authentication" />
+                <branch-info repo="$PROJECT_DIR$" source="UI" />
               </list>
             </value>
           </entry>
@@ -95,6 +132,7 @@
       <workItem from="1680431083670" duration="506000" />
       <workItem from="1680502873698" duration="796000" />
       <workItem from="1680504821665" duration="293000" />
+      <workItem from="1681004296087" duration="269000" />
     </task>
     <task id="LOCAL-00001" summary="More small changes">
       <created>1680503076494</created>

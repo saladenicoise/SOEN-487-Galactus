@@ -4,13 +4,13 @@
 		<img src="/favicon.ico" alt="Logo" width="30" height="24" >
 	</div>
 	<h3> <b>Galactus</b><br>SkySiren</h3>
-
+<!--arrow on the top-->
 		<div class="menu-toggle-wrap">
 			<button class="menu-toggle" @click="ToggleMenu">
 				<span class="material-icons">keyboard_double_arrow_right</span>
 			</button>
 		</div>
-
+<!--top part of the menu-->
 		<h3>Menu</h3>
 		<div class="menu">
 			<router-link to="/" class="button">
@@ -27,9 +27,15 @@
 				<span class="text">Sign In</span>
 			</router-link>
 
-		</div>
-		<div class="flex"></div>
+			<router-link to="/news" class="button" v-if="isAuthenticated">
+				<span class="material-icons">newspaper</span>
+				<span class="text">Local News</span>
+			</router-link>
 
+		</div>
+		<!--keeps both parts in place-->
+		<div class="flex"></div>
+<!--bottom part of the menu-->
 		<div class="menu">
 
 			<router-link to="/sign-up" class="button" v-if="!isAuthenticated">
@@ -40,7 +46,6 @@
 				<span class="material-icons" >logout</span>
 				<span class="text">Sign Out</span>
 			</router-link>
-
 
 			<router-link to="/preferences" class="button" v-if="isAuthenticated">
 				<span class="material-icons">settings</span>
@@ -55,8 +60,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import logoURL from '../assets/logo.png'
 
+/*opens and closes the menu*/
 const is_expanded = ref(localStorage.getItem("is_expanded") === "true")
 
 const ToggleMenu = () => {
@@ -66,6 +71,7 @@ const ToggleMenu = () => {
 </script>
 
 <script>
+/*imports the store and validates authentication*/
 export default {
     computed:{
         isAuthenticated(){
@@ -84,11 +90,13 @@ export default {
 
 <style lang="scss" scoped>
 aside {
+	/*general style */
 	display: flex;
 	flex-direction: column;
-
-	background: linear-gradient( #243b55,#141e30);
-	color: var(--light);
+z-index: 1000;
+background: rgb(23,31,43);
+background: linear-gradient(360deg, rgba(23,31,43,1) 20%, rgba(32,46,60,1) 50%, rgba(39,57,72,1) 60%, rgba(51,78,95,1) 75%, rgba(36,59,85,1) 85%, rgba(23,31,43,1) 95%);
+	color: var(--primary);
 
 	width: calc(2rem + 32px);
 	overflow: hidden;
@@ -122,7 +130,7 @@ aside {
 			transition: 0.2s ease-in-out;
 			.material-icons {
 				font-size: 2rem;
-				color: var(--light);
+				color: var(--grey);
 				transition: 0.2s ease-out;
 			}
 
@@ -155,46 +163,36 @@ aside {
 			display: flex;
 			align-items: center;
 			text-decoration: none;
-
 			transition: 0.2s ease-in-out;
 			padding: 0.5rem 1rem;
 
 			.material-icons {
 				font-size: 2rem;
-				color: var(--light);
+				color: var(--grey);
 				transition: 0.2s ease-in-out;
 			}
 			.text {
-				color: var(--light);
+				color: var(--grey);
 				transition: 0.2s ease-in-out;
 			}
 
 			&:hover {
-				background-color: var(--dark-alt);
-
+/*grey for the overlay and green for the bar on the left */
+				background-color: rgba(255, 255, 255, 0.1);
+				box-shadow: inset 5px 0px 0px rgba(32,46,60,1) ;
 				.material-icons, .text {
-					color: var(--primary);
+					color: aliceblue;
 				}
 			}
 
 			&.router-link-exact-active {
-				background-color: var(--dark-alt);
-				border-right: 5px solid var(--primary);
+				background: var(--primary);
+  transition: all 0.5s;
 
 				.material-icons, .text {
-					color: var(--primary);
+					color: white;
 				}
 			}
-		}
-	}
-
-	.footer {
-		opacity: 0;
-		transition: opacity 0.3s ease-in-out;
-
-		p {
-			font-size: 0.875rem;
-			color: var(--grey);
 		}
 	}
 

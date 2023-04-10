@@ -1,43 +1,47 @@
 <template>
-    <div class="notify-nexus">
+    <div class="notify-nexus ">
         <!-- TODO Perform check to see if this devide is registed to Pusher Beam -->
-        <div>
-            <h1 style="color: white">Notification service preferences</h1>
-            <input name="alertLocation" placeholder="alert" type="text" v-model="alertLocation">
+        <div class="centered login-box">
+
+            <div class="user-box">
+        <h1>Notification service preferences</h1>
+        <input name="alertLocation" placeholder="alert" type="text" v-model="alertLocation">
         </div>
-        <div>
+
+        <div class="user-box">
             <h2 style="color: white">Notifications scheduler</h2>
             <input name="schedule" v-model="schedule" type="time">
             <button class="btn btn-outline-primary" style="color: white"
                 @click="subscribeToNotifyNexus('notification')">Subscribe to weather
                 notifications?</button>
         </div>
-        <div>
+        <div class="user-box">
             <h2 style="color: white">Alerts</h2>
             <button class="btn btn-outline-primary" style="color: white"
                 @click="subscribeToNotifyNexus('alert')">Subscribe to weather
                 alerts?</button>
-                
+
         </div>
         <!-- List of useful functions -->
-        <div>
+        <div class="user-box">
             <input placeholder="delete an interest" name="deleteOneInterest" v-model="deleteOneInterest" type="text">
             <button @click="removeDeviceInterestByName(deleteOneInterest)"></button>
         </div>
 
-        <div>
+        <div class="user-box">
             <button class="btn btn-outline-primary" style="color: white" @click="removeDeviceInterest()">remove one interest</button>
         </div>
 
-        <div>
+        <div class="user-box">
             <button class="btn btn-outline-primary" style="color: white" @click="getDeviceInterests()">show device interests</button>
         </div>
 
-        <div>
+        <div  class="user-box">
             <button class="btn btn-outline-primary" style="color: white" @click="customClearDeviceInterests()">clear all interests</button>
         </div>
-        
-        
+
+
+    </div>
 
     </div>
 </template>
@@ -46,6 +50,7 @@
 import axios from 'axios'
 
 export default {
+    name: 'NotifyNexus',
     data() {
         return {
             schedule: '',
@@ -53,6 +58,7 @@ export default {
             alertLocation: ''
         }
     },
+
     methods: {
         subscribeToNotifyNexus(interest) {
             console.log(`Subscribe to ${interest} interest for notify-nexus`);
@@ -141,7 +147,7 @@ export default {
             });
             beamsClient.start()
                 .then((beamsClient) => beamsClient.getDeviceInterests())
-                .then((interests) => interests.forEach((interest) => 
+                .then((interests) => interests.forEach((interest) =>
                     beamsClient.removeDeviceInterest(interest))
                 )
                 .then(() => console.log('Unsubscribe from all interests'))
