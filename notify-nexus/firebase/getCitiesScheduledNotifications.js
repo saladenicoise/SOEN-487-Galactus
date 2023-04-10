@@ -1,6 +1,12 @@
 const getAllUsers = require('./getAllUsers')
 
 async function getCitiesSchedulesNotifications(timeIndex , axios) {
+  // For testing - revert this
+  // return [
+  //   { location: 'Montreal', language: 'fr', time: '03h10' },
+  //   { location: 'Montreal', language: 'en', time: '03h10' }
+  // ];
+  // For testing - revert this
   const currentTime = reverseIndexToTime(timeIndex);
   const allUsers = await getAllUsers(axios);
   const currentUsers = {};

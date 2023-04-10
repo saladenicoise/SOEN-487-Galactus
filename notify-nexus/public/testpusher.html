@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Testing subscriptions</title>
+	<style>
+		body {
+			margin: 0;
+		}
+
+		.container {
+			height: 100vh;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		button {
+			padding: 10px 20px;
+			font-size: 16px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+        .message {
+			margin-top: 10px;
+			text-align: center;
+            height: 20px;
+		}
+	</style>
+	<script src="https://js.pusher.com/beams/1.0/push-notifications-cdn.js"></script>
+</head>
+<body>
+	<div class="container">
+		<button onclick="registerDevice()" id="subscribeBtn">Register with Pusher Beams</button>
+        <div class="message" id="successMessage"></div>
+
+        <button onclick="subscribeToInterest('interest1')" id="subscribeBtn">Subscribe to Interest1</button>
+        <div class="message" id="subscribeMessage:interest1"></div>
+
+        <button onclick="subscribeToInterest('interest2')" id="subscribeBtn">Subscribe to Interest2</button>
+        <div class="message" id="subscribeMessage:interest2"></div>
+
+        <button onclick="subscribeToInterest('interest3')" id="subscribeBtn">Subscribe to Test Interest3</button>
+        <div class="message" id="subscribeMessage:interest3"></div>
+
+        <button onclick="unsubscribeFromInterest('interest1')" id="subscribeBtn">Unsubscribe from Interest1</button>
+        <div class="message" id="unsubscribeMessage:interest1"></div>
+
+        <button onclick="unsubscribeFromInterest('interest2')" id="subscribeBtn">Unsubscribe from Interest2</button>
+        <div class="message" id="unsubscribeMessage:interest2"></div>
+
+        <button onclick="unsubscribeFromInterest('interest3')" id="subscribeBtn">Unsubscribe from Test Interest3</button>
+        <div class="message" id="unsubscribeMessage:interest3"></div>
+
+        <button onclick="unsubscribeFromAllInterests()" id="subscribeBtn">Unsubscribe from all Interests</button>
+        <div class="message" id="unsubscribeMessageAll"></div>
+
+        <button onclick="getSubscriptions()" id="subscribeBtn">Print Subscriptions to console</button>
+        <div class="message" id="consoleBtn"></div>
+	</div>
+
+	<script>
+		function registerDevice() {
+			const beamsClient = new PusherPushNotifications.Client({
+				instanceId: "b5d262e1-0b5e-40f0-b3ac-0ccab70181bb",
+			});
+
+			beamsClient
+                .start()
+                .then((beamsClient) => beamsClient.getDeviceId())
+                .then((deviceId) => {
+                    console.log("Successfully registered with Beams. Device ID:", deviceId);
+                    document.getElementById("successMessage").innerHTML = "Successfully registered with Pusher Beams!";
+                })
+                .catch(console.error);
+		}
+	</script>
+
+    <script>
+        function subscribeToInterest(interest) {
+            const beamsClient = new PusherPushNotifications.Client({
+                instanceId: "b5d262e1-0b5e-40f0-b3ac-0ccab70181bb",
+            });
+            
+            beamsClient
+            .start()
+            .then((beamsClient) => beamsClient.getDeviceId())
+            .then((deviceId) => {
+                console.log("Successfully registered with Beams. Device ID:", deviceId);
+                document.getElementById("subscribeMessage:"+interest).innerHTML = "Successfully subscribed!";
+            })
+            .then(() => beamsClient.addDeviceInterest(interest))
+            .then(() => beamsClient.getDeviceInterests())
+            .then((interests) => console.log("Current interests:", interests))
+            .catch(console.error);
+        }
+    </script>
+
+    <script>
+        function getSubscriptions(){
+            const beamsClient = new PusherPushNotifications.Client({
+                instanceId: "b5d262e1-0b5e-40f0-b3ac-0ccab70181bb",
+            });
+
+            beamsClient.getDeviceInterests()
+                .then(interests => {
+                    console.log(interests) // Will log something like ["a", "b", "c"]
+                })
+                .catch(e => console.error('Could not get device interests', e));
+        }
+    </script>
+
+    <!--
+        This default function in Web SDK is broken, use the one bellow
+        
+        <script>
+        function unsubscribeFromAllInterests(){
+            const beamsClient = new PusherPushNotifications.Client({
+                instanceId: "b5d262e1-0b5e-40f0-b3ac-0ccab70181bb",
+            });
+
+            beamsClient.clearDeviceInterests()
+                .then(() => {
+                    console.log('Device interests have been cleared');
+                    document.getElementById("unsubscribeMessageAll").innerHTML = "Successfully unsubscribed with Pusher Beams!";
+            })
+                .catch(e => console.error('Could not clear device interests', e));
+        }
+    </script> -->
+
+    <script>
+        function unsubscribeFromAllInterests(){
+            const beamsClient = new PusherPushNotifications.Client({
+                instanceId: "b5d262e1-0b5e-40f0-b3ac-0ccab70181bb",
+            });
+
+            beamsClient.getDeviceInterests()
+                .then((interests) => {
+                    for (const i of interests) {
+                        beamsClient.removeDeviceInterest(i);
+                    }
+                    document.getElementById("unsubscribeMessageAll").innerHTML = "Successfully unsubscribed with Pusher Beams!";
+                })
+                .catch(e => console.error('Could not remove device interests', e));
+        }
+    </script>
+    
+    <script>
+        function unsubscribeFromInterest(interest){
+            const beamsClient = new PusherPushNotifications.Client({
+                instanceId: "b5d262e1-0b5e-40f0-b3ac-0ccab70181bb",
+            });
+
+            beamsClient.start()
+                .then(() => {
+                    beamsClient.removeDeviceInterest(interest);
+                    document.getElementById("unsubscribeMessage:"+interest).innerHTML = "Successfully unsubscribed with Pusher Beams!";
+                })
+                .catch(e => console.error('Could not remove device interest', e));
+        }
+    </script>
+</body>
+</html>

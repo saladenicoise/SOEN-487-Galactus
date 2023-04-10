@@ -76,12 +76,17 @@
             </form>
         </div>
 
-        <div style="color: white;">
-            <h3>THIS WILL BE REMOVED IN PROD</h3>
-           
-            <button style="color: white;" @click="getDeviceInterests()">Get interests</button><br>
-            <button style="color: white;" @click="customClearDeviceInterests()">Delete all interests</button><br>
-            <button style="color: white;" @click="getLocationSelected()">Get location selected</button><br>
+        <div>
+            <!-- <h3>Debugging utility functions. Comment this out</h3> -->
+            <div>
+                <button hidden class="btn btn-outline-primary" @click="getDeviceInterests()">Get interests</button>
+            </div>
+            <div>
+                <button hidden class="btn btn-outline-primary" @click="customClearDeviceInterests()">Delete all interests</button>
+            </div>
+            <!-- <div>
+                <button class="btn btn-outline-primary" @click="getLocationSelected()">Get location selected</button>
+            </div> -->
         </div>
     </main>
 </template>
@@ -193,6 +198,12 @@ const setCities = () => {
             console.log(error);
         })
 };
+// TODO
+// Add call to data-service when Location is updated to autoDetect -> /fromIP
+// The city input is disabled but its value is changed to the current city
+
+// What if the cityis already auto-detected (saved in db), but user changed city so the auto detect input is "outdated" until we do -> manual input -> auto detect
+// .. upon which, the location will be update to current location
 
 
 const getDeviceInterests = () => {

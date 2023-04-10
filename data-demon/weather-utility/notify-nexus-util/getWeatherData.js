@@ -1,0 +1,89 @@
+const geoCoding = require("../geoCodingAPI.js");
+const { fetchWeatherData } = require("../weatherRetrievalAPIs.js");
+const redisProm = require('redis-promisify');
+
+async function getCurrentWeather(cityName, language, time){
+    console.log("Called getCurrentWeather with: ", cityName, language, time);
+
+    const client = redisProm.createClient({
+        legacyMode: true,
+        socket: {
+            host: "redis",
+            port: 6379
+        }
+    });
+    client.on('connect', function() {
+        console.log(' [x] Connected to Redis!');
+    });
+
+    let jsonObject = await client.getAsync(`${cityName}-${language}-notif`);
+
+    if (jsonObject != null) { // data exists in the cache, return it
+        console.log(" [x] Available in Redis. Retreiving from cache...");
+        jsonObject = JSON.parse(jsonObject.toString());
+    } else {  // data does not exist in the cache, fetch it from the API and cache it
+        console.log(
+        " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
+        );
+
+        console.log("In From Address");
+        const locationObject = await geoCoding.getLocationFromAddress(cityName);
+
+        // if locationObject is null, send a 404 error
+        console.log("Returned from geocaching")
+        if (!locationObject) {
+            res.status(404).send(`Error: Could not find location ${cityName}`);
+            return;
+        }
+
+        weatherData = await fetchWeatherData(
+            locationObject.latitude,
+            locationObject.longitude,
+            language
+        );
+        
+        if(!weatherData) return null;
+
+        let currentWeather = weatherData[0];
+        let content = `${currentWeather.temperature_c}C/${currentWeather.temperature_f}F ${currentWeather.weather_condition}`;
+    
+        jsonObject = {
+            cityName: cityName,
+            language: language,
+            time: time,
+            content: content
+        };
+        
+
+        let jsonString = JSON.stringify(jsonObject);
+        client.SETEX(`${cityName}-${language}-notif`, 3600, jsonString);    
+    }
+    
+    
+    const result = {
+        cityName: jsonObject.cityName,
+        language: jsonObject.language,
+        time: time,
+        content: jsonObject.content
+    }
+    
+    client.quit();
+    return result;
+
+}
+
+
+// const client = redisProm.createClient({
+//     legacyMode: true,
+// });
+
+
+// // Connect to Redis and log a message
+// client.on('connect', function() {
+//     console.log(' [x] Connected to Redis!');
+//     getCurrentWeather('Montreal', 'en', '13h10', client).then(console.log);
+// });
+
+module.exports = getCurrentWeather;
+
+

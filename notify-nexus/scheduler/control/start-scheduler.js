@@ -28,12 +28,15 @@ function startScheduler(pollingUserServiceResult, producerMessagesToDataService,
     // User service Polling. Since this function does an axios call that returns a promise...
     pollingUserServiceResult(getCurrentTimeIndex(), axios)
       .then((arrayOfMessages) => {
-      // Producer sends message to alert queue
-      producerMessagesToDataService(arrayOfMessages);
-    })
-    .catch((err) => console.error('debug scheduler. Cannot get pollingUserServiceResult', err))
-
-
+      // Producer sends message to alert queueif
+        if (Array.isArray(arrayOfMessages) && arrayOfMessages.length) {
+          // Producer sends message to alert queue
+          producerMessagesToDataService(arrayOfMessages);
+        } else {
+          console.log("No messages to send.");
+        }
+      })
+      .catch((err) => console.error('debug scheduler. Cannot get pollingUserServiceResult', err))
   })
 
   const job = new SimpleIntervalJob({ seconds: frequencyInSeconds, runImmediately: true }, task)
@@ -51,6 +54,8 @@ function startScheduler(pollingUserServiceResult, producerMessagesToDataService,
 
 // This function takes two Date objects as arguments and returns the difference in seconds between them.
 function diffInSeconds(date1, date2) {
+  // uncomment this line for instant alerts (testing)
+  // return 1;
   if (!(date1 instanceof Date) || !(date2 instanceof Date)) {
     throw new Error('Both arguments must be Date objects.');
   }
