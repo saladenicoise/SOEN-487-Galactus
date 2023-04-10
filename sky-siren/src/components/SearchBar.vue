@@ -58,7 +58,8 @@ name: "SearchBar"
     position: relative;
     display: inline-block;
     padding: 10px 10px;
-    color: #03e9f4;
+    text-shadow: 0 0 10px #0a9ecf, 0 0 10px rgba(7, 42, 90, 0.834);
+      color: #03e9f4;
     font-size: 16px;
     text-decoration: none;
     text-transform: uppercase;

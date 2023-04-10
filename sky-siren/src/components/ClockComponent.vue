@@ -1,14 +1,12 @@
 <template>
 
-   <main id="clockmain">
-
 
       <div id="clock">
          <div class="time">{{ time }}</div>
          <div class="date">{{ date }}</div>
 
       </div>
-   </main>
+
 </template>
 
 <script>
@@ -39,33 +37,42 @@ export default {
   box-sizing: border-box;
 }
 
-#clockmain #clock {
+ #clock {
   font-family: "Share Tech Mono", monospace;
-  background-color:  #000000;
-   box-shadow: 0 0 60px black, 0 0 60px black, 0 0 60px black, 0 0 60px black;
-   border-radius: 15px;
-   width: fit-content;
-   height: fit-content;
-  color: #ffffff;
-  text-align: center;
-  position: relative;
-   top: 10vh;
-   left: 20vw;
-   transform: translate(-50%, -50%);
-  color: #daf6ff;
-   animation: textColor 10s infinite;
+   position: absolute;
 
-}
+    padding: 10.9px 10.9px;
+    margin: 0;
+    display: flex;
+    box-sizing:border-box;
+    Background: linear-gradient(360deg, rgba(23, 31, 43, 1) 20%, rgba(32, 46, 60, 1) 50%, rgba(39, 57, 72, 1) 60%, rgba(37, 56, 68, 1) 70%, rgba(36, 59, 85, 1) 80%, rgba(23, 31, 43, 1) 95%);
+    border: 1px groove var(--dark);
+    border-width: 10px;
+    border-radius: 25px;
+    font-family: verdana;
+    font-size: 16px;
+    z-index: 1;
+  top:10vh;
+  left: 20vw;
+    transform: translate(-50%, -50%);
+    background-clip: border-box;
 
-#clock .time {
-  letter-spacing: 0.05em;
-  font-size: 32px;
+   }
+
+   #clock .time {
+
+      letter-spacing: 0.05em;
+      font-size: 32px;
+      text-shadow: 0 0 10px #0a9ecf, 0 0 10px rgba(7, 42, 90, 0.834);
+      color: #03e9f4;
 
 
 }
 #clock .date {
   letter-spacing: 0.1em;
   font-size: 14px;
+  text-shadow: 0 0 10px #0a9ecf, 0 0 10px rgba(7, 42, 90, 0.834);
+      color: #03e9f4;
 }
 
 
