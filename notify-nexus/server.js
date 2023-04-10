@@ -25,7 +25,7 @@ startScheduler(getSchedules, pingGetWeatherNotification, axios);
 // Middleware
 app.use(express.json());
 // app.use(express.static('public'));
-app.use(cors({origin: 'http://localhost:5173'}))
+app.use(cors({origin: 'http://notify-nexus:5173'}))
 
 
 // Routes
