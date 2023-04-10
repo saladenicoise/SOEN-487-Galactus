@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
 });
 
 // Start the server
-const port = process.env.PORT || 3003;
+const port = process.env.PORT || 3004;
 app.listen(port, () => {
   console.log(`Cipher Chief Server started on port ${port}`);
 });

@@ -151,7 +151,7 @@ export default {
 
 
         async postNotificationPreferences(deviceId, schedule) {
-            let res = await axios.post("http://localhost:3001/post/notification-preferences", {
+            let res = await axios.post("http://localhost:3003/post/notification-preferences", {
                 deviceId,
                 schedule
             }).catch(e => console.log(`weird axios or await error? ${e}`))
@@ -159,7 +159,7 @@ export default {
         },
         // This function calls the notify-nexus server to pass it the registered device id
         async postDeviceIdToNotifyNexus(deviceId) {
-            let res = await axios.post("http://localhost:3001/post/deviceId", {
+            let res = await axios.post("http://localhost:3003/post/deviceId", {
                 deviceId
             }).catch(e => console.log(`weird axios or await error? ${e}`))
             console.log(`postDeviceIdToNotifyNexus result: ${res.data}`);
