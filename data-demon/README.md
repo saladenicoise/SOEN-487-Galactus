@@ -1,5 +1,5 @@
 ## How to run data-demon for development
- Make sure before running the server at port 3000, you have the following servers open:
+ Make sure before running the server at port 3001, you have the following servers open:
  1) Prerequisite: Have docker downloaded and run an instance of it
       - Make sure to have WSL installed in your operating system.
       - Open the Windows Start menu and search for "Windows Features."
