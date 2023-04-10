@@ -15,8 +15,8 @@ module.exports = function createNotification(weatherAlert) {
         .publishToInterests([`alert-${weatherAlert.location}`], {
             web: {
                 notification: {
-                    title: `Weather alert in ${weatherAlert.location}`,
-                    body: weatherAlert.alertContent,
+                    title: `${weatherAlert.location.replace(/^[^\w_\-=@,.]/g, ' ')}`,
+                    body: weatherAlert.alertContent.replace(/^[^\w_\-=@,.]/g, ' '),
                     deep_link: "https://www.pusher.com",
                 },
             },

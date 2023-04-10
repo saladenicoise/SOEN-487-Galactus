@@ -97,16 +97,16 @@
         </form>
 
         <div>
-            <h3>Debugging utility functions. Comment this out</h3>
+            <!-- <h3>Debugging utility functions. Comment this out</h3> -->
             <div>
-                <button class="btn btn-outline-primary" @click="getDeviceInterests()">Get interests</button>
+                <button hidden class="btn btn-outline-primary" @click="getDeviceInterests()">Get interests</button>
             </div>
             <div>
-                <button class="btn btn-outline-primary" @click="customClearDeviceInterests()">Delete all interests</button>
+                <button hidden class="btn btn-outline-primary" @click="customClearDeviceInterests()">Delete all interests</button>
             </div>
-            <div>
+            <!-- <div>
                 <button class="btn btn-outline-primary" @click="getLocationSelected()">Get location selected</button>
-            </div>
+            </div> -->
         </div>
     </main>
 </template>
@@ -259,14 +259,6 @@ const setCities = () => {
 // What if the cityis already auto-detected (saved in db), but user changed city so the auto detect input is "outdated" until we do -> manual input -> auto detect
 // .. upon which, the location will be update to current location
 
-// Pusher beam integration methods
-const onChangeToAutoDetect = () => {
-
-}
-
-const onUpdateAutoDetectValue = () => {
-
-}
 
 const getDeviceInterests = () => {
     beamsClient.start()
@@ -306,12 +298,12 @@ const addInterest = (interest) => {
                 // parsing time from 08:55 format to 08h55 since char ':' is not allowed by pusher-beam
                 newInterest += '-' + notificationSchedule.value;
                 newInterest = newInterest.replace(':', 'h');
+                newInterest += '-'
+                newInterest += language.value;
             }
-            if (interest === 'notification' || interest === 'alert') {
-                console.log(newInterest);
-                beamsClient.addDeviceInterest(newInterest);
-            }
-
+            // removing language from 'alerts' since backend currently does not support it
+            console.log(newInterest);
+            beamsClient.addDeviceInterest(newInterest);
         })
         .catch(console.error);
 }

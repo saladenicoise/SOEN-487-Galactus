@@ -7,16 +7,16 @@ const app = express();
 // Alert and Notification scheduler requirements
 const startScheduler = require('./scheduler/control/start-scheduler')
 const getAllDistinctAlertLocations = require('./scheduler/jobs/cipher-chef-remote/getAllDistinctAlertLocations');
-const { getAllScheduledNotifications } = require('./scheduler/jobs/cipher-chef-remote/getAllScheduledNotifications');
+const getSchedules = require('./firebase/getCitiesScheduledNotifications');
 const pingGetWeatherAlerts = require('./scheduler/jobs/data-service-remote/pingGetWeatherAlerts');
+const pingGetWeatherNotification = require('./scheduler/jobs/data-service-remote/pingGetWeatherNotifications');
 
 
-// In production change to no arguments 
 // Alert scheduler
-startScheduler(getAllDistinctAlertLocations, pingGetWeatherAlerts, axios, 60);
-
+startScheduler(getAllDistinctAlertLocations, pingGetWeatherAlerts, axios, 20);
 // Notification scheduler
-// startScheduler();
+startScheduler(getSchedules, pingGetWeatherNotification, axios);
+
 
 // Middleware
 app.use(express.json());
@@ -43,8 +43,7 @@ app.post('/post/notification-preferences', (req, res) => {
 
 })
 
-// TO-DO In production change to no arguments 
-// startScheduler();
+
 
 // Start the server
 const port = process.env.PORT || 3001;
