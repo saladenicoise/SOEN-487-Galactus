@@ -12,9 +12,7 @@ It works utilizing 4 Services:
 
 3) Visualization/Pre-Render Service -> Visual Voyager
 
-4) Authentication Service -> Cipher Chief
-
-The UI is codenamed Sky Siren
+4) UI + Authentication Service -> Sky Siren
 
 ## Setup for the Services and UI
 Please ensure that you have Node.js already installed on your machine, you can download it at [Node Download](https://nodejs.org/en/download)
