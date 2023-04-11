@@ -1,7 +1,7 @@
 //One function per API
 
 const OPEN_WEATHER_API_KEY = '534d92cb34d25943cec3aeb8d8281386';
-const WEATHER_API_KEY = '7f7c4f738c4045a7829222148232603';
+const WEATHER_API_KEY = '0acafcfd6d8546bc86205124231104';
 
 
 //Current weather
