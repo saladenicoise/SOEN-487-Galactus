@@ -1,10 +1,13 @@
+.btn{
+  border: none;
+}
 .home-main {
   margin: 0;
   padding: 0;
   position: relative;
 display: flex;
   /*The image */
-  background-image: url('/background.jpg');
+  
 
   height: 100vh;
   width: 100vw;
@@ -43,6 +46,7 @@ display: flex;
   left: 50vw;
   transform: translate(-50%, -50%);
   background-clip: padding-box;
+  margin-top: -1%;
 }
 
 .searchbar input {

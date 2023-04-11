@@ -47,7 +47,7 @@ const getTime = () => {
    left: 20vw;
    transform: translate(-50%, -50%);
    background-clip: border-box;
-
+   margin-top: -1%;
 }
 
 #clock .theTime {
