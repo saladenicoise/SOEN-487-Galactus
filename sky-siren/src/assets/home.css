@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
   position: relative;
-
+display: flex;
   /*The image */
   background-image: url('/background.jpg');
 
@@ -16,29 +16,13 @@
 
 }
 
-.btn {
-  display: inline-block;
-  outline: none;
-  cursor: pointer;
-  border-radius: 3px;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 16px;
-  padding: 2px 16px;
-  height: 32px;
-  min-width: 60px;
-  min-height: 32px;
-  border: none;
-  color: #fff;
-  background-color: #4f545c;
-  transition: background-color 0.17s ease, color 0.17s ease;
-}
+
 
 .searchbar {
   position: absolute;
   padding: 0;
   margin: 0;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   box-sizing: content-box;
   background: linear-gradient(
@@ -54,8 +38,7 @@
   border-width: 10px;
   border-radius: 25px;
   font-family: verdana;
-  font-size: 16px;
-  z-index: 1;
+   z-index: 1;
   top: 10vh;
   left: 50vw;
   transform: translate(-50%, -50%);
@@ -63,17 +46,20 @@
 }
 
 .searchbar input {
-  display: block;
-  width: 350px;
+  display: inline-block;
   margin: 10px 10px;
   padding: 10px 10px;
-  background: white url('assets/search-icon.svg') no-repeat 15px center;
   background-size: 15px 15px;
   font-size: 16px;
   border: none;
   border-radius: 5px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  border-style: inset;
+  border-width: 1px;}
+
+.searchbar input:focus {
+  outline: none;
 }
+
 .searchbar button {
   position: relative;
   display: inline-block;
@@ -86,16 +72,32 @@
   overflow: hidden;
   transition: 0.5s;
   letter-spacing: 4px;
+  background-color: transparent;
+  transition: background-color 0.17s ease, color 0.17s ease;
 }
 .searchbar button.hover {
-  background: #03e9f4;
-  color: #000;
-  border-radius: 5px;
-  box-shadow: 0 0 5px #03e9f4, 0 0 25px #03e9f4, 0 0 50px #03e9f4, 0 0 100px #03e9f4;
-  animation: animate 1s linear infinite;
 
+  background: #03e9f4;
+  color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #03e9f4,
+    0 0 25px #03e9f4,
+    0 0 50px #03e9f4,
+    0 0 100px #03e9f4;
   cursor: pointer;
 }
+
+.searchbar button:active{
+  background-color: #03e9f4;
+  color: #fff;
+  border-radius: 5px;
+  text-shadow: 0 0 10px #0a9ecf, 0 0 10px rgba(7, 42, 90, 0.834);
+  cursor: pointer;
+  appearance: none;
+
+}
+
+
 @media (max-width: 600px) {
   .searchbar {
     width: 80%;
@@ -103,7 +105,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     margin-top: 20%;
-    
+
   }
   .searchbar input{
     width: 70%;

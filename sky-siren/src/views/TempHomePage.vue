@@ -9,7 +9,7 @@
             <div v-if="loading">Loading...</div>
             <div v-if="error">{{ error }}</div>
             <div v-if="currentTemp" class="wData">
-                
+
                 <h3>Current Weather for {{ locationName }}</h3>
                 <p>Temperature: {{ currentTemp }}° {{ temperatureUnit }}</p>
                 <p>Min: {{ dailyMin }}° {{ temperatureUnit }} - Max: {{ dailyMax }}° {{ temperatureUnit }}</p>
@@ -22,7 +22,7 @@
             </div>
         </div>
         <div class="weather">
-            <img :src="'data:image/svg+xml;base64, ' + forecastVisualData" alt="Weather Forecast" /> 
+            <img :src="'data:image/svg+xml;base64, ' + forecastVisualData" alt="Weather Forecast" />
         </div>
     </main>
 </template>
@@ -67,7 +67,7 @@ const windDirection = ref(null);
 const humidity = ref(null);
 const visibility = ref(null);
 // maybe
-const uvIndex = ref(null); 
+const uvIndex = ref(null);
 const pressure = ref(null);
 
 const forecastVisualData = ref(null);
@@ -200,7 +200,7 @@ const getWeatherByIpHistorical = async (ip = null, lang, beginDate, endDate) => 
             if (!response.ok) {
                 console.log(ipApiData.message || 'Failed to fetch IP address.');
             }
-            
+
             url += `&ip=${ipApiData.ip}`;
         }
 
@@ -210,11 +210,11 @@ const getWeatherByIpHistorical = async (ip = null, lang, beginDate, endDate) => 
             console.log(dataDemonResponse.message || 'Failed to fetch weather data.');
         }
         weatherData.value = dataDemonResponse;
-       
+
     } catch (err) {
         error.value = err.message;
     }
-    
+
 };
 
 const getWeatherByAddressHistorical = async (cityName, lang, beginDate, endDate) => {
