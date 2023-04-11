@@ -56,3 +56,15 @@ const store = useStore();
     }
 };
 </script>
+<style scoped>
+@media (max-width: 600px) {
+  .user-box {
+    width: 80%;
+    margin-left: 8%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top: 20%;
+    
+  }
+}
+</style>

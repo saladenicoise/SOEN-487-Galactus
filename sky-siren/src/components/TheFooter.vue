@@ -20,4 +20,12 @@
   align-content: center;
   height: 4rem;
 }
+@media (max-width: 600px) {
+    /* adjust the styles for smaller screens */
+    #footer {
+      left: 15%;
+     
+      
+    }
+  }
 </style>

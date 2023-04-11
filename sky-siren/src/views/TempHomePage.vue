@@ -1,13 +1,15 @@
 <template>
     <main style="color: aliceblue;">
         <div>
-            <h2>Weather Information</h2>
+            <h2 class="wData">Weather Information</h2>
+            <div class="wData">
             <input type="text" name="city" id="city" v-model="city">&nbsp;
             <button class="btn" @click="getWeather">Search</button> <br>
-
+            </div>
             <div v-if="loading">Loading...</div>
             <div v-if="error">{{ error }}</div>
-            <div v-if="currentTemp">
+            <div v-if="currentTemp" class="wData">
+
                 <h3>Current Weather for {{ locationName }}</h3>
                 <p>Temperature: {{ currentTemp }}° {{ temperatureUnit }}</p>
                 <p>Min: {{ dailyMin }}° {{ temperatureUnit }} - Max: {{ dailyMax }}° {{ temperatureUnit }}</p>
@@ -16,9 +18,11 @@
                 <p>Humidity: {{ humidity }}%</p>
                 <p>Visibility: {{ visibility }} KM</p>
                 <p>UV Index: {{ uvIndex }}</p>
-                <p>Pressure: {{ pressure }} MB</p>
-                <!-- <img :src="'data:image/png;base64,' + weatherData.forecastVisualData" alt="Weather Forecast" /> -->
+                <p>Pressure: {{ pressure }} MB </p>
             </div>
+        </div>
+        <div class="weather">
+            <img :src="'data:image/svg+xml;base64, ' + forecastVisualData" alt="Weather Forecast" />
         </div>
     </main>
 </template>
@@ -47,7 +51,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useStore } from 'vuex';
 
-const WEATHER_API_BASE_URL = 'http://localhost:3000';
+const WEATHER_API_BASE_URL = 'http://localhost:3001';
 const store = useStore();
 
 const city = ref(''); // Vancouver
@@ -63,7 +67,7 @@ const windDirection = ref(null);
 const humidity = ref(null);
 const visibility = ref(null);
 // maybe
-const uvIndex = ref(null); 
+const uvIndex = ref(null);
 const pressure = ref(null);
 
 const forecastVisualData = ref(null);
@@ -89,13 +93,14 @@ onMounted(() => {
     } else {
         getWeatherByAddress(userPreferences.value.city);
     }
+
 });
 
 const getWeather = async () => {
     getWeatherByAddress(city.value);
 };
 
-const processWeatherData = (rawWeatherData) => {
+const processWeatherData = (rawWeatherData, rawVisualData) => {
 
     // console.log('Here is the raw weather data: ', rawWeatherData);
     const forecastCurrent = rawWeatherData.find((data) => data.type === 'forecast-current');
@@ -123,7 +128,7 @@ const processWeatherData = (rawWeatherData) => {
     visibility.value = forecastCurrent.visibility_km;
     uvIndex.value = forecastCurrent.uv_index;
     pressure.value = forecastCurrent.pressure_mb;
-    //forecastVisualData.value = forecastDay.daily_information.daily_condition;
+    forecastVisualData.value = rawVisualData.celsiusChart;
 };
 
 const requestConfig = {
@@ -149,15 +154,6 @@ const getWeatherByIp = async (ip = null, lang = 'en') => {
     loading.value = true;
     try {
         let url = `${WEATHER_API_BASE_URL}/fromIp?lang=${lang}`
-        // If no IP address is provided, fetch it from the API
-        if(!ip) {
-            const response = await fetch('https://api.ipify.org?format=json');
-            const ipApiData = await response.json();
-            if (!response.ok) {
-                console.log(ipApiData.message || 'Failed to fetch IP address.');
-            }
-            url += `&ip=${ipApiData.ip}`;
-        }
 
         const response = await fetch(url);
         const dataDemonResponse = await response.json();
@@ -166,7 +162,7 @@ const getWeatherByIp = async (ip = null, lang = 'en') => {
         }
         console.log('Weather data: ', dataDemonResponse.locationObject);
         locationName.value = dataDemonResponse.locationObject.city + ', ' + dataDemonResponse.locationObject.state;
-        processWeatherData(dataDemonResponse.weatherData);
+        processWeatherData(dataDemonResponse.weatherData, dataDemonResponse.forecastVisualData);
     } catch (err) {
         error.value = err.message;
     }
@@ -182,9 +178,9 @@ const getWeatherByAddress = async (cityName, lang = 'en') => {
         if (!response.ok) {
             console.log(dataDemonResponse.message || 'Failed to fetch weather data.');
         }
-        
+        console.log(dataDemonResponse, dataDemonResponse.forecastVisualData);
         locationName.value = dataDemonResponse.locationObject.city + ', ' + dataDemonResponse.locationObject.state;
-        processWeatherData(dataDemonResponse.weatherData);
+        processWeatherData(dataDemonResponse.weatherData, dataDemonResponse.forecastVisualData);
     } catch (err) {
         console.log(err);
         error.value = err.message;
@@ -204,7 +200,7 @@ const getWeatherByIpHistorical = async (ip = null, lang, beginDate, endDate) => 
             if (!response.ok) {
                 console.log(ipApiData.message || 'Failed to fetch IP address.');
             }
-            
+
             url += `&ip=${ipApiData.ip}`;
         }
 
@@ -214,11 +210,11 @@ const getWeatherByIpHistorical = async (ip = null, lang, beginDate, endDate) => 
             console.log(dataDemonResponse.message || 'Failed to fetch weather data.');
         }
         weatherData.value = dataDemonResponse;
-       
+
     } catch (err) {
         error.value = err.message;
     }
-    
+
 };
 
 const getWeatherByAddressHistorical = async (cityName, lang, beginDate, endDate) => {
@@ -238,4 +234,11 @@ const getWeatherByAddressHistorical = async (cityName, lang, beginDate, endDate)
 };
 
 </script>
-  
+<style scoped>
+.weather{
+    margin-top: -12%;
+}
+.wData{
+    text-align: center;
+}
+</style>

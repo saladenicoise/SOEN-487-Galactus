@@ -48,6 +48,8 @@ router.get("/fromIp", (req, res) => {
   const incomingURL = new URL(req.url, `http://${req.headers.host}`);
   const search_params = incomingURL.searchParams;
   let ip = search_params.get("ip") || req.ip.substring(req.ip.lastIndexOf(":")+1, req.ip.length) || req.headers['x-forwarded-for']; //Gets us the requester's IP address
+  if (ip==='1') ip ='127.0.0.1'; 
+  console.log(ip);
   let language = search_params.get("lang");
   return geoCoding.getLocationFromIp(ip).then((locationObject) => {
     // we want the city name extracted from the locationObject
