@@ -6,7 +6,7 @@
         <ClockComponent />
 <!--Search bar-->
         <div class="searchbar">
-            <input type="text" name="city" id="city" v-model="city" placeholder="⌕‍">
+            <input type="text" name="city" id="city" v-model="city" placeholder="⌕‍" required>
             <button class="btn" @click="getWeather">Search</button>
         </div>
 
@@ -25,10 +25,17 @@
 <!--main text-->
 
         <div class="alignCircles textstyle" >
+                <p v-if="loading">Loading...</p>
+                <p v-if="error">{{ error }}</p>
+                <div v-if="currentTemp">
                 <h2>{{ locationName }}</h2>
                 <p>Temperature: {{ currentTemp }}° {{ temperatureUnit }}</p>
                 <p>Min: {{ dailyMin }}° {{ temperatureUnit }} - Max: {{ dailyMax }}° {{ temperatureUnit }}</p>
                 <p>Weather Condition: {{ currentWeatherCondition }}</p>
+                </div>
+                <div v-else>
+                <p>Unable to fetch data</p>
+                </div>
         </div>
 
 
@@ -75,7 +82,7 @@ const store = useStore();
 const city = ref(''); // Vancouver
 const locationName = ref(null);
 const currentTemp = ref(null);
-const temperatureUnit = ref(null);
+const temperatureUnit = ref('C');
 const dailyMin = ref(null);
 const dailyMax = ref(null);
 
@@ -106,15 +113,17 @@ const getBeginDate = () => {
 
 // Once the component is mounted, fetch the weather data for the user's IP address
 onMounted(() => {
-    if(userPreferences.value.location === 'autoDetect' || userPreferences.value.city === null) {
+    if(!userPreferences.value || userPreferences.value.location === 'autoDetect' || userPreferences.value.city === null) {
         getWeatherByIp();
-    } else {
+    } 
+    else {
         getWeatherByAddress(userPreferences.value.city);
     }
 
 });
 
 const getWeather = async () => {
+    if(city.value)
     getWeatherByAddress(city.value);
 };
 
@@ -126,19 +135,18 @@ const processWeatherData = (rawWeatherData, rawVisualData) => {
 
     const forecastDay = rawWeatherData.find((data) => data.type === 'forecast-day');
     // console.log(forecastDay);
+    currentTemp.value = forecastCurrent.temperature_c;
+    temperatureUnit.value = 'C';
+    dailyMin.value = forecastDay.daily_information.min_temp_c;
+    dailyMax.value = forecastDay.daily_information.max_temp_c;
 
-    if(userPreferences.value.temperatureUnit === 'fahrenheit') {
+    if(userPreferences.value && userPreferences.value.temperatureUnit === 'fahrenheit') {
         currentTemp.value = forecastCurrent.temperature_f;
         temperatureUnit.value = 'F';
         dailyMin.value = forecastDay.daily_information.min_temp_f;
         dailyMax.value = forecastDay.daily_information.max_temp_f;
-    } else {
-        currentTemp.value = forecastCurrent.temperature_c;
-        temperatureUnit.value = 'C';
-        dailyMin.value = forecastDay.daily_information.min_temp_c;
-        dailyMax.value = forecastDay.daily_information.max_temp_c;
-    }
-
+    }  
+    
     currentWeatherCondition.value = forecastCurrent.weather_condition;
     windSpeed.value = forecastCurrent.wind_speed_kph;
     windDirection.value = forecastCurrent.wind_direction;
@@ -157,14 +165,6 @@ const requestConfig = {
     }
 };
 
-const testIpCall = async () => {
-    const response = await fetch('https://api.ipify.org?format=json');
-    const ipApiData = await response.json();
-    if (!response.ok) {
-        console.log(ipApiData.message || 'Failed to fetch IP address.');
-    }
-    console.log('IP address: ', ipApiData.ip);
-};
 
 // Fetch the weather data for the user's IP address
 const getWeatherByIp = async (ip = null, lang = 'en') => {
@@ -179,7 +179,11 @@ const getWeatherByIp = async (ip = null, lang = 'en') => {
             console.log(dataDemonResponse.message || 'Failed to fetch weather data.');
         }
         console.log('Weather data: ', dataDemonResponse.locationObject);
-        locationName.value = dataDemonResponse.locationObject.city + ', ' + dataDemonResponse.locationObject.state;
+        if(dataDemonResponse.locationObject.city){
+            locationName.value = dataDemonResponse.locationObject.city + ', ' + dataDemonResponse.locationObject.state;
+        }else{
+            locationName.value = dataDemonResponse.locationObject.country;
+        }
         processWeatherData(dataDemonResponse.weatherData, dataDemonResponse.forecastVisualData);
     } catch (err) {
         error.value = err.message;
@@ -211,17 +215,6 @@ const getWeatherByIpHistorical = async (ip = null, lang, beginDate, endDate) => 
     loading.value = true;
     try {
         let url = `${WEATHER_API_BASE_URL}/fromIpHistorical?lang=${lang}&beginDate=${beginDate}&endDate=${endDate}`
-        // If no IP address is provided, fetch it from the API
-        if(!ip) {
-            const response = await fetch('https://api.ipify.org?format=json');
-            const ipApiData = await response.json();
-            if (!response.ok) {
-                console.log(ipApiData.message || 'Failed to fetch IP address.');
-            }
-
-            url += `&ip=${ipApiData.ip}`;
-        }
-
         const response = await fetch(url);
         const dataDemonResponse = await response.json();
         if (!response.ok) {
