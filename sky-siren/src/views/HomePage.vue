@@ -325,16 +325,13 @@ display: block;
 
   @media (max-width: 1280px) {
     .weather {
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  background-color: #fff;
-  padding: 10px;
-  display: none; /* hide the content by default */
+    margin-left: 40%;
+    margin-top: 15%;
+    
     }
     
     .wCard{
-    margin-left:272%;
+    margin-left:7%;
     transform: translate(-50%, -50%);
     margin-top: 25%;
     }
