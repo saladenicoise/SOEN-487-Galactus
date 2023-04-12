@@ -16,11 +16,6 @@ const consumeFromQueue = require("./rabbitmq-utility/logger/consumer-logger.js")
 const runAlertConsumer = require("./rabbitmq-runscripts/alert-service/consumer-alert-polling-runscript.js");
 const runNotificationConsumer = require("./rabbitmq-runscripts/notification-service/consumer-notification-polling-runscript.js");
 
-// RabbitMQ consumer runscripts
-const consumeFromQueue = require("./rabbitmq-utility/logger/consumer-logger.js");
-const runAlertConsumer = require("./rabbitmq-runscripts/alert-service/consumer-alert-polling-runscript.js");
-const runNotificationConsumer = require("./rabbitmq-runscripts/notification-service/consumer-notification-polling-runscript.js");
-
 
 // Middleware to start the server
 app.use(express.json());
