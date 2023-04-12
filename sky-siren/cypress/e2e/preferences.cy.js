@@ -1,18 +1,15 @@
 describe('Preferences', () => {
     beforeEach(() => {
-        // TODO: make it work with the store
         cy.signIn('test.user@fake.com', 'password');
         cy.visit('/preferences');
+        // TODO: make it work with the store
         // cy.window().should('have.property', '__store__');
         // cy.window().then( win => {
         //     console.log(win.__store__.getters['user/userId'])
         // });
-        
     });
 
     it('allows a user to change the language', () => {
-        cy.visit('/preferences');
-        
         cy.get('input[name="language"]').check('fr');
 
         cy.get('input[name="language"]').should('be.checked');
@@ -33,7 +30,8 @@ describe('Preferences', () => {
     });
 
     it('allows a user to change the location', () => {
-        cy.get('input[name="location"]').check('manual');
+        cy.get('input[name="location"]').check('manualInput');
+        cy.get('input[name="city"]').type('Montreal');
         cy.get('button[type="submit"]').click();
 
         cy.get('input[name="location"]').should('be.checked');
@@ -47,11 +45,10 @@ describe('Preferences', () => {
     });
 
     it('allows a user to change the notifications', () => {
-        cy.get('input[name="notifications"]').check();
-        cy.get('input[name="time"]').type('12:00');
+        cy.get('input[name="notification"]').check();
+        cy.get('select[name="notificationSchedule"]').select('00:05');
         cy.get('button[type="submit"]').click();
 
-        cy.get('input[name="notifications"]').should('be.checked');
+        cy.get('input[name="notification"]').should('be.checked');
     });
-
 });
