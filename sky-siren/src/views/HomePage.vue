@@ -50,7 +50,7 @@
             </div>
             </div>
     <div class="weather">          
-            <img :src="'data:image/svg+xml;base64, ' + forecastVisualData" alt="Weather Forecast" />
+            <img style="width: 80%;" :src="'data:image/svg+xml;base64, ' + forecastVisualData" alt="Weather Forecast" />
         </div>     
     </main>
 </template>
@@ -298,7 +298,7 @@ display: block;
 
 .weather{
     margin-left: 40%;
-    margin-top: 1%;
+    margin-top: 7%;
     
 }
 .wData{
