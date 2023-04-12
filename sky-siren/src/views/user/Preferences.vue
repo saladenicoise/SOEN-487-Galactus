@@ -15,24 +15,28 @@
                         <input type="radio" id="languageFr" value="fr" v-model="language" name="language">&nbsp;FR
                     </label>
                 </div>
-                
+
                 <div class="input-box">
                     <span class="input-label">Temperature unit&nbsp;</span>
                     <label for="temperatureUnitCelsius">
-                        <input type="radio" id="temperatureUnitCelsius" value="celsius" v-model="temperatureUnit" name="temperatureUnit">&nbsp;Celsius
+                        <input type="radio" id="temperatureUnitCelsius" value="celsius" v-model="temperatureUnit"
+                            name="temperatureUnit">&nbsp;Celsius
                     </label>
                     <label for="temperatureUnitFahrenheit">
-                        <input type="radio" id="temperatureUnitFahrenheit" value="fahrenheit" v-model="temperatureUnit" name="temperatureUnit">&nbsp;Fahrenheit
+                        <input type="radio" id="temperatureUnitFahrenheit" value="fahrenheit" v-model="temperatureUnit"
+                            name="temperatureUnit">&nbsp;Fahrenheit
                     </label>
                 </div>
-               
+
                 <div class="input-box">
                     <span class="input-label">Time format&nbsp;</span>
                     <label for="timeFormat12">
-                        <input type="radio" id="timeFormat12" value="12" v-model="timeFormat" name="timeFormat">&nbsp;12-hour
+                        <input type="radio" id="timeFormat12" value="12" v-model="timeFormat"
+                            name="timeFormat">&nbsp;12-hour
                     </label>
                     <label for="timeFormat24">
-                        <input type="radio" id="timeFormat24" value="24" v-model="timeFormat" name="timeFormat">&nbsp;24-hour
+                        <input type="radio" id="timeFormat24" value="24" v-model="timeFormat"
+                            name="timeFormat">&nbsp;24-hour
                     </label>
                 </div>
 
@@ -42,7 +46,8 @@
                         <input type="radio" id="locationAutoDetect" value="autoDetect" v-model="location">&nbsp;Auto Detect
                     </label>
                     <label for="locationManualInput">
-                        <input type="radio" id="locationManualInput" value="manualInput" v-model="location">&nbsp;Manual Input
+                        <input type="radio" id="locationManualInput" value="manualInput" v-model="location">&nbsp;Manual
+                        Input
                     </label>
                 </div>
 
@@ -53,14 +58,16 @@
 
                 <div class="input-box">
                     <div>
-                        <input type="checkbox" role="switch" id="weatherAlerts" v-model="weatherAlerts" name="weatherAlerts">&nbsp;
+                        <input type="checkbox" role="switch" id="weatherAlerts" v-model="weatherAlerts"
+                            name="weatherAlerts">&nbsp;
                         <label for="weatherAlerts">Weather alerts</label>
                     </div>
                 </div>
 
                 <div class="input-box">
                     <div>
-                        <input type="checkbox" role="switch" id="notification" v-model="notification" name="notification">&nbsp;
+                        <input type="checkbox" role="switch" id="notification" v-model="notification"
+                            name="notification">&nbsp;
                         <label for="notification">Notification alerts</label>
                     </div>
                 </div>
@@ -69,7 +76,7 @@
                     <label class="input-label" for="time-input">Notification schedule&nbsp;</label>
                     <select type="time" v-model="notificationSchedule" name="notificationSchedule ">
                         <option v-for="time in timeOptions" :value="time">{{ time }}</option>
-                    </select> 
+                    </select>
                 </div>
 
                 <button class="btn centered" type="submit">Update</button>
@@ -82,7 +89,8 @@
                 <button hidden class="btn btn-outline-primary" @click="getDeviceInterests()">Get interests</button>
             </div>
             <div>
-                <button hidden class="btn btn-outline-primary" @click="customClearDeviceInterests()">Delete all interests</button>
+                <button hidden class="btn btn-outline-primary" @click="customClearDeviceInterests()">Delete all
+                    interests</button>
             </div>
             <!-- <div>
                 <button class="btn btn-outline-primary" @click="getLocationSelected()">Get location selected</button>
@@ -142,16 +150,29 @@ onMounted(() => {
 
 /* Methods */
 const updatePreference = async () => {
-    // delete all current pusher beam interests
-    customClearDeviceInterests();
-
-    // add new ones according to preferences here
-    // update the alerts
-    if (weatherAlerts.value)
-        addInterest('alert');
-    // update the scheduled notification
-    if (notification.value)
-        addInterest('notification');
+    beamsClient.start()
+        // first, remove all old notifications
+        .then((beamsClient) => beamsClient.getDeviceInterests())
+        .then((interests) => interests.forEach((interest) =>
+            beamsClient.removeDeviceInterest(interest))
+        )
+        .then(() => console.log('Unsubscribe from all interests'))
+        // add alerts
+        .then(() => {
+            if (weatherAlerts.value) {
+                let newInterest = 'alert-' + city.value;
+                beamsClient.addDeviceInterest(newInterest);
+            }
+        })
+        // add scheduled notifications
+        .then(() => {
+            if (notification.value) {
+                let newInterest = 'notification-' + city.value + '-' + notificationSchedule.value;
+                newInterest = newInterest.replace(':', 'h') + '-' + language.value;
+                beamsClient.addDeviceInterest(newInterest);
+            }
+        })
+        .catch((e) => console.log(e))
 
     try {
         await store.dispatch('user/updateUserData', {
@@ -255,11 +276,10 @@ const addInterest = (interest) => {
 
 </script>
 
-<style scoped>
-.input-box {
+<style scoped>.input-box {
     margin-bottom: 4%
 }
+
 .input-label {
     color: #03e9f4;
-}
-</style>
+}</style>
