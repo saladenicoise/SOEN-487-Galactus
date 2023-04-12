@@ -36,7 +36,7 @@ const getTime = () => {
    margin: 0;
    display: flex;
    box-sizing: border-box;
-   Background: linear-gradient(360deg, rgba(23, 31, 43, 1) 20%, rgba(32, 46, 60, 1) 50%, rgba(39, 57, 72, 1) 60%, rgba(37, 56, 68, 1) 70%, rgba(36, 59, 85, 1) 80%, rgba(23, 31, 43, 1) 95%);
+   background: linear-gradient(360deg, rgba(23, 31, 43, 1) 20%, rgba(32, 46, 60, 1) 50%, rgba(39, 57, 72, 1) 60%, rgba(37, 56, 68, 1) 70%, rgba(36, 59, 85, 1) 80%, rgba(23, 31, 43, 1) 95%);
    border: 1px groove var(--dark);
    border-width: 10px;
    border-radius: 25px;
