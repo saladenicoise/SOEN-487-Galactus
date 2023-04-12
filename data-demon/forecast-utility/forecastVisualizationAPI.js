@@ -3,7 +3,7 @@ const getWeeklyVisualData = (weatherData) => {
         console.log("tried to feed empty data to forecast")
         return;
     }
-    return fetch('http://localhost:3002/weeklyVisual', {
+    return fetch('http://localhost:3000/weeklyVisual', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ const getHistoricalVisualData = (weatherData) => {
         console.log("tried to feed empty data to forecast")
         return;
     }
-    return fetch('http://localhost:3002/historicalVisual', {
+    return fetch('http://localhost:3000/historicalVisual', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

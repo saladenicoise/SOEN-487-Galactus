@@ -11,19 +11,23 @@ const router = express.Router();
 const produce = require("./rabbitmq-utility/logger/producer-logger.js");
 const redis = require("redis");
 
+const consumeFromQueue = require("./rabbitmq-utility/logger/consumer-logger.js");
+const runAlertConsumer = require("./rabbitmq-runscripts/alert-service/consumer-alert-polling-runscript.js");
+const runNotificationConsumer = require("./rabbitmq-runscripts/notification-service/consumer-notification-polling-runscript.js");
+
 // Middleware to start the server
 app.use(express.json());
 app.use(cors());
 let locationObject = {};
-const client = redis.createClient({
-  legacyMode: true,
-});
+// const client = redis.createClient({
+//   legacyMode: true,
+// });
 
-// Connect to Redis and log a message
-client.connect().catch(console.error);
-client.on('connect', function() {
-  console.log(' [x] Connected to Redis!');
-});
+// // Connect to Redis and log a message
+// client.connect().catch(console.error);
+// client.on('connect', function() {
+//   console.log(' [x] Connected to Redis!');
+// });
 
 // Routes
 /**
@@ -47,8 +51,8 @@ router.get("/", (req, res) => {
 router.get("/fromIp", (req, res) => {
   const incomingURL = new URL(req.url, `http://${req.headers.host}`);
   const search_params = incomingURL.searchParams;
-  let ip = search_params.get("ip") || req.ip.substring(req.ip.lastIndexOf(":")+1, req.ip.length) || req.headers['x-forwarded-for']; //Gets us the requester's IP address
-  if (ip==='1') ip ='127.0.0.1'; 
+  let ip = search_params.get("ip") || req.ip.substring(req.ip.lastIndexOf(":") + 1, req.ip.length) || req.headers['x-forwarded-for']; //Gets us the requester's IP address
+  if (ip === '1') ip = '127.0.0.1';
   console.log(ip);
   let language = search_params.get("lang");
   return geoCoding.getLocationFromIp(ip).then((locationObject) => {
@@ -59,51 +63,52 @@ router.get("/fromIp", (req, res) => {
       return;
     }
 
+    return weatherRetrieval
+      .fetchWeatherData(
+        locationObject.latitude,
+        locationObject.longitude,
+        language
+      )
+      .then((weatherData) => {
+        if (!weatherData) res.status(404).send(`Error: Could not find weather data for location`);
+        //FOR TESTING WITHOUT FORECAST SERVICE
+        let jsonObject = {
+          locationObject: locationObject,
+          weatherData: weatherData,
+        };
+        // let jsonString = JSON.stringify(jsonObject);
+        // //client.SETEX(`${cityName}`, 3600, jsonString);
+        // produce("Q1_weather", jsonString, (durable = false));
+        // res.status(200).send(jsonString);
+        // return;
+        // // COMMENT OUT BELOW CODE TO TEST WITHOUT FORECAST SERVICE
+        return forecastUtility.getWeeklyVisualData(JSON.stringify(jsonObject)).then((forecastVisualData) => {   
+          if(!forecastVisualData) res.status(404).send(`Error: Could not find forecast visual data for location`);
+          let jsonObject = {
+            locationObject: locationObject,
+            weatherData: weatherData,
+            forecastVisualData: forecastVisualData
+          };
+          let jsonString = JSON.stringify(jsonObject);
+          //client.SETEX(`${cityName}`, 3600, jsonString);
+          produce("Q1_weather", jsonString, (durable = false));
+          res.status(200).send(jsonString);
+        });
+      });
     // Redis checks the server at default port 6379 for the key cityName
-    client.get(`${cityName}`, async (err, data) => {
-      if (err) console.log(err);
-      if (data != null) { // data exists in the cache, return it
-        console.log(" [x] Available in Redis. Retreiving from cache...");
-        produce("Q1_weather", data, (durable = false));
-        res.status(200).send(data);
-      } else {  // data does not exist in the cache, fetch it from the API and cache it
-        console.log(
-          " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
-        );
-        return weatherRetrieval
-          .fetchWeatherData(
-            locationObject.latitude,
-            locationObject.longitude,
-            language
-          )
-          .then((weatherData) => {
-            if(!weatherData) res.status(404).send(`Error: Could not find weather data for location`);
-            //FOR TESTING WITHOUT FORECAST SERVICE
-            let jsonObject = {
-              locationObject: locationObject,
-              weatherData: weatherData,
-            };
-            // let jsonString = JSON.stringify(jsonObject);
-            // client.SETEX(`${cityName}`, 3600, jsonString);
-            // produce("Q1_weather", jsonString, (durable = false));
-            // res.status(200).send(jsonString);
-            // return;
-            // // COMMENT OUT BELOW CODE TO TEST WITHOUT FORECAST SERVICE
-            return forecastUtility.getWeeklyVisualData(JSON.stringify(jsonObject)).then((forecastVisualData) => {   
-              if(!forecastVisualData) res.status(404).send(`Error: Could not find forecast visual data for location`);
-              let jsonObject = {
-                locationObject: locationObject,
-                weatherData: weatherData,
-                forecastVisualData: forecastVisualData
-              };
-              let jsonString = JSON.stringify(jsonObject);
-              client.SETEX(`${cityName}`, 3600, jsonString);
-              produce("Q1_weather", jsonString, (durable = false));
-              res.status(200).send(jsonString);
-            });
-          });
-      }
-    });
+     // client.get(`${cityName}`, async (err, data) => {
+    //   if (err) console.log(err);
+    //   if (data != null) { // data exists in the cache, return it
+    //     console.log(" [x] Available in Redis. Retreiving from cache...");
+    //     produce("Q1_weather", data, (durable = false));
+    //     res.status(200).send(data);
+    //   } else { // data does not exist in the cache, fetch it from the API and cache it
+    //     console.log(
+    //       " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
+    //     );
+
+    //   }
+    // });
   });
 });
 
@@ -125,56 +130,54 @@ router.get("/fromAddress", async (req, res) => {
       return;
     }
     console.log("Geocaching not empty")
+
+    return weatherRetrieval
+      .fetchWeatherData(
+        locationObject.latitude,
+        locationObject.longitude,
+        language
+      )
+      .then((weatherData) => {
+        if (!weatherData) res.status(404).send(`Error: Could not find weather data for location`);
+        let jsonObject = {
+          locationObject: locationObject,
+          weatherData: weatherData,
+        }
+        // //FOR TESTING WITHOUT FORECAST SERVICE
+        // let jsonString = JSON.stringify(jsonObject);
+        // //client.SETEX(`${cityName}`, 3600, jsonString);
+        // produce("Q1_weather", jsonString, (durable = false));
+        // res.status(200).send(jsonString);
+        // return;
+        // COMMENT OUT BELOW CODE TO TEST WITHOUT FORECAST SERVICE
+        return forecastUtility.getWeeklyVisualData(JSON.stringify(jsonObject)).then((forecastVisualData) => {
+          if (!forecastVisualData) res.status(404).send(`Error: Could not find forecast visual data for location`);
+          let jsonObject = {
+            locationObject: locationObject,
+            weatherData: weatherData,
+            forecastVisualData: forecastVisualData
+          };
+          let jsonString = JSON.stringify(jsonObject);
+          //client.SETEX(`${cityName}`, 3600, jsonString);
+          produce("Q1_weather", jsonString, (durable = false));
+          res.status(200).send(jsonString);
+        });
+      });
     // we can extract the city name from the URL and use it as a key for Redis
     // Redis checks the server at default port 6379 for the key cityName
-    client.get(`${cityName}`, async (err, data) => {
-      if (err) console.log(err);
-      if (data != null) { // data exists in the cache, return it
-        console.log(" [x] Available in Redis. Retreiving from cache...");
-        produce("Q1_weather", data, (durable = false));
-        res.status(200).send(data);
-      } else {  // data does not exist in the cache, fetch it from the API and cache it
-        console.log(
-          " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
-        );
-        return weatherRetrieval
-          .fetchWeatherData(
-            locationObject.latitude,
-            locationObject.longitude,
-            language
-          )
-          .then((weatherData) => {
-            if(!weatherData) res.status(404).send(`Error: Could not find weather data for location`);
-            let jsonObject = {
-              locationObject: locationObject,
-              weatherData: weatherData,
-            }
-            //FOR TESTING WITHOUT FORECAST SERVICE
-            // let jsonObject = {
-            //   locationObject: locationObject,
-            //   weatherData: weatherData,
-            // };
-            // let jsonString = JSON.stringify(jsonObject);
-            // client.SETEX(`${cityName}`, 3600, jsonString);
-            // produce("Q1_weather", jsonString, (durable = false));
-            // res.status(200).send(jsonString);
-            // return;
-            // COMMENT OUT BELOW CODE TO TEST WITHOUT FORECAST SERVICE
-            return forecastUtility.getWeeklyVisualData(JSON.stringify(jsonObject)).then((forecastVisualData) => {   
-              if(!forecastVisualData) res.status(404).send(`Error: Could not find forecast visual data for location`);
-              let jsonObject = {
-                locationObject: locationObject,
-                weatherData: weatherData,
-                forecastVisualData: forecastVisualData
-              };
-              let jsonString = JSON.stringify(jsonObject);
-              client.SETEX(`${cityName}`, 3600, jsonString);
-              produce("Q1_weather", jsonString, (durable = false));
-              res.status(200).send(jsonString);
-            });
-          });
-      }
-    });
+    // client.get(`${cityName}`, async (err, data) => {
+    //   if (err) console.log(err);
+    //   if (data != null) { // data exists in the cache, return it
+    //     console.log(" [x] Available in Redis. Retreiving from cache...");
+    //     produce("Q1_weather", data, (durable = false));
+    //     res.status(200).send(data);
+    //   } else { // data does not exist in the cache, fetch it from the API and cache it
+    //     console.log(
+    //       " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
+    //     );
+
+    //   }
+    // });
   });
 });
 
@@ -182,7 +185,8 @@ router.get("/fromAddress", async (req, res) => {
 router.get("/fromIpHistorical", (req, res) => {
   const incomingURL = new URL(req.url, `http://${req.headers.host}`);
   const search_params = incomingURL.searchParams;
-  let ip = search_params.get("ip") || req.ip.substring(req.ip.lastIndexOf(":")+1, req.ip.length) || req.headers['x-forwarded-for']; //Gets us the requester's IP address
+  let ip = search_params.get("ip") || req.ip.substring(req.ip.lastIndexOf(":") + 1, req.ip.length) || req.headers['x-forwarded-for']; //Gets us the requester's IP address
+  if (ip === '1') ip = '127.0.0.1';
   let startDate = search_params.get("startDate");
   let endDate = search_params.get("endDate");
   return geoCoding.getLocationFromIp(ip).then((locationObject) => {
@@ -191,18 +195,7 @@ router.get("/fromIpHistorical", (req, res) => {
       res.status(404).send(`Error: Could not find location ${cityName}`);
       return;
     }
-    // Redis checks the server at default port 6379 for the key cityName
-    client.get(`${cityName}-historical`, async (err, data) => {
-      if (err) console.log(err);
-      if (data != null) { // data exists in the cache, return it
-        console.log(" [x] Available in Redis. Retreiving from cache...");
-        produce("Q1_weather", data, (durable = false));
-        res.status(200).send(data);
-      } else {  // data does not exist in the cache, fetch it from the API and cache it
-        console.log(
-          " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
-        );
-        return weatherRetrieval
+    return weatherRetrieval
           .fetchHistoricalData(
             locationObject.latitude,
             locationObject.longitude,
@@ -210,33 +203,45 @@ router.get("/fromIpHistorical", (req, res) => {
             endDate //End Date
           )
           .then((weatherData) => {
-            if(!weatherData) return res.status(404).send("Error: Could not find weather data for this location");
+            if (!weatherData) return res.status(404).send("Error: Could not find weather data for this location");
             //FOR TESTING WITHOUT FORECAST SERVICE
             let jsonObject = {
               locationObject: locationObject,
               weatherData: weatherData,
             };
             // let jsonString = JSON.stringify(jsonObject);
-            // client.SETEX(`${cityName}-historical`, 3600, jsonString);
+            // //client.SETEX(`${cityName}-historical`, 3600, jsonString);
             // produce("Q1_weather", jsonString, (durable = false));
             // res.status(200).send(jsonString);
             // return;
             // COMMENT OUT BELOW CODE TO TEST WITHOUT FORECAST SERVICE
-            return forecastUtility.getHistoricalVisualData(JSON.stringify(jsonObject)).then((forecastVisualData) => {           
-              if(!forecastVisualData) return res.status(404).send("Error: Could not generate visual data for this location");
+            return forecastUtility.getHistoricalVisualData(JSON.stringify(jsonObject)).then((forecastVisualData) => {
+              if (!forecastVisualData) return res.status(404).send("Error: Could not generate visual data for this location");
               let jsonObject = {
                 locationObject: locationObject,
                 weatherData: weatherData,
                 forecastVisualData: forecastVisualData
               };
               let jsonString = JSON.stringify(jsonObject);
-              client.SETEX(`${cityName}-historical`, 3600, jsonString);
+              //client.SETEX(`${cityName}-historical`, 3600, jsonString);
               produce("Q1_weather", jsonString, (durable = false));
               res.status(200).send(jsonString);
             });
           });
-      }
-    });
+    // Redis checks the server at default port 6379 for the key cityName
+    // client.get(`${cityName}-historical`, async (err, data) => {
+    //   if (err) console.log(err);
+    //   if (data != null) { // data exists in the cache, return it
+    //     console.log(" [x] Available in Redis. Retreiving from cache...");
+    //     produce("Q1_weather", data, (durable = false));
+    //     res.status(200).send(data);
+    //   } else { // data does not exist in the cache, fetch it from the API and cache it
+    //     console.log(
+    //       " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
+    //     );
+        
+    //   }
+    // });
   });
 });
 
@@ -255,18 +260,7 @@ router.get("/fromAddressHistorical", (req, res) => {
     }
     console.log("Location object not empty")
 
-    // Redis checks the server at default port 6379 for the key cityName
-    client.get(`${cityName}-historical`, async (err, data) => {
-      if (err) console.log(err);
-      if (data != null) { // data exists in the cache, return it
-        console.log(" [x] Available in Redis. Retreiving from cache...");
-        produce("Q1_weather", data, (durable = false));
-        res.status(200).send(data);
-      } else {  // data does not exist in the cache, fetch it from the API and cache it
-        console.log(
-          " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
-        );
-        return weatherRetrieval
+    return weatherRetrieval
           .fetchHistoricalData(
             locationObject.latitude,
             locationObject.longitude,
@@ -274,35 +268,54 @@ router.get("/fromAddressHistorical", (req, res) => {
             endDate //End Date
           )
           .then((weatherData) => {
-            if(!weatherData) return res.status(404).send("Error: Could not find weather data for this location");
+            if (!weatherData) return res.status(404).send("Error: Could not find weather data for this location");
             //FOR TESTING WITHOUT FORECAST SERVICE
             let jsonObject = {
               locationObject: locationObject,
               weatherData: weatherData,
             };
             // let jsonString = JSON.stringify(jsonObject);
-            // client.SETEX(`${cityName}-historical`, 3600, jsonString);
+            // //client.SETEX(`${cityName}-historical`, 3600, jsonString);
             // produce("Q1_weather", jsonString, (durable = false));
             // res.status(200).send(jsonString);
             // return;
             // COMMENT OUT BELOW CODE TO TEST WITHOUT FORECAST SERVICE
-            return forecastUtility.getHistoricalVisualData(JSON.stringify(jsonObject)).then((forecastVisualData) => {           
-              if(!forecastVisualData) return res.status(404).send("Error: Could not generate visual data for this location");
+            return forecastUtility.getHistoricalVisualData(JSON.stringify(jsonObject)).then((forecastVisualData) => {
+              if (!forecastVisualData) return res.status(404).send("Error: Could not generate visual data for this location");
               let jsonObject = {
                 locationObject: locationObject,
                 weatherData: weatherData,
                 forecastVisualData: forecastVisualData
               };
               let jsonString = JSON.stringify(jsonObject);
-              client.SETEX(`${cityName}-historical`, 3600, jsonString);
+              //client.SETEX(`${cityName}-historical`, 3600, jsonString);
               produce("Q1_weather", jsonString, (durable = false));
               res.status(200).send(jsonString);
             });
           });
-      }
-    });
+
+    // Redis checks the server at default port 6379 for the key cityName
+    // client.get(`${cityName}-historical`, async (err, data) => {
+    //   if (err) console.log(err);
+    //   if (data != null) { // data exists in the cache, return it
+    //     console.log(" [x] Available in Redis. Retreiving from cache...");
+    //     produce("Q1_weather", data, (durable = false));
+    //     res.status(200).send(data);
+    //   } else { // data does not exist in the cache, fetch it from the API and cache it
+    //     console.log(
+    //       " [x] Not available in Redis. Retreiving from API then caching for 1 hour..."
+    //     );
+        
+    //   }
+    // });
   });
 });
+
+
+consumeFromQueue("Q1_weather");
+runAlertConsumer();
+runNotificationConsumer();
+
 // Start the server
 const port = process.env.PORT || 3001;
 app.use("/", router);

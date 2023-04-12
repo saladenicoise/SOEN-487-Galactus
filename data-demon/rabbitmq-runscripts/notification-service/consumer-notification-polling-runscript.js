@@ -33,4 +33,6 @@ async function pingCreateNotifications(receivedJSON) {
 // published format: [{"location":"Montreal","language":"en","time":"13h10","content":"-1C/30.2F Sunny"},{"location":"Montreal","language":"en","time":"13h10","content":"-1C/30.2F Sunny"}]
 }
 
-consumeFromPollingQueue("notification-polling-queue", pingCreateNotifications);
+module.exports = function () {
+    consumeFromPollingQueue("notification-polling-queue", pingCreateNotifications);
+};

@@ -34,5 +34,6 @@ function pingCreateAlerts(data) {
 
 
 }
-
-consumeFromPollingQueue("alerts-polling-queue", pingCreateAlerts);
+module.exports = function () {
+    consumeFromPollingQueue("alerts-polling-queue", pingCreateAlerts);
+}
