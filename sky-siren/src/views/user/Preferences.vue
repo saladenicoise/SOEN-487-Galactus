@@ -15,7 +15,7 @@
                         <input type="radio" id="languageFr" value="fr" v-model="language" name="language">&nbsp;FR
                     </label>
                 </div>
-                
+
                 <div class="input-box">
                     <span class="input-label">Temperature unit&nbsp;</span>
                     <label for="temperatureUnitCelsius">
@@ -25,7 +25,7 @@
                         <input type="radio" id="temperatureUnitFahrenheit" value="fahrenheit" v-model="temperatureUnit" name="temperatureUnit">&nbsp;Fahrenheit
                     </label>
                 </div>
-               
+
                 <div class="input-box">
                     <span class="input-label">Time format&nbsp;</span>
                     <label for="timeFormat12">
@@ -39,16 +39,16 @@
                 <div class="input-box">
                     <label class="input-label">Location&nbsp;</label>
                     <label for="locationAutoDetect">
-                        <input type="radio" id="locationAutoDetect" value="autoDetect" v-model="location">&nbsp;Auto Detect
+                        <input type="radio" id="locationAutoDetect" value="autoDetect" v-model="location" name="location">&nbsp;Auto Detect
                     </label>
                     <label for="locationManualInput">
-                        <input type="radio" id="locationManualInput" value="manualInput" v-model="location">&nbsp;Manual Input
+                        <input type="radio" id="locationManualInput" value="manualInput" v-model="location" name="location">&nbsp;Manual Input
                     </label>
                 </div>
 
                 <div class="input-box" :hidden="location === 'autoDetect'">
                     <label class="input-label">Default city&nbsp;</label>
-                    <input type="text" id="city" v-model="city" :disabled="location === 'autoDetect'">
+                    <input type="text" id="city" v-model="city" :disabled="location === 'autoDetect'" name="city">
                 </div>
 
                 <div class="input-box">
@@ -67,9 +67,9 @@
 
                 <div class="input-box" :hidden="!notification">
                     <label class="input-label" for="time-input">Notification schedule&nbsp;</label>
-                    <select type="time" v-model="notificationSchedule" name="notificationSchedule ">
+                    <select v-model="notificationSchedule" name="notificationSchedule">
                         <option v-for="time in timeOptions" :value="time">{{ time }}</option>
-                    </select> 
+                    </select>
                 </div>
 
                 <button class="btn centered" type="submit">Update</button>
@@ -90,7 +90,6 @@
         </div>
     </main>
 </template>
-
 
 <script setup>
 /* Imports */
@@ -139,19 +138,31 @@ onMounted(() => {
     }
 });
 
-
 /* Methods */
 const updatePreference = async () => {
-    // delete all current pusher beam interests
-    customClearDeviceInterests();
-
-    // add new ones according to preferences here
-    // update the alerts
-    if (weatherAlerts.value)
-        addInterest('alert');
-    // update the scheduled notification
-    if (notification.value)
-        addInterest('notification');
+    beamsClient.start()
+        // first, remove all old notifications
+        .then((beamsClient) => beamsClient.getDeviceInterests())
+        .then((interests) => interests.forEach((interest) =>
+            beamsClient.removeDeviceInterest(interest))
+        )
+        .then(() => console.log('Unsubscribe from all interests'))
+        // add alerts
+        .then(() => {
+            if (weatherAlerts.value) {
+                let newInterest = 'alert-' + city.value;
+                beamsClient.addDeviceInterest(newInterest);
+            }
+        })
+        // add scheduled notifications
+        .then(() => {
+            if (notification.value) {
+                let newInterest = 'notification-' + city.value + '-' + notificationSchedule.value;
+                newInterest = newInterest.replace(':', 'h') + '-' + language.value;
+                beamsClient.addDeviceInterest(newInterest);
+            }
+        })
+        .catch((e) => console.log(e))
 
     try {
         await store.dispatch('user/updateUserData', {
@@ -160,7 +171,7 @@ const updatePreference = async () => {
             temperatureUnit: temperatureUnit.value,
             timeFormat: timeFormat.value,
             location: location.value,
-            city: city.value,
+            city: (location.value === 'autoDetect') ? null : city.value,
             weatherAlerts: weatherAlerts.value,
             notification: notification.value,
             notificationSchedule: notificationSchedule.value,
@@ -198,13 +209,6 @@ const setCities = () => {
             console.log(error);
         })
 };
-// TODO
-// Add call to data-service when Location is updated to autoDetect -> /fromIP
-// The city input is disabled but its value is changed to the current city
-
-// What if the cityis already auto-detected (saved in db), but user changed city so the auto detect input is "outdated" until we do -> manual input -> auto detect
-// .. upon which, the location will be update to current location
-
 
 const getDeviceInterests = () => {
     beamsClient.start()
@@ -259,6 +263,7 @@ const addInterest = (interest) => {
 .input-box {
     margin-bottom: 4%
 }
+
 .input-label {
     color: #03e9f4;
 }
