@@ -11,6 +11,10 @@ const getSchedules = require('./firebase/getCitiesScheduledNotifications');
 const pingGetWeatherAlerts = require('./scheduler/jobs/data-service-remote/pingGetWeatherAlerts');
 const pingGetWeatherNotification = require('./scheduler/jobs/data-service-remote/pingGetWeatherNotifications');
 
+// RabbitMQ consumer runscripts
+const runAlertConsumer = require('./rabbitmq/runscripts/consumer-alert-pushing-runscript');
+const runNotificationConsumer = require('./rabbitmq/runscripts/consumer-notification-pushing-runscript');
+
 
 // Alert scheduler
 startScheduler(getAllDistinctAlertLocations, pingGetWeatherAlerts, axios, 20);
@@ -21,7 +25,7 @@ startScheduler(getSchedules, pingGetWeatherNotification, axios);
 // Middleware
 app.use(express.json());
 // app.use(express.static('public'));
-app.use(cors({origin: 'http://localhost:5173'}))
+app.use(cors({origin: 'http://notify-nexus:5173'}))
 
 
 // Routes
@@ -43,10 +47,12 @@ app.post('/post/notification-preferences', (req, res) => {
 
 })
 
+runAlertConsumer();
+runNotificationConsumer();
 
 
 // Start the server
-const port = process.env.PORT || 3001;
+const port = process.env.PORT || 3003;
 app.listen(port, () => {
   console.log(`Notify Nexus Server started on port ${port}`);
 });

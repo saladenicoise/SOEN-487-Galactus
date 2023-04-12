@@ -1,5 +1,5 @@
 ## How to run data-demon for development
- Make sure before running the server at port 3000, you have the following servers open:
+ Make sure before running the server at port 3001, you have the following servers open:
  1) Prerequisite: Have docker downloaded and run an instance of it
       - Make sure to have WSL installed in your operating system.
       - Open the Windows Start menu and search for "Windows Features."
@@ -39,10 +39,6 @@
       - Alternative step: instead of the last 2 steps, you can also download redis-CLI and run the tests by typing `redis-cli` on your terminal of choice: [Link to download redis](https://redis.io/topics/rediscli)
       - To stop running the docker instance, easiest way is to stop it from the Docker app
       - See this [medium link](https://medium.com/idomongodb/installing-redis-server-using-docker-container-453c3cfffbdf) that explains the previous steps to download and run redis docker
- 3) Consumer script running on a separate terminal otherwise you must comment out producer.
-    ```bash
-    cd data-demon
-    node consumer.js
-    ```
- 4) RabbitMQ is running cloudAMPQ instance at port 5672 so no need to run it locally
+
+ 3) RabbitMQ is running cloudAMPQ instance at port 5672 so no need to run it locally
  

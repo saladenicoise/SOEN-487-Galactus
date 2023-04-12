@@ -36,3 +36,15 @@ services:
     - PORT=3001
     networks:
       - default
+  notify-nexus:
+    container_name: notify-nexus
+    build: 
+      context: ./notify-nexus/
+    ports:
+    - "3003:3003"
+    links:
+    - data-demon
+    environment:
+    - PORT=3003
+    networks:
+      - default

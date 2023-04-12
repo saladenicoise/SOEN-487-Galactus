@@ -1,36 +1,13 @@
 ## How to run Notify Nexus
-Run the Scheduled notification micro service
-- In notify-nexus, run the consumer-notification-pushing-runscript.js 
-  ```bash
-  cd notify-nexus/rabbitmq/runscripts/
-
-  nodemon consumer-notification-pushing-runscript.js
-  ```
-- In data-demon, run the consumer-notification-polling-runscript.js
-  ```bash
-  cd data-demon/rabbitmq-runscripts/notification-service
-
-  nodemon consumer-notification-polling-runscript.js
-  ```
-Run the Alert micro service
-- In notify-nexus, run the consumer-alert-pushing-runscript.js 
-  ```bash
-  cd notify-nexus/rabbitmq/runscripts
-
-  nodemon consumer-alert-pushing-runscript.js
-  ```
-- In data-demon, run the consumer-notification-polling-runscript.js
-  ```bash
-  cd data-demon/rabbitmq-runscripts/alert-service
-
-  nodemon consumer-alert-polling-runscript.js
-  ```
-Finally, run the express server
+run the express server
 - In notify-nexus, run the server to start up the scheduler
   ```bash
   cd notify-nexus
-
+  # in developement
   npm run live-reload
+
+  # in production
+  npm start
   ```
 
 ## Manually test the feature as a user
