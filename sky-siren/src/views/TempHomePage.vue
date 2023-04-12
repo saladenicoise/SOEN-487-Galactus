@@ -51,7 +51,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useStore } from 'vuex';
 
-const WEATHER_API_BASE_URL = 'http://localhost:3001';
+const WEATHER_API_BASE_URL = 'http://161.35.253.52';
 const store = useStore();
 
 const city = ref(''); // Vancouver
