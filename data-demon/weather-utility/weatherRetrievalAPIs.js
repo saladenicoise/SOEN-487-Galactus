@@ -1,9 +1,5 @@
 //One function per API
 
-const OPEN_WEATHER_API_KEY = '534d92cb34d25943cec3aeb8d8281386';
-const WEATHER_API_KEY = '0acafcfd6d8546bc86205124231104';
-
-
 //Current weather
 const fetchOpenWeatherCurrent = async (lat, lon, lang) => {
     let url = 'https://api.openweathermap.org/data/2.5/weather?lat='+ lat + '&lon=' + lon + '&appid=' + OPEN_WEATHER_API_KEY + '&units=metric&lang=' + lang;
